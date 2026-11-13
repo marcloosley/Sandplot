@@ -1474,6 +1474,10 @@ Lodging: <span id="val-score-lodging">-</span>
 <div class="flex flex-wrap items-center gap-1.5">
 <span id="gh-stock-progress-pill" class="text-[9.5px] font-mono px-2 py-0.5 rounded bg-emerald-50 border border-emerald-200 text-emerald-800 font-bold">0 / 0 stocked</span>
 <span id="gh-pack-stats" class="text-[10px] font-mono px-2 py-0.5 rounded bg-sand-50 border border-sand-200">Ready</span>
+<div class="inline-flex items-center rounded border border-sand-300 overflow-hidden bg-white">
+  <button type="button" id="gh-btn-undo" onclick="undoGhInventory()" disabled class="px-2 py-0.5 text-[10px] font-bold text-sand-800 hover:bg-sand-100 disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1" title="Undo last Glasshouse move, draw, delete, or pack (Ctrl+Z)"><svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg> Undo</button>
+  <button type="button" id="gh-btn-redo" onclick="redoGhHistory()" disabled class="px-2 py-0.5 text-[10px] font-bold text-sand-800 hover:bg-sand-100 border-l border-sand-200 disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1" title="Redo undone action (Ctrl+Y)"><svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"/></svg> Redo</button>
+</div>
 <button type="button" onclick="packGlasshouse()" class="px-2 py-0.5 rounded bg-cyan-700 hover:bg-cyan-800 text-white font-bold text-[10px] inline-flex items-center gap-1" title="Run Auto-Pack across zones"><svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Auto-Pack</button>
 </div>
 </div>
@@ -1489,7 +1493,7 @@ Lodging: <span id="val-score-lodging">-</span>
 <button type="button" id="gh-btn-lock-layout" onclick="toggleGhLayoutLock()" class="px-2.5 py-1 rounded font-bold bg-white border border-sand-300 text-sand-800 inline-flex items-center gap-1" title="Lock layout so trays cannot be accidentally moved, rotated, or repacked"><svg class="w-3.5 h-3.5 inline-block -mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg> Lock Layout</button>
 </div>
 <div class="flex flex-wrap items-center gap-1.5 font-mono text-[9.5px]">
-<button type="button" onclick="rotateSelectedGhTray(true)" class="px-2 py-1 rounded border border-cyan-600 bg-cyan-700 hover:bg-cyan-800 text-white font-bold inline-flex items-center gap-1" title="Rotate selected tray(s) 90° and snap neighbours to fill gaps"><svg class="w-3.5 h-3.5 inline-block -mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Rotate Tray</button>
+<button type="button" onclick="rotateSelectedGhTray(false)" class="px-2 py-1 rounded border border-cyan-600 bg-cyan-700 hover:bg-cyan-800 text-white font-bold inline-flex items-center gap-1" title="Rotate selected tray 90° in place without shifting neighbours"><svg class="w-3.5 h-3.5 inline-block -mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Rotate Tray</button>
 <button type="button" onclick="zoomGhCanvas(-0.15)" class="px-1.5 py-1 rounded border border-sand-300 bg-white hover:bg-sand-100 text-sand-800 font-bold" title="Zoom out schematic">-</button>
 <button type="button" onclick="zoomGhCanvas(0.15)" class="px-1.5 py-1 rounded border border-sand-300 bg-white hover:bg-sand-100 text-sand-800 font-bold" title="Zoom in schematic">+</button>
 <button type="button" onclick="rotateGhCanvas()" class="px-2 py-1 rounded border border-sand-300 bg-white hover:bg-sand-100 text-sand-800 font-semibold inline-flex items-center gap-1" title="Rotate entire schematic view 90°"><svg class="w-3.5 h-3.5 inline-block -mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Rotate View</button>
@@ -1519,8 +1523,9 @@ Lodging: <span id="val-score-lodging">-</span>
   </div>
   <div class="flex flex-wrap items-center gap-1.5 font-mono">
     <div class="inline-flex rounded border border-sand-300 overflow-hidden bg-white">
-      <button type="button" id="gh-draw-mode-drag" onclick="setGhDrawFillCol(false)" class="px-2 py-0.5 font-bold bg-cyan-700 text-white" title="Click or hold &amp; drag across cells to paint trays">Drag Paint</button>
-      <button type="button" id="gh-draw-mode-col" onclick="setGhDrawFillCol(true)" class="px-2 py-0.5 font-semibold text-sand-800 hover:bg-sand-100" title="Click any cell to fill that entire free column strip in 1 click">Fill Whole Col</button>
+      <button type="button" id="gh-draw-mode-drag" onclick="setGhDrawPaintMode('swipe')" class="px-2 py-0.5 font-bold bg-cyan-700 text-white" title="Click or hold &amp; drag across cells to paint trays continuously">Swipe Paint</button>
+      <button type="button" id="gh-draw-mode-box" onclick="setGhDrawPaintMode('box')" class="px-2 py-0.5 font-semibold text-sand-800 hover:bg-sand-100 border-l border-sand-200" title="Click a corner cell and drag to opposite corner to fill a rectangular block">Box Fill</button>
+      <button type="button" id="gh-draw-mode-col" onclick="setGhDrawPaintMode('col')" class="px-2 py-0.5 font-semibold text-sand-800 hover:bg-sand-100 border-l border-sand-200" title="Click any cell to fill that entire free column strip in 1 click">Fill Col</button>
     </div>
     <button type="button" onclick="packGlasshouse()" class="px-2 py-0.5 rounded bg-cyan-700 hover:bg-cyan-800 text-white font-bold" title="Auto-pack remaining unplaced items around your fixed drawn trays">Auto-Pack Rest</button>
     <button type="button" onclick="unpinMovedGhTrays()" class="px-2 py-0.5 rounded bg-white hover:bg-amber-50 border border-amber-300 text-amber-900 font-semibold" title="Convert drawn batch trays back to auto-pack items">Release Drawn</button>
@@ -2403,7 +2408,7 @@ shapeOptions: [], selectedShape: null, bestGrid: null, bestScore: null, bestViol
 rcbd: { tests: 33, checks: 3, reps: 3, blockRows: 6, blockCols: 6, repsY: 1, repsX: 3, grid: null, repMatrix: null, longRecords: [] },
 disease: { rows: 10, cols: 18, markerInterval: 0, unrep: 93, unrepNaked: 15, rep: 20, repNaked: 5, repCount: 2, ctrl: 2, ctrlCount: 3, grid: null, score: null, violations: 0, locked: [], longRecords: [] },
 nursery: { plotRows: 10, plotCols: 5, blockRows: 2, blockCols: 2, gapRows: 1, gapCols: 1, prefix: 'NUR-', startNum: 1, pathing: 'serpentine', grid: null },
-glasshouse: { troughs: [{ id: 0, label: "Zone 1", w: 1.2, l: 5, pinned: [], items: [] }, { id: 1, label: "Zone 2", w: 1.2, l: 5, pinned: [], items: [] }, { id: 2, label: "Zone 3", w: 1.2, l: 5, pinned: [], items: [] }, { id: 3, label: "Zone 4", w: 1.2, l: 5, pinned: [], items: [] }], items: [], history: [], totalArea: 0, usedArea: 0, gapArea: 0, editingId: null, dragIndex: null, packed: [], toolMode: "pan", gridStep: 0.5, gapLength: 0.5, gapFullWidth: true, startCorner: "bottom-left", packMode: "auto-best", colOrder: "left-first", preferredColMix: null, layoutLocked: false, autoPinOnEdit: true, selectedPlacement: null, selectedPlacements: [], multiSelectMode: false, autoFit: true, activeManualItemId: "", drawOrientation: "L", drawFillCol: false, savedGlasshouses: [], activeGlasshouseId: "", lockStockMeta: false, keepBarcodeFocus: true, scanHistory: [], ui: { zoom: 1, panX: 0, panY: 0, isPanning: false, dragMoved: false, startX: 0, startY: 0, rotated: false } },
+glasshouse: { troughs: [{ id: 0, label: "Zone 1", w: 1.2, l: 5, pinned: [], items: [] }, { id: 1, label: "Zone 2", w: 1.2, l: 5, pinned: [], items: [] }, { id: 2, label: "Zone 3", w: 1.2, l: 5, pinned: [], items: [] }, { id: 3, label: "Zone 4", w: 1.2, l: 5, pinned: [], items: [] }], items: [], history: [], redoStack: [], totalArea: 0, usedArea: 0, gapArea: 0, editingId: null, dragIndex: null, packed: [], toolMode: "pan", gridStep: 0.5, gapLength: 0.5, gapFullWidth: true, startCorner: "bottom-left", packMode: "auto-best", colOrder: "left-first", preferredColMix: null, layoutLocked: false, autoPinOnEdit: true, selectedPlacement: null, selectedPlacements: [], multiSelectMode: false, autoFit: true, activeManualItemId: "", drawOrientation: "L", drawFillCol: false, drawPaintMode: "swipe", savedGlasshouses: [], activeGlasshouseId: "", lockStockMeta: false, keepBarcodeFocus: true, scanHistory: [], ui: { zoom: 1, panX: 0, panY: 0, isPanning: false, dragMoved: false, startX: 0, startY: 0, rotated: false } },
 cropart: { imgElement: null, grid: null, w: 40, h: 40, thresh: 128, plant: 'ART', blank: 'N-ALLEY' },
 ghRequests: [], ghActiveTab: "spray", sprayItems: [], consumableItems: [],
 fieldPlan: { sheets: [], rawPegs: [], mathPacked: [], fieldData: [], grids: [{ id: 'g1', name: 'Grid 1', boards: 4, runs: 35, rowsPerBoard: 108, startDir: 'bottom' }], stopAtGridEnd: false, engineMode: 'math', colorBy: 'generation', labelMode: 'fc', dupMode: 'merge', condensedMode: 'gen_board', condensedNumbering: 'continuous', mathStartFcOverride: '', showWidthTape: true, tapeBedM: 1.55, tapePitchM: 1.88, altStartFc: 0, altEndFc: 0, altOffset: 0, startsAtBottom: true, colWidth: 56, searchQuery: '', searchMatchIndex: 0, highlightDrift: false, diagOpen: false, diagFilter: 'all', selectedBlockKey: null, diagnostics: { duplicates: [], fcGaps: [], excelDrifts: [], boardSplits: [], overflows: [], firstDrift: null }, nurseryColors: {}, legendNames: {}, sourceName: '', duplicateCount: 0, initialized: false, loading: false },
@@ -8623,13 +8628,51 @@ function ghEscape(value) { return String(value ?? '').replace(/[&<>"']/g, char =
 function getGhZoneLabel(trough, index) {
 return (trough && trough.label && String(trough.label).trim()) ? String(trough.label).trim() : `Zone ${index + 1}`;
 }
+function captureGhSnapshot() {
+  return {
+    items: JSON.parse(JSON.stringify(state.glasshouse.items || [])),
+    troughsState: (state.glasshouse.troughs || []).map(t => ({
+      pinned: JSON.parse(JSON.stringify(t.pinned || [])),
+      items: JSON.parse(JSON.stringify(t.items || []))
+    })),
+    selectedPlacements: JSON.parse(JSON.stringify(state.glasshouse.selectedPlacements || [])),
+    selectedPlacement: state.glasshouse.selectedPlacement ? JSON.parse(JSON.stringify(state.glasshouse.selectedPlacement)) : null
+  };
+}
+function applyGhSnapshot(snap) {
+  if (!snap || typeof snap !== 'object') return;
+  if (Array.isArray(snap)) {
+    state.glasshouse.items = JSON.parse(JSON.stringify(snap));
+  } else {
+    state.glasshouse.items = JSON.parse(JSON.stringify(snap.items || []));
+    if (Array.isArray(snap.troughsState)) {
+      (state.glasshouse.troughs || []).forEach((t, i) => {
+        const ts = snap.troughsState[i];
+        t.pinned = ts ? JSON.parse(JSON.stringify(ts.pinned || [])) : [];
+        t.items = ts ? JSON.parse(JSON.stringify(ts.items || [])) : [];
+      });
+    } else if (Array.isArray(snap.pinnedByTrough)) {
+      (state.glasshouse.troughs || []).forEach((t, i) => {
+        t.pinned = JSON.parse(JSON.stringify(snap.pinnedByTrough[i] || []));
+      });
+    }
+    state.glasshouse.selectedPlacements = JSON.parse(JSON.stringify(snap.selectedPlacements || []));
+    state.glasshouse.selectedPlacement = snap.selectedPlacement ? JSON.parse(JSON.stringify(snap.selectedPlacement)) : null;
+  }
+  syncGhAfterPlacementMutation({ autosave: true });
+}
+function updateGhUndoUi() {
+  const uBtn = document.getElementById('gh-btn-undo');
+  const rBtn = document.getElementById('gh-btn-redo');
+  if (uBtn) uBtn.disabled = !(state.glasshouse.history && state.glasshouse.history.length);
+  if (rBtn) rBtn.disabled = !(state.glasshouse.redoStack && state.glasshouse.redoStack.length);
+}
 function saveGhHistory() {
-const snap = {
-items: JSON.parse(JSON.stringify(state.glasshouse.items || [])),
-pinnedByTrough: (state.glasshouse.troughs || []).map(t => JSON.parse(JSON.stringify(t.pinned || [])))
-};
-state.glasshouse.history.push(snap);
-if (state.glasshouse.history.length > 25) state.glasshouse.history.shift();
+  if (!Array.isArray(state.glasshouse.history)) state.glasshouse.history = [];
+  state.glasshouse.history.push(captureGhSnapshot());
+  if (state.glasshouse.history.length > 35) state.glasshouse.history.shift();
+  state.glasshouse.redoStack = [];
+  updateGhUndoUi();
 }
 function saveGhLayout() {
 try {
@@ -8713,6 +8756,14 @@ renderGhTroughs();
 repackOrRenderGh();
 showToast('Cleared all pinned gaps and manual placements across all zones.');
 }
+function rebuildGhObstacles() {
+  (state.glasshouse.troughs || []).forEach(trough => {
+    trough.obstacles = [
+      ...(trough.pinned || []).map(p => ({ x: Number(p.x), y: Number(p.y), w: Number(p.w), l: Number(p.l) })),
+      ...(trough.items || []).map(it => ({ x: Number(it.x), y: Number(it.y), w: Number(it.w), l: Number(it.l) }))
+    ];
+  });
+}
 function recalcGhStatsInPlace() {
   const buffer = Math.max(0, Number(document.getElementById('gh-edge-buffer')?.value ?? state.glasshouse.edgeBuffer ?? 0));
   state.glasshouse.edgeBuffer = buffer;
@@ -8730,7 +8781,7 @@ function recalcGhStatsInPlace() {
       else {
         manualCount++;
         usedArea += area;
-        const srcId = p.sourceItemId || p.id;
+        const srcId = p.sourceItemId || p.itemId || p.id;
         if (srcId) countsById[srcId] = (countsById[srcId] || 0) + 1;
       }
     });
@@ -8741,13 +8792,24 @@ function recalcGhStatsInPlace() {
     });
   });
   (state.glasshouse.items || []).forEach(it => { it.packed = countsById[it.id] || 0; });
+  rebuildGhObstacles();
   state.glasshouse.totalArea = totalArea;
   state.glasshouse.usedArea = usedArea;
   state.glasshouse.gapArea = gapArea;
   const util = totalArea ? (100 * usedArea / totalArea).toFixed(1) : '0.0';
   const stEl = document.getElementById('gh-pack-stats');
-  if (stEl) stEl.innerText = `${autoCount} auto-packed · ${manualCount} manual · ${gapCount} gap(s) · ${util}% area used`;
+  if (stEl) stEl.innerText = `${autoCount} auto-packed · ${manualCount} fixed/drawn · ${gapCount} gap(s) · ${util}% area used`;
   renderGhItems();
+}
+function syncGhAfterPlacementMutation(opts = {}) {
+  recalcGhStatsInPlace();
+  renderGhTroughs();
+  if (typeof updateGhDrawBarUi === 'function') updateGhDrawBarUi();
+  if (typeof updateGhEditBarUi === 'function') updateGhEditBarUi();
+  updateGhUndoUi();
+  renderGhCanvas();
+  if (opts.updateTable !== false && typeof renderGhPlacementTable === 'function') renderGhPlacementTable();
+  if (opts.autosave !== false && typeof scheduleWorkspaceAutosave === 'function') scheduleWorkspaceAutosave(300);
 }
 function removeGhPinnedById(troughIndex, pinnedId, event) {
 if (event) event.stopPropagation();
@@ -8801,7 +8863,7 @@ renderGhCanvas();
 function getGhDrawBrush() {
   const selId = state.glasshouse.activeManualItemId || document.getElementById('gh-manual-item-select')?.value || '';
   let tpl = (state.glasshouse.items || []).find(it => it.id === selId);
-  if (!tpl && (state.glasshouse.items || []).length > 0 && !selId) {
+  if (!tpl && selId !== '__form__' && (state.glasshouse.items || []).length > 0 && !selId) {
     tpl = state.glasshouse.items[0];
     state.glasshouse.activeManualItemId = tpl.id;
   }
@@ -8809,9 +8871,10 @@ function getGhDrawBrush() {
   if (!tpl) {
     const fw = Math.max(0.05, Number(document.getElementById('gh-item-w')?.value) || 0.32);
     const fl = Math.max(0.05, Number(document.getElementById('gh-item-l')?.value) || 0.52);
-    const fn = (document.getElementById('gh-item-n')?.value || '').trim() || 'Form Tray';
+    const fn = (document.getElementById('gh-item-n')?.value || '').trim() || 'Drawn Item';
     const fc = document.getElementById('gh-item-c')?.value || '#2dd4bf';
-    tpl = { id: null, n: fn, w: fw, l: fl, c: fc, qty: null };
+    const fqty = document.getElementById('gh-item-qty')?.value;
+    tpl = { id: null, n: fn, w: fw, l: fl, c: fc, qty: fqty ? Math.max(1, parseInt(fqty, 10)) : null };
   }
   const baseW = Number(tpl.w) || 0.32;
   const baseL = Number(tpl.l) || 0.52;
@@ -8820,6 +8883,33 @@ function getGhDrawBrush() {
   const w = orient === 'W' ? baseL : baseW;
   const l = orient === 'W' ? baseW : baseL;
   return { tpl, isFromList, isSquare, orient, w: Number(w.toFixed(4)), l: Number(l.toFixed(4)) };
+}
+
+function ensureGhBrushInItinerary(brush) {
+  if (brush.isFromList && brush.tpl.id) return brush.tpl;
+  const list = state.glasshouse.items || (state.glasshouse.items = []);
+  const bw = Number(brush.tpl.w), bl = Number(brush.tpl.l);
+  let match = list.find(it => it.n === brush.tpl.n && Math.abs(Number(it.w) - bw) < 0.002 && Math.abs(Number(it.l) - bl) < 0.002);
+  if (!match) {
+    match = {
+      id: `GH_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+      n: brush.tpl.n || 'Drawn Batch',
+      w: bw,
+      l: bl,
+      qty: brush.tpl.qty ?? null,
+      maxDeep: null,
+      c: brush.tpl.c || '#2dd4bf',
+      packed: 0
+    };
+    list.push(match);
+  }
+  state.glasshouse.activeManualItemId = match.id;
+  const sel = document.getElementById('gh-manual-item-select');
+  if (sel) {
+    renderGhItems();
+    sel.value = match.id;
+  }
+  return match;
 }
 
 function setGhDrawItem(id) {
@@ -8840,9 +8930,14 @@ function toggleGhDrawOrientation() {
   setGhDrawOrientation(state.glasshouse.drawOrientation === 'W' ? 'L' : 'W');
 }
 
-function setGhDrawFillCol(fillCol) {
-  state.glasshouse.drawFillCol = Boolean(fillCol);
+function setGhDrawPaintMode(mode) {
+  const valid = ['swipe', 'box', 'col'];
+  state.glasshouse.drawPaintMode = valid.includes(mode) ? mode : 'swipe';
+  state.glasshouse.drawFillCol = (state.glasshouse.drawPaintMode === 'col');
   updateGhDrawBarUi();
+}
+function setGhDrawFillCol(fillCol) {
+  setGhDrawPaintMode(fillCol ? 'col' : 'swipe');
 }
 
 function updateGhDrawBarUi() {
@@ -8883,10 +8978,12 @@ function updateGhDrawBarUi() {
         : 'px-2 py-0.5 font-mono font-semibold text-sand-800 hover:bg-sand-100');
   }
   const dragBtn = document.getElementById('gh-draw-mode-drag');
+  const boxBtn = document.getElementById('gh-draw-mode-box');
   const colBtn = document.getElementById('gh-draw-mode-col');
-  const isCol = Boolean(state.glasshouse.drawFillCol);
-  if (dragBtn) dragBtn.className = !isCol ? 'px-2 py-0.5 font-bold bg-cyan-700 text-white' : 'px-2 py-0.5 font-semibold text-sand-800 hover:bg-sand-100';
-  if (colBtn) colBtn.className = isCol ? 'px-2 py-0.5 font-bold bg-cyan-700 text-white' : 'px-2 py-0.5 font-semibold text-sand-800 hover:bg-sand-100';
+  const pMode = state.glasshouse.drawPaintMode || (state.glasshouse.drawFillCol ? 'col' : 'swipe');
+  if (dragBtn) dragBtn.className = pMode === 'swipe' ? 'px-2 py-0.5 font-bold bg-cyan-700 text-white' : 'px-2 py-0.5 font-semibold text-sand-800 hover:bg-sand-100';
+  if (boxBtn) boxBtn.className = pMode === 'box' ? 'px-2 py-0.5 font-bold bg-cyan-700 text-white border-l border-sand-200' : 'px-2 py-0.5 font-semibold text-sand-800 hover:bg-sand-100 border-l border-sand-200';
+  if (colBtn) colBtn.className = pMode === 'col' ? 'px-2 py-0.5 font-bold bg-cyan-700 text-white border-l border-sand-200' : 'px-2 py-0.5 font-semibold text-sand-800 hover:bg-sand-100 border-l border-sand-200';
 }
 
 function countGhPlacedForItem(itemId) {
@@ -8945,7 +9042,32 @@ function computeGhItemDrawSlots(trough, brushW, brushL, buffer) {
 
 let _ghDrawPaintActive = false;
 let _ghDrawPaintSavedHistory = false;
+let _ghBoxAnchor = null;
+let _ghBoxCurrent = null;
+
+function highlightGhBoxPreview() {
+  document.querySelectorAll('.gh-draw-slot-cell').forEach(el => {
+    const tIdx = Number(el.dataset.trough);
+    const cx = Number(el.dataset.x), cy = Number(el.dataset.y), cw = Number(el.dataset.w), cl = Number(el.dataset.l);
+    if (_ghBoxAnchor && _ghBoxCurrent && tIdx === _ghBoxAnchor.troughIndex && tIdx === _ghBoxCurrent.troughIndex) {
+      const minX = Math.min(_ghBoxAnchor.x, _ghBoxCurrent.x) - 0.002;
+      const maxX = Math.max(_ghBoxAnchor.x + _ghBoxAnchor.w, _ghBoxCurrent.x + _ghBoxCurrent.w) + 0.002;
+      const minY = Math.min(_ghBoxAnchor.y, _ghBoxCurrent.y) - 0.002;
+      const maxY = Math.max(_ghBoxAnchor.y + _ghBoxAnchor.l, _ghBoxCurrent.y + _ghBoxCurrent.l) + 0.002;
+      const inBox = (cx + cw * 0.5 >= minX && cx + cw * 0.5 <= maxX && cy + cl * 0.5 >= minY && cy + cl * 0.5 <= maxY);
+      el.setAttribute('fill', inBox ? 'rgba(5,150,105,0.42)' : el.dataset.basefill);
+    } else {
+      el.setAttribute('fill', el.dataset.basefill);
+    }
+  });
+}
+
 window.addEventListener('mouseup', () => {
+  if (_ghBoxAnchor && _ghBoxCurrent && _ghBoxAnchor.troughIndex === _ghBoxCurrent.troughIndex) {
+    placeGhDrawnBox(_ghBoxAnchor.troughIndex, _ghBoxAnchor, _ghBoxCurrent);
+  }
+  _ghBoxAnchor = null;
+  _ghBoxCurrent = null;
   if (_ghDrawPaintActive) {
     _ghDrawPaintActive = false;
     _ghDrawPaintSavedHistory = false;
@@ -8953,12 +9075,68 @@ window.addEventListener('mouseup', () => {
   }
 });
 
+function placeGhDrawnBox(troughIndex, c1, c2) {
+  if (state.glasshouse.layoutLocked) { showToast('Layout is locked. Unlock to draw.'); return 0; }
+  const trough = state.glasshouse.troughs[troughIndex];
+  if (!trough) return 0;
+  if (!Array.isArray(trough.pinned)) trough.pinned = [];
+  const brush = getGhDrawBrush();
+  const linkedItem = ensureGhBrushInItinerary(brush);
+  const buffer = Math.max(0, Number(document.getElementById('gh-edge-buffer')?.value ?? state.glasshouse.edgeBuffer ?? 0));
+  const minX = Math.min(c1.x, c2.x) - 0.003;
+  const maxX = Math.max(c1.x + c1.w, c2.x + c2.w) + 0.003;
+  const minY = Math.min(c1.y, c2.y) - 0.003;
+  const maxY = Math.max(c1.y + c1.l, c2.y + c2.l) + 0.003;
+
+  saveGhHistory();
+  let remQuota = Infinity;
+  if (linkedItem.qty != null) {
+    remQuota = Math.max(0, Number(linkedItem.qty) - countGhPlacedForItem(linkedItem.id));
+    if (remQuota <= 0) {
+      showToast(`All ${linkedItem.qty} "${linkedItem.n}" are already placed.`);
+      return 0;
+    }
+  }
+
+  const allSlots = computeGhItemDrawSlots(trough, brush.w, brush.l, buffer)
+    .filter(s => s.x + s.w * 0.5 >= minX && s.x + s.w * 0.5 <= maxX && s.y + s.l * 0.5 >= minY && s.y + s.l * 0.5 <= maxY)
+    .sort((a, b) => (Math.abs(a.x - b.x) > 0.01 ? a.x - b.x : a.y - b.y));
+
+  let placed = 0;
+  const eps = 1e-4;
+  for (const s of allSlots) {
+    if (placed >= remQuota) break;
+    const obsNow = [...(trough.pinned || []), ...(trough.items || [])];
+    if (obsNow.some(o => ghRectsOverlap(s.x, s.y, s.w, s.l, o.x, o.y, o.w, o.l))) continue;
+    trough.pinned.push({
+      id: `MAN_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      sourceItemId: linkedItem.id,
+      n: linkedItem.n,
+      x: Number(s.x.toFixed(4)),
+      y: Number(s.y.toFixed(4)),
+      w: s.w,
+      l: s.l,
+      c: linkedItem.c || '#2dd4bf',
+      isGap: false,
+      isManual: true,
+      fixedOrientation: brush.orient
+    });
+    placed++;
+  }
+  if (placed > 0) {
+    syncGhAfterPlacementMutation();
+    showToast(`Filled box with ${placed} fixed ${brush.orient} "${linkedItem.n}" tray(s) & linked to itinerary.`);
+  }
+  return placed;
+}
+
 function placeGhDrawnCell(troughIndex, gx, gy, gw, gl, fillColumn = false) {
   if (state.glasshouse.layoutLocked) { showToast('Layout is locked. Unlock to draw.'); return false; }
   const trough = state.glasshouse.troughs[troughIndex];
   if (!trough) return false;
   if (!Array.isArray(trough.pinned)) trough.pinned = [];
   const brush = getGhDrawBrush();
+  const linkedItem = ensureGhBrushInItinerary(brush);
   const buffer = Math.max(0, Number(document.getElementById('gh-edge-buffer')?.value ?? state.glasshouse.edgeBuffer ?? 0));
   const obstacles = () => [...(trough.pinned || []), ...(trough.items || [])];
   const isFree = (x, y, w, l) => {
@@ -8972,10 +9150,10 @@ function placeGhDrawnCell(troughIndex, gx, gy, gw, gl, fillColumn = false) {
   }
 
   let remQuota = Infinity;
-  if (brush.isFromList && brush.tpl.qty != null) {
-    remQuota = Math.max(0, Number(brush.tpl.qty) - countGhPlacedForItem(brush.tpl.id));
+  if (linkedItem.qty != null) {
+    remQuota = Math.max(0, Number(linkedItem.qty) - countGhPlacedForItem(linkedItem.id));
     if (remQuota <= 0) {
-      showToast(`All ${brush.tpl.qty} "${brush.tpl.n}" are already placed.`);
+      showToast(`All ${linkedItem.qty} "${linkedItem.n}" are already placed.`);
       return false;
     }
   }
@@ -9005,13 +9183,13 @@ function placeGhDrawnCell(troughIndex, gx, gy, gw, gl, fillColumn = false) {
     if (!isFree(cell.x, cell.y, cell.w, cell.l)) continue;
     trough.pinned.push({
       id: `MAN_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
-      sourceItemId: brush.tpl.id || undefined,
-      n: brush.tpl.n || 'Tray',
+      sourceItemId: linkedItem.id,
+      n: linkedItem.n,
       x: cell.x,
       y: cell.y,
       w: cell.w,
       l: cell.l,
-      c: brush.tpl.c || '#2dd4bf',
+      c: linkedItem.c || '#2dd4bf',
       isGap: false,
       isManual: true,
       fixedOrientation: brush.orient
@@ -9019,11 +9197,8 @@ function placeGhDrawnCell(troughIndex, gx, gy, gw, gl, fillColumn = false) {
     placedCount++;
   }
   if (placedCount > 0) {
-    recalcGhStatsInPlace();
-    renderGhTroughs();
-    updateGhDrawBarUi();
-    renderGhCanvas();
-    if (fillColumn) showToast(`Drew ${placedCount} fixed ${brush.orient} tray(s) in column on ${getGhZoneLabel(trough, troughIndex)}.`);
+    syncGhAfterPlacementMutation({ updateTable: true, autosave: fillColumn });
+    if (fillColumn) showToast(`Drew ${placedCount} fixed ${brush.orient} "${linkedItem.n}" in column on ${getGhZoneLabel(trough, troughIndex)}.`);
     return true;
   }
   return false;
@@ -9035,13 +9210,18 @@ function startGhDrawCell(troughIndex, gx, gy, gw, gl, event) {
     event.stopPropagation();
   }
   if (state.glasshouse.ui.dragMoved) return;
-  const useFillCol = Boolean(state.glasshouse.drawFillCol || event?.shiftKey);
+  const pMode = event?.shiftKey ? 'col' : (state.glasshouse.drawPaintMode || (state.glasshouse.drawFillCol ? 'col' : 'swipe'));
+  if (pMode === 'box') {
+    _ghBoxAnchor = { troughIndex, x: gx, y: gy, w: gw, l: gl };
+    _ghBoxCurrent = { troughIndex, x: gx, y: gy, w: gw, l: gl };
+    highlightGhBoxPreview();
+    return;
+  }
   _ghDrawPaintSavedHistory = false;
-  if (useFillCol) {
+  if (pMode === 'col') {
     placeGhDrawnCell(troughIndex, gx, gy, gw, gl, true);
     _ghDrawPaintActive = false;
     _ghDrawPaintSavedHistory = false;
-    scheduleWorkspaceAutosave(300);
   } else {
     _ghDrawPaintActive = true;
     placeGhDrawnCell(troughIndex, gx, gy, gw, gl, false);
@@ -9049,7 +9229,14 @@ function startGhDrawCell(troughIndex, gx, gy, gw, gl, event) {
 }
 
 function continueGhDrawCell(troughIndex, gx, gy, gw, gl) {
-  if (!_ghDrawPaintActive || state.glasshouse.toolMode !== 'manual_item') return;
+  if (state.glasshouse.toolMode !== 'manual_item') return;
+  const pMode = state.glasshouse.drawPaintMode || 'swipe';
+  if (pMode === 'box' && _ghBoxAnchor && troughIndex === _ghBoxAnchor.troughIndex) {
+    _ghBoxCurrent = { troughIndex, x: gx, y: gy, w: gw, l: gl };
+    highlightGhBoxPreview();
+    return;
+  }
+  if (!_ghDrawPaintActive) return;
   placeGhDrawnCell(troughIndex, gx, gy, gw, gl, false);
 }
 
@@ -9180,17 +9367,21 @@ const item = state.glasshouse.items.find(entry => entry.id === state.glasshouse.
 }
 function removeGhItem(id) { saveGhHistory(); state.glasshouse.items = state.glasshouse.items.filter(item => item.id !== id); renderGhItems(); repackOrRenderGh(); }
 function undoGhInventory() {
-if (!state.glasshouse.history.length) return showToast('Nothing to undo.');
-const prev = state.glasshouse.history.pop();
-if (Array.isArray(prev)) {
-state.glasshouse.items = prev;
-} else if (prev && typeof prev === 'object') {
-state.glasshouse.items = prev.items || [];
-if (Array.isArray(prev.pinnedByTrough)) {
-state.glasshouse.troughs.forEach((t, i) => { t.pinned = prev.pinnedByTrough[i] || []; });
+  if (!state.glasshouse.history || !state.glasshouse.history.length) return showToast('Nothing to undo.');
+  if (!Array.isArray(state.glasshouse.redoStack)) state.glasshouse.redoStack = [];
+  state.glasshouse.redoStack.push(captureGhSnapshot());
+  if (state.glasshouse.redoStack.length > 35) state.glasshouse.redoStack.shift();
+  const prev = state.glasshouse.history.pop();
+  applyGhSnapshot(prev);
+  showToast('Undid last Glasshouse change.');
 }
-}
-renderGhTroughs(); renderGhItems(); repackOrRenderGh();
+function redoGhHistory() {
+  if (!state.glasshouse.redoStack || !state.glasshouse.redoStack.length) return showToast('Nothing to redo.');
+  if (!Array.isArray(state.glasshouse.history)) state.glasshouse.history = [];
+  state.glasshouse.history.push(captureGhSnapshot());
+  const next = state.glasshouse.redoStack.pop();
+  applyGhSnapshot(next);
+  showToast('Redid Glasshouse change.');
 }
 function ghDragStart(event, index) { state.glasshouse.dragIndex = index; event.dataTransfer.effectAllowed = 'move'; }
 function ghDragOver(event) { event.preventDefault(); event.dataTransfer.dropEffect = 'move'; }
@@ -9285,7 +9476,8 @@ if (p.isGap) { gapCount++; state.glasshouse.gapArea += p.w * p.l; }
 else {
   manualCount++;
   state.glasshouse.usedArea += p.w * p.l;
-  if (p.sourceItemId) pinnedCountBySource[p.sourceItemId] = (pinnedCountBySource[p.sourceItemId] || 0) + 1;
+  const sid = p.sourceItemId || p.itemId;
+  if (sid) pinnedCountBySource[sid] = (pinnedCountBySource[sid] || 0) + 1;
 }
 }
 }
@@ -9307,6 +9499,7 @@ function simulateColumnStrips(trough, troughIndex, item, startY, cols, limitQty)
   let colX = colOrder === 'right-first' ? Math.max(buffer, Number((trough.w - buffer - totalColsW).toFixed(4))) : buffer;
   const orderedCols = colOrder === 'right-first' ? [...cols].reverse() : cols;
   const zoneReverseY = (colOrder === 'serpentine' && (troughIndex % 2 === 1));
+  // Even in serpentine reverse zones, always scan obstacle-free from minYLimit = buffer
 
   orderedCols.forEach((col, cIdx) => {
     const colPlaced = [];
@@ -9437,16 +9630,15 @@ if (canUseColumns) {
     }
   }
   if (bestPlan && bestPlan.sim.length > 0) {
-    let maxEndY = trough.cursorY;
     for (const p of bestPlan.sim) {
       trough.items.push(p);
       trough.obstacles.push({ x: p.x, y: p.y, w: p.w, l: p.l });
       item.packed++;
       state.glasshouse.usedArea += p.w * p.l;
       remaining--;
-      maxEndY = Math.max(maxEndY, p.y + p.l);
     }
-    trough.cursorY = Number(maxEndY.toFixed(4));
+    // Keep cursorY at buffer so next batches skip placed obstacles cleanly per-column instead of skipping empty right-side columns or odd serpentine zones!
+    trough.cursorY = buffer;
     trough.cursorX = buffer;
     trough.shelfH = 0;
     trough.shelfCount = 0;
@@ -9463,42 +9655,40 @@ const orientations = allowRotate && item.w !== item.l ? [[item.w, item.l], [item
 const orientation = orientations.find(([width, length]) => width <= trough.usableW + eps && length <= trough.usableL + eps);
 if (!orientation) continue;
 const [width, length] = orientation;
+const revYFallback = (colOrder === 'serpentine' && (troughIndex % 2 === 1));
+const rightFirstFallback = (colOrder === 'right-first');
+let fbY = revYFallback ? Number((trough.l - buffer - length).toFixed(4)) : buffer;
+let fbX = rightFirstFallback ? Number((trough.w - buffer - width).toFixed(4)) : buffer;
+let fbCount = 0;
 let guard = 0;
 while (remaining > 0 && guard++ < 8000) {
-if (item.maxDeep && trough.shelfCount >= item.maxDeep) {
-trough.cursorY = Number((trough.cursorY + Math.max(trough.shelfH, 0.01)).toFixed(4));
-trough.cursorX = buffer;
-trough.shelfH = 0;
-trough.shelfCount = 0;
-}
-if (trough.cursorX + width > trough.w - buffer + eps) {
-if (trough.shelfH > 0) {
-trough.cursorY = Number((trough.cursorY + trough.shelfH).toFixed(4));
-} else {
-const blocking = trough.obstacles.filter(o => o.y < trough.cursorY + length - eps && o.y + o.l > trough.cursorY + eps);
-const nextY = blocking.length ? Math.min(...blocking.map(o => o.y + o.l)) : trough.cursorY + 0.05;
-trough.cursorY = Number(Math.max(trough.cursorY + 0.005, nextY).toFixed(4));
-}
-trough.cursorX = buffer;
-trough.shelfH = 0;
-trough.shelfCount = 0;
-}
-if (trough.cursorY + length > trough.l - buffer + eps) break;
-const hits = trough.obstacles.filter(o => ghRectsOverlap(trough.cursorX, trough.cursorY, width, length, o.x, o.y, o.w, o.l));
-if (hits.length > 0) {
-const maxRight = Math.max(...hits.map(o => o.x + o.w));
-trough.cursorX = Number(Math.max(trough.cursorX + 0.005, maxRight).toFixed(4));
-continue;
-}
-const packed = { id: item.id, n: item.n, c: item.c, x: Number(trough.cursorX.toFixed(4)), y: Number(trough.cursorY.toFixed(4)), w: width, l: length, isGap: false, isManual: false };
-trough.items.push(packed);
-trough.obstacles.push({ x: packed.x, y: packed.y, w: packed.w, l: packed.l });
-trough.cursorX = Number((trough.cursorX + width).toFixed(4));
-trough.shelfH = Math.max(trough.shelfH, length);
-trough.shelfCount++;
-item.packed++;
-state.glasshouse.usedArea += width * length;
-remaining--;
+  if (item.maxDeep && fbCount >= item.maxDeep) {
+    fbY = revYFallback ? Number((fbY - length).toFixed(4)) : Number((fbY + length).toFixed(4));
+    fbX = rightFirstFallback ? Number((trough.w - buffer - width).toFixed(4)) : buffer;
+    fbCount = 0;
+  }
+  const xOutOfBounds = rightFirstFallback ? (fbX < buffer - eps) : (fbX + width > trough.w - buffer + eps);
+  if (xOutOfBounds) {
+    fbY = revYFallback ? Number((fbY - length).toFixed(4)) : Number((fbY + length).toFixed(4));
+    fbX = rightFirstFallback ? Number((trough.w - buffer - width).toFixed(4)) : buffer;
+    fbCount = 0;
+  }
+  if (revYFallback ? (fbY < buffer - eps) : (fbY + length > trough.l - buffer + eps)) break;
+  const hits = trough.obstacles.filter(o => ghRectsOverlap(fbX, fbY, width, length, o.x, o.y, o.w, o.l));
+  if (hits.length > 0) {
+    fbX = rightFirstFallback
+      ? Number(Math.min(fbX - 0.005, Math.min(...hits.map(o => o.x)) - width).toFixed(4))
+      : Number(Math.max(fbX + 0.005, Math.max(...hits.map(o => o.x + o.w))).toFixed(4));
+    continue;
+  }
+  const packed = { id: item.id, n: item.n, c: item.c, x: Number(fbX.toFixed(4)), y: Number(fbY.toFixed(4)), w: width, l: length, isGap: false, isManual: false };
+  trough.items.push(packed);
+  trough.obstacles.push({ x: packed.x, y: packed.y, w: packed.w, l: packed.l });
+  fbX = rightFirstFallback ? Number((fbX - width).toFixed(4)) : Number((fbX + width).toFixed(4));
+  fbCount++;
+  item.packed++;
+  state.glasshouse.usedArea += width * length;
+  remaining--;
 }
 }
 }
@@ -9506,8 +9696,10 @@ const total = state.glasshouse.items.reduce((sum, item) => sum + item.packed, 0)
 const utilization = state.glasshouse.totalArea ? (100 * state.glasshouse.usedArea / state.glasshouse.totalArea).toFixed(1) : '0.0';
 const stEl = document.getElementById('gh-pack-stats');
 if (stEl) stEl.innerText = `${total} auto-packed · ${manualCount} manual · ${gapCount} gap(s) · ${utilization}% area used${columnSummaryNote}`;
+rebuildGhObstacles();
 renderGhItems();
 if (typeof renderGhColMixPicker === 'function') renderGhColMixPicker();
+if (typeof updateGhUndoUi === 'function') updateGhUndoUi();
 renderGhCanvas();
 }
 function getAllTroughPlacements(trough, troughIndex = -1) {
@@ -9551,7 +9743,7 @@ function getAllGhStockablePlacements() {
   const list = [];
   (state.glasshouse.troughs || []).forEach((trough, zIdx) => {
     const zLabel = getGhZoneLabel(trough, zIdx);
-    const allEntries = getAllTroughPlacements(trough);
+    const allEntries = getAllTroughPlacements(trough, zIdx);
     allEntries.forEach((item, iIdx) => {
       if (item.isGap) return;
       const ref = `Z${zIdx + 1}-${iIdx + 1}`;
@@ -10210,7 +10402,7 @@ function renderGhCanvas() {
       const baseFillSlot = brush.orient === 'W' ? 'rgba(8,145,178,0.06)' : 'rgba(5,150,105,0.06)';
       slots.forEach(s => {
         const mr = mapGhCornerRect(trough, s, sc);
-        html += `<rect class="gh-interactive-target" x="${xOffset + mr.x}" y="${mr.y}" width="${mr.w}" height="${mr.l}" rx="0.01" fill="${baseFillSlot}" stroke="${strokeSlot}" stroke-width="0.008" stroke-dasharray="0.025 0.015" style="cursor:crosshair" onmouseover="this.setAttribute('fill','${fillPreview}')" onmouseout="this.setAttribute('fill','${baseFillSlot}')" onmousedown="startGhDrawCell(${troughIndex},${s.x},${s.y},${s.w},${s.l},event)" onmouseenter="continueGhDrawCell(${troughIndex},${s.x},${s.y},${s.w},${s.l})"><title>Click or drag to draw ${ghEscape(brush.tpl.n)} [${brush.orient}: ${s.w.toFixed(2)}×${s.l.toFixed(2)}m] at (${s.x.toFixed(2)}m, ${s.y.toFixed(2)}m) · Hold Shift for whole col</title></rect>`;
+        html += `<rect class="gh-interactive-target gh-draw-slot-cell" data-trough="${troughIndex}" data-x="${s.x}" data-y="${s.y}" data-w="${s.w}" data-l="${s.l}" data-basefill="${baseFillSlot}" x="${xOffset + mr.x}" y="${mr.y}" width="${mr.w}" height="${mr.l}" rx="0.01" fill="${baseFillSlot}" stroke="${strokeSlot}" stroke-width="0.008" stroke-dasharray="0.025 0.015" style="cursor:crosshair" onmouseover="if(!_ghBoxAnchor)this.setAttribute('fill','${fillPreview}')" onmouseout="if(!_ghBoxAnchor)this.setAttribute('fill','${baseFillSlot}')" onmousedown="startGhDrawCell(${troughIndex},${s.x},${s.y},${s.w},${s.l},event)" onmouseenter="continueGhDrawCell(${troughIndex},${s.x},${s.y},${s.w},${s.l})"><title>Draw ${ghEscape(brush.tpl.n)} [${brush.orient}: ${s.w.toFixed(2)}×${s.l.toFixed(2)}m] at (${s.x.toFixed(2)}m, ${s.y.toFixed(2)}m) · Shift-click for col</title></rect>`;
       });
     }
 
@@ -10534,10 +10726,7 @@ function pinSelectedGhTrays(shouldPin = true) {
   saveGhHistory();
   const changed = promoteGhEntriesToPinned(entries, shouldPin);
   state.glasshouse.selectedPlacement = state.glasshouse.selectedPlacements[state.glasshouse.selectedPlacements.length - 1] || null;
-  updateGhEditBarUi();
-  renderGhCanvas();
-  renderGhPlacementTable();
-  scheduleWorkspaceAutosave(300);
+  syncGhAfterPlacementMutation();
   showToast(shouldPin
     ? (changed ? `Pinned ${changed} item(s) in place — preserved across Auto-Pack.` : 'Selection already pinned in place.')
     : (changed ? `Unpinned ${changed} item(s).` : 'Selection was not pinned.'));
@@ -10773,10 +10962,7 @@ function rotateSelectedGhTray(snapOthers = true) {
   }
   state.glasshouse.selectedPlacements = [{ ...rotSel }];
   state.glasshouse.selectedPlacement = state.glasshouse.selectedPlacements[0];
-  updateGhEditBarUi();
-  renderGhCanvas();
-  renderGhPlacementTable();
-  scheduleWorkspaceAutosave(300);
+  syncGhAfterPlacementMutation();
   showToast(snapOthers ? `Rotated ${item.n} & snapped neighbours to fill gaps.` : `Rotated ${item.n} in place.`);
 }
 
@@ -10850,10 +11036,7 @@ function moveOrSnapSelectedGhBatch(axis, dirSign, maxDist) {
     promoteGhEntriesToPinned(entries, true);
   }
   state.glasshouse.selectedPlacement = state.glasshouse.selectedPlacements[state.glasshouse.selectedPlacements.length - 1] || null;
-  updateGhEditBarUi();
-  renderGhCanvas();
-  renderGhPlacementTable();
-  scheduleWorkspaceAutosave(300);
+  syncGhAfterPlacementMutation();
 }
 
 function nudgeSelectedGhTray(visDxSign, visDySign) {
@@ -10905,10 +11088,7 @@ function compactSelectedGhZone(toFarEnd = false) {
   }
   state.glasshouse.selectedPlacement = null;
   state.glasshouse.selectedPlacements = [];
-  updateGhEditBarUi();
-  renderGhCanvas();
-  renderGhPlacementTable();
-  scheduleWorkspaceAutosave(300);
+  syncGhAfterPlacementMutation();
   showToast(toFarEnd ? `Snapped trays in ${getGhZoneLabel(trough, tIdx)} against walkways/far end.` : `Snapped trays in ${getGhZoneLabel(trough, tIdx)} to fill gaps.`);
 }
 
@@ -10928,6 +11108,7 @@ function startGhTrayDrag(event, troughIndex, isPinned, x, y, xOffset) {
   const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
   _ghDragState = { troughIndex, isPinned, item, xOffset, startSvgX: svgPt.x, startSvgY: svgPt.y, origX: item.x, origY: item.y, moved: false };
   state.glasshouse.selectedPlacement = { troughIndex, isPinned, x: item.x, y: item.y };
+  state.glasshouse.selectedPlacements = [state.glasshouse.selectedPlacement];
   const onMove = (ev) => {
     if (!_ghDragState) return;
     pt.x = ev.clientX; pt.y = ev.clientY;
@@ -10957,17 +11138,16 @@ function startGhTrayDrag(event, troughIndex, isPinned, x, y, xOffset) {
     window.removeEventListener('mousemove', onMove);
     window.removeEventListener('mouseup', onUp);
     if (_ghDragState && _ghDragState.moved) {
+      state.glasshouse.ui.dragMoved = true;
+      setTimeout(() => { state.glasshouse.ui.dragMoved = false; }, 50);
+      const dragTrough = state.glasshouse.troughs?.[_ghDragState.troughIndex];
+      const dragSel = { troughIndex: _ghDragState.troughIndex, isPinned: _ghDragState.isPinned, x: _ghDragState.item.x, y: _ghDragState.item.y };
       if (state.glasshouse.autoPinOnEdit !== false && !_ghDragState.isPinned) {
-        const dragTrough = state.glasshouse.troughs?.[_ghDragState.troughIndex];
-        const dragSel = { troughIndex: _ghDragState.troughIndex, isPinned: _ghDragState.isPinned, x: _ghDragState.item.x, y: _ghDragState.item.y };
         promoteGhEntriesToPinned([{ sel: dragSel, trough: dragTrough, item: _ghDragState.item }], true);
-        state.glasshouse.selectedPlacements = [dragSel];
-        state.glasshouse.selectedPlacement = dragSel;
-        updateGhEditBarUi();
-        renderGhCanvas();
       }
-      renderGhPlacementTable();
-      scheduleWorkspaceAutosave(300);
+      state.glasshouse.selectedPlacements = [dragSel];
+      state.glasshouse.selectedPlacement = dragSel;
+      syncGhAfterPlacementMutation();
     }
     _ghDragState = null;
   };
@@ -10978,6 +11158,16 @@ function startGhTrayDrag(event, troughIndex, isPinned, x, y, xOffset) {
 document.addEventListener('keydown', (e) => {
   const tag0 = (e.target?.tagName || '').toLowerCase();
   if (tag0 === 'input' || tag0 === 'textarea' || tag0 === 'select') return;
+  if (state.view === 'glasshouse' && (e.ctrlKey || e.metaKey) && !e.shiftKey && e.key.toLowerCase() === 'z') {
+    e.preventDefault();
+    undoGhInventory();
+    return;
+  }
+  if (state.view === 'glasshouse' && ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === 'y' || (e.shiftKey && e.key.toLowerCase() === 'z')))) {
+    e.preventDefault();
+    redoGhHistory();
+    return;
+  }
   if (state.glasshouse.toolMode === 'manual_item' && (e.key === 'r' || e.key === 'R')) {
     e.preventDefault();
     toggleGhDrawOrientation();
