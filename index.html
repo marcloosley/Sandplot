@@ -1484,7 +1484,7 @@ Lodging: <span id="val-score-lodging">-</span>
 <button type="button" id="gh-mode-edit" onclick="setGhToolMode('edit')" class="px-2.5 py-1 rounded font-semibold bg-white border border-sand-300 text-sand-800 inline-flex items-center gap-1" title="Click any tray/pot to select, drag, rotate, or nudge it"><svg class="w-3.5 h-3.5 inline-block -mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Edit / Move</button>
 <button type="button" id="gh-mode-stock" onclick="setGhToolMode('stock')" class="px-2.5 py-1 rounded font-semibold bg-white border border-sand-300 text-sand-800 inline-flex items-center gap-1" title="Click any placed pot/tray on the schematic to target it for Barcode/QR stocking"><svg class="w-3.5 h-3.5 inline-block -mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> Stock / Scan</button>
 <button type="button" id="gh-mode-gap" onclick="setGhToolMode('gap')" class="px-2.5 py-1 rounded font-semibold bg-white border border-sand-300 text-sand-800 inline-flex items-center gap-1"><svg class="w-3.5 h-3.5 inline-block -mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><line x1="3" y1="12" x2="21" y2="12"/></svg> Add Gap</button>
-<button type="button" id="gh-mode-manual" onclick="setGhToolMode('manual_item')" class="px-2.5 py-1 rounded font-semibold bg-white border border-sand-300 text-sand-800 inline-flex items-center gap-1"><svg class="w-3.5 h-3.5 inline-block -mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg> Place Item</button>
+<button type="button" id="gh-mode-manual" onclick="setGhToolMode('manual_item')" class="px-2.5 py-1 rounded font-semibold bg-white border border-sand-300 text-sand-800 inline-flex items-center gap-1" title="Show each item's exact dimension grid and click/drag to draw fixed-orientation trays"><svg class="w-3.5 h-3.5 inline-block -mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Draw Items</button>
 <button type="button" id="gh-mode-erase" onclick="setGhToolMode('erase')" class="px-2.5 py-1 rounded font-semibold bg-white border border-sand-300 text-sand-800 inline-flex items-center gap-1" title="Click ANY placed pot, tray, manual item, or gap to delete it immediately"><svg class="w-3.5 h-3.5 inline-block -mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/></svg> Erase</button>
 <button type="button" id="gh-btn-lock-layout" onclick="toggleGhLayoutLock()" class="px-2.5 py-1 rounded font-bold bg-white border border-sand-300 text-sand-800 inline-flex items-center gap-1" title="Lock layout so trays cannot be accidentally moved, rotated, or repacked"><svg class="w-3.5 h-3.5 inline-block -mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg> Lock Layout</button>
 </div>
@@ -1503,8 +1503,28 @@ Lodging: <span id="val-score-lodging">-</span>
 </select>
 </label>
 <label class="flex items-center gap-1 cursor-pointer" title="When placing a gap on the grid, span the full width of the zone/trough"><input type="checkbox" id="gh-gap-fullwidth" checked onchange="state.glasshouse.gapFullWidth=this.checked;renderGhCanvas()"> Full-Width Gap</label>
-<select id="gh-manual-item-select" onchange="state.glasshouse.activeManualItemId=this.value" class="px-1.5 py-0.5 border border-sand-300 rounded bg-white max-w-[140px]" aria-label="Item to place when in Place Item mode" title="Item to place when in Click Grid: Place Item mode"><option value="">Use Item Form inputs</option></select>
+<select id="gh-manual-item-select" onchange="setGhDrawItem(this.value)" class="px-1.5 py-0.5 border border-sand-300 rounded bg-white max-w-[145px]" aria-label="Item to draw on dimension grid" title="Active item for Draw Items dimension grid"><option value="">Use Item Form inputs</option></select>
 </div>
+</div>
+
+<div id="gh-draw-bar" class="hidden flex flex-wrap items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg border border-emerald-300 bg-emerald-50/80 text-[10px]">
+  <div class="flex flex-wrap items-center gap-1.5">
+    <span class="font-bold text-emerald-950">Item Draw Grid:</span>
+    <span id="gh-draw-active-label" class="font-mono font-bold text-emerald-900 bg-white px-2 py-0.5 rounded border border-emerald-200">Select item</span>
+    <div class="inline-flex rounded border border-emerald-300 overflow-hidden bg-white">
+      <button type="button" id="gh-draw-orient-L" onclick="setGhDrawOrientation('L')" class="px-2 py-0.5 font-mono font-bold bg-emerald-700 text-white" title="Draw trays Lengthwise (W × L)">L (Lengthwise)</button>
+      <button type="button" id="gh-draw-orient-W" onclick="setGhDrawOrientation('W')" class="px-2 py-0.5 font-mono font-semibold text-sand-800 hover:bg-sand-100" title="Draw trays Sideways (L × W)">W (Sideways)</button>
+    </div>
+    <button type="button" onclick="toggleGhDrawOrientation()" class="px-2 py-0.5 rounded bg-white hover:bg-sand-100 border border-sand-300 font-mono font-semibold text-sand-800" title="Flip draw orientation (Shortcut: R)">Flip (R)</button>
+  </div>
+  <div class="flex flex-wrap items-center gap-1.5 font-mono">
+    <div class="inline-flex rounded border border-sand-300 overflow-hidden bg-white">
+      <button type="button" id="gh-draw-mode-drag" onclick="setGhDrawFillCol(false)" class="px-2 py-0.5 font-bold bg-cyan-700 text-white" title="Click or hold &amp; drag across cells to paint trays">Drag Paint</button>
+      <button type="button" id="gh-draw-mode-col" onclick="setGhDrawFillCol(true)" class="px-2 py-0.5 font-semibold text-sand-800 hover:bg-sand-100" title="Click any cell to fill that entire free column strip in 1 click">Fill Whole Col</button>
+    </div>
+    <button type="button" onclick="packGlasshouse()" class="px-2 py-0.5 rounded bg-cyan-700 hover:bg-cyan-800 text-white font-bold" title="Auto-pack remaining unplaced items around your fixed drawn trays">Auto-Pack Rest</button>
+    <button type="button" onclick="unpinMovedGhTrays()" class="px-2 py-0.5 rounded bg-white hover:bg-amber-50 border border-amber-300 text-amber-900 font-semibold" title="Convert drawn batch trays back to auto-pack items">Release Drawn</button>
+  </div>
 </div>
 
 <div id="gh-tray-edit-bar" class="hidden flex flex-wrap items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg border border-cyan-300 bg-cyan-50/70 text-[10.5px]">
@@ -2383,7 +2403,7 @@ shapeOptions: [], selectedShape: null, bestGrid: null, bestScore: null, bestViol
 rcbd: { tests: 33, checks: 3, reps: 3, blockRows: 6, blockCols: 6, repsY: 1, repsX: 3, grid: null, repMatrix: null, longRecords: [] },
 disease: { rows: 10, cols: 18, markerInterval: 0, unrep: 93, unrepNaked: 15, rep: 20, repNaked: 5, repCount: 2, ctrl: 2, ctrlCount: 3, grid: null, score: null, violations: 0, locked: [], longRecords: [] },
 nursery: { plotRows: 10, plotCols: 5, blockRows: 2, blockCols: 2, gapRows: 1, gapCols: 1, prefix: 'NUR-', startNum: 1, pathing: 'serpentine', grid: null },
-glasshouse: { troughs: [{ id: 0, label: "Zone 1", w: 1.2, l: 5, pinned: [], items: [] }, { id: 1, label: "Zone 2", w: 1.2, l: 5, pinned: [], items: [] }, { id: 2, label: "Zone 3", w: 1.2, l: 5, pinned: [], items: [] }, { id: 3, label: "Zone 4", w: 1.2, l: 5, pinned: [], items: [] }], items: [], history: [], totalArea: 0, usedArea: 0, gapArea: 0, editingId: null, dragIndex: null, packed: [], toolMode: "pan", gridStep: 0.5, gapLength: 0.5, gapFullWidth: true, startCorner: "bottom-left", packMode: "auto-best", colOrder: "left-first", preferredColMix: null, layoutLocked: false, autoPinOnEdit: true, selectedPlacement: null, selectedPlacements: [], multiSelectMode: false, autoFit: true, activeManualItemId: "", savedGlasshouses: [], activeGlasshouseId: "", lockStockMeta: false, keepBarcodeFocus: true, scanHistory: [], ui: { zoom: 1, panX: 0, panY: 0, isPanning: false, dragMoved: false, startX: 0, startY: 0, rotated: false } },
+glasshouse: { troughs: [{ id: 0, label: "Zone 1", w: 1.2, l: 5, pinned: [], items: [] }, { id: 1, label: "Zone 2", w: 1.2, l: 5, pinned: [], items: [] }, { id: 2, label: "Zone 3", w: 1.2, l: 5, pinned: [], items: [] }, { id: 3, label: "Zone 4", w: 1.2, l: 5, pinned: [], items: [] }], items: [], history: [], totalArea: 0, usedArea: 0, gapArea: 0, editingId: null, dragIndex: null, packed: [], toolMode: "pan", gridStep: 0.5, gapLength: 0.5, gapFullWidth: true, startCorner: "bottom-left", packMode: "auto-best", colOrder: "left-first", preferredColMix: null, layoutLocked: false, autoPinOnEdit: true, selectedPlacement: null, selectedPlacements: [], multiSelectMode: false, autoFit: true, activeManualItemId: "", drawOrientation: "L", drawFillCol: false, savedGlasshouses: [], activeGlasshouseId: "", lockStockMeta: false, keepBarcodeFocus: true, scanHistory: [], ui: { zoom: 1, panX: 0, panY: 0, isPanning: false, dragMoved: false, startX: 0, startY: 0, rotated: false } },
 cropart: { imgElement: null, grid: null, w: 40, h: 40, thresh: 128, plant: 'ART', blank: 'N-ALLEY' },
 ghRequests: [], ghActiveTab: "spray", sprayItems: [], consumableItems: [],
 fieldPlan: { sheets: [], rawPegs: [], mathPacked: [], fieldData: [], grids: [{ id: 'g1', name: 'Grid 1', boards: 4, runs: 35, rowsPerBoard: 108, startDir: 'bottom' }], stopAtGridEnd: false, engineMode: 'math', colorBy: 'generation', labelMode: 'fc', dupMode: 'merge', condensedMode: 'gen_board', condensedNumbering: 'continuous', mathStartFcOverride: '', showWidthTape: true, tapeBedM: 1.55, tapePitchM: 1.88, altStartFc: 0, altEndFc: 0, altOffset: 0, startsAtBottom: true, colWidth: 56, searchQuery: '', searchMatchIndex: 0, highlightDrift: false, diagOpen: false, diagFilter: 'all', selectedBlockKey: null, diagnostics: { duplicates: [], fcGaps: [], excelDrifts: [], boardSplits: [], overflows: [], firstDrift: null }, nurseryColors: {}, legendNames: {}, sourceName: '', duplicateCount: 0, initialized: false, loading: false },
@@ -8764,12 +8784,13 @@ if (hint) {
 if (mode === 'edit') hint.innerText = 'Click or drag any tray/pot to move it, or use Rotate, Nudge, Snap & Delete Sel above.';
 else if (mode === 'stock') hint.innerText = 'Click any placed pot/tray on the schematic to target it for Barcode/QR stocking.';
 else if (mode === 'gap') hint.innerText = 'Click any rough grid section on a Zone/Trough below to pin or toggle a Walkway / Section Gap.';
-else if (mode === 'manual_item') hint.innerText = 'Click any rough grid cell on a Zone/Trough to manually pin the selected item at that position.';
+else if (mode === 'manual_item') hint.innerText = 'Draw Mode ON: Item-dimension grid shown — choose L/W orientation above and click or drag across cells to lock trays in place (press R to flip).';
 else if (mode === 'erase') hint.innerText = 'Erase Mode ON: Click ANY placed pot, tray, manual item, stray pot, or gap to delete it immediately.';
-else hint.innerText = 'Drag to pan, scroll to zoom, or switch to Edit / Move or Erase to adjust individual trays.';
+else hint.innerText = 'Drag to pan, scroll to zoom, or switch to Draw Items, Edit / Move, or Erase.';
 }
 const container = document.getElementById('gh-svg-container');
 if (container) container.style.cursor = mode === 'pan' ? 'move' : 'crosshair';
+if (typeof updateGhDrawBarUi === 'function') updateGhDrawBarUi();
 if (typeof updateGhEditBarUi === 'function') updateGhEditBarUi();
 renderGhCanvas();
 }
@@ -8777,6 +8798,261 @@ function setGhGridStep(stepVal) {
 state.glasshouse.gridStep = Math.max(0.1, Number(stepVal) || 0.5);
 renderGhCanvas();
 }
+function getGhDrawBrush() {
+  const selId = state.glasshouse.activeManualItemId || document.getElementById('gh-manual-item-select')?.value || '';
+  let tpl = (state.glasshouse.items || []).find(it => it.id === selId);
+  if (!tpl && (state.glasshouse.items || []).length > 0 && !selId) {
+    tpl = state.glasshouse.items[0];
+    state.glasshouse.activeManualItemId = tpl.id;
+  }
+  const isFromList = Boolean(tpl && tpl.id);
+  if (!tpl) {
+    const fw = Math.max(0.05, Number(document.getElementById('gh-item-w')?.value) || 0.32);
+    const fl = Math.max(0.05, Number(document.getElementById('gh-item-l')?.value) || 0.52);
+    const fn = (document.getElementById('gh-item-n')?.value || '').trim() || 'Form Tray';
+    const fc = document.getElementById('gh-item-c')?.value || '#2dd4bf';
+    tpl = { id: null, n: fn, w: fw, l: fl, c: fc, qty: null };
+  }
+  const baseW = Number(tpl.w) || 0.32;
+  const baseL = Number(tpl.l) || 0.52;
+  const isSquare = Math.abs(baseW - baseL) < 0.001;
+  const orient = (!isSquare && state.glasshouse.drawOrientation === 'W') ? 'W' : 'L';
+  const w = orient === 'W' ? baseL : baseW;
+  const l = orient === 'W' ? baseW : baseL;
+  return { tpl, isFromList, isSquare, orient, w: Number(w.toFixed(4)), l: Number(l.toFixed(4)) };
+}
+
+function setGhDrawItem(id) {
+  state.glasshouse.activeManualItemId = id || '';
+  const sel = document.getElementById('gh-manual-item-select');
+  if (sel && sel.value !== state.glasshouse.activeManualItemId) sel.value = state.glasshouse.activeManualItemId;
+  updateGhDrawBarUi();
+  if (state.glasshouse.toolMode === 'manual_item') renderGhCanvas();
+}
+
+function setGhDrawOrientation(orient) {
+  state.glasshouse.drawOrientation = orient === 'W' ? 'W' : 'L';
+  updateGhDrawBarUi();
+  if (state.glasshouse.toolMode === 'manual_item') renderGhCanvas();
+}
+
+function toggleGhDrawOrientation() {
+  setGhDrawOrientation(state.glasshouse.drawOrientation === 'W' ? 'L' : 'W');
+}
+
+function setGhDrawFillCol(fillCol) {
+  state.glasshouse.drawFillCol = Boolean(fillCol);
+  updateGhDrawBarUi();
+}
+
+function updateGhDrawBarUi() {
+  const bar = document.getElementById('gh-draw-bar');
+  if (!bar) return;
+  const mode = state.glasshouse.toolMode || 'pan';
+  if (mode !== 'manual_item') {
+    bar.classList.add('hidden');
+    return;
+  }
+  bar.classList.remove('hidden');
+  const brush = getGhDrawBrush();
+  const lbl = document.getElementById('gh-draw-active-label');
+  if (lbl) {
+    let remTxt = '';
+    if (brush.isFromList && brush.tpl.qty != null) {
+      const used = countGhPlacedForItem(brush.tpl.id);
+      remTxt = ` · ${used}/${brush.tpl.qty}`;
+    }
+    lbl.textContent = `${brush.tpl.n}: ${brush.w.toFixed(2)} × ${brush.l.toFixed(2)} m [${brush.orient}]${remTxt}`;
+  }
+  const btnL = document.getElementById('gh-draw-orient-L');
+  const btnW = document.getElementById('gh-draw-orient-W');
+  const bW = Number(brush.tpl.w) || 0.32, bL = Number(brush.tpl.l) || 0.52;
+  if (btnL) {
+    btnL.textContent = `L (${bW.toFixed(2)}×${bL.toFixed(2)})`;
+    btnL.className = brush.orient === 'L'
+      ? 'px-2 py-0.5 font-mono font-bold bg-emerald-700 text-white'
+      : 'px-2 py-0.5 font-mono font-semibold text-sand-800 hover:bg-sand-100';
+  }
+  if (btnW) {
+    btnW.textContent = `W (${bL.toFixed(2)}×${bW.toFixed(2)})`;
+    btnW.disabled = brush.isSquare;
+    btnW.className = brush.isSquare
+      ? 'px-2 py-0.5 font-mono text-sand-400 bg-sand-100 cursor-not-allowed'
+      : (brush.orient === 'W'
+        ? 'px-2 py-0.5 font-mono font-bold bg-emerald-700 text-white'
+        : 'px-2 py-0.5 font-mono font-semibold text-sand-800 hover:bg-sand-100');
+  }
+  const dragBtn = document.getElementById('gh-draw-mode-drag');
+  const colBtn = document.getElementById('gh-draw-mode-col');
+  const isCol = Boolean(state.glasshouse.drawFillCol);
+  if (dragBtn) dragBtn.className = !isCol ? 'px-2 py-0.5 font-bold bg-cyan-700 text-white' : 'px-2 py-0.5 font-semibold text-sand-800 hover:bg-sand-100';
+  if (colBtn) colBtn.className = isCol ? 'px-2 py-0.5 font-bold bg-cyan-700 text-white' : 'px-2 py-0.5 font-semibold text-sand-800 hover:bg-sand-100';
+}
+
+function countGhPlacedForItem(itemId) {
+  if (!itemId) return 0;
+  let c = 0;
+  (state.glasshouse.troughs || []).forEach(t => {
+    (t.pinned || []).forEach(p => { if (!p.isGap && (p.sourceItemId === itemId || p.id === itemId)) c++; });
+    (t.items || []).forEach(it => { if (it.id === itemId) c++; });
+  });
+  return c;
+}
+
+function computeGhItemDrawSlots(trough, brushW, brushL, buffer) {
+  const eps = 1e-4;
+  const slots = [];
+  const obstacles = [...(trough.pinned || []), ...(trough.items || [])];
+  const minX = buffer, maxX = trough.w - buffer;
+  const minY = buffer, maxY = trough.l - buffer;
+  if (maxX - minX < brushW - eps || maxY - minY < brushL - eps) return slots;
+
+  let y0 = minY;
+  let guard = 0;
+  while (y0 + brushL <= maxY + eps && guard++ < 2000) {
+    const overlapping = obstacles.filter(o => o.y < y0 + brushL - eps && o.y + o.l > y0 + eps);
+    const bandObs = overlapping
+      .map(o => [Math.max(minX, Number(o.x)), Math.min(maxX, Number(o.x) + Number(o.w))])
+      .filter(([a, b]) => b - a > eps)
+      .sort((a, b) => a[0] - b[0]);
+
+    const freeSpans = [];
+    let cursor = minX;
+    for (const [ox0, ox1] of bandObs) {
+      if (ox0 > cursor + eps) freeSpans.push([cursor, ox0]);
+      if (ox1 > cursor) cursor = ox1;
+    }
+    if (maxX > cursor + eps) freeSpans.push([cursor, maxX]);
+
+    let added = 0;
+    for (const [sx0, sx1] of freeSpans) {
+      for (let cx = sx0; cx + brushW <= sx1 + eps; cx = Number((cx + brushW).toFixed(4))) {
+        slots.push({ x: Number(cx.toFixed(4)), y: Number(y0.toFixed(4)), w: brushW, l: brushL });
+        added++;
+      }
+    }
+    if (added > 0) {
+      y0 = Number((y0 + brushL).toFixed(4));
+    } else if (overlapping.length > 0) {
+      const ends = overlapping.map(o => Number(o.y) + Number(o.l)).filter(v => v > y0 + eps);
+      y0 = Number((ends.length ? Math.min(...ends) : y0 + brushL).toFixed(4));
+    } else {
+      break;
+    }
+  }
+  return slots;
+}
+
+let _ghDrawPaintActive = false;
+let _ghDrawPaintSavedHistory = false;
+window.addEventListener('mouseup', () => {
+  if (_ghDrawPaintActive) {
+    _ghDrawPaintActive = false;
+    _ghDrawPaintSavedHistory = false;
+    scheduleWorkspaceAutosave(300);
+  }
+});
+
+function placeGhDrawnCell(troughIndex, gx, gy, gw, gl, fillColumn = false) {
+  if (state.glasshouse.layoutLocked) { showToast('Layout is locked. Unlock to draw.'); return false; }
+  const trough = state.glasshouse.troughs[troughIndex];
+  if (!trough) return false;
+  if (!Array.isArray(trough.pinned)) trough.pinned = [];
+  const brush = getGhDrawBrush();
+  const buffer = Math.max(0, Number(document.getElementById('gh-edge-buffer')?.value ?? state.glasshouse.edgeBuffer ?? 0));
+  const obstacles = () => [...(trough.pinned || []), ...(trough.items || [])];
+  const isFree = (x, y, w, l) => {
+    if (x < buffer - 1e-4 || y < buffer - 1e-4 || x + w > trough.w - buffer + 1e-4 || y + l > trough.l - buffer + 1e-4) return false;
+    return !obstacles().some(o => ghRectsOverlap(x, y, w, l, o.x, o.y, o.w, o.l));
+  };
+
+  if (!_ghDrawPaintSavedHistory) {
+    saveGhHistory();
+    _ghDrawPaintSavedHistory = true;
+  }
+
+  let remQuota = Infinity;
+  if (brush.isFromList && brush.tpl.qty != null) {
+    remQuota = Math.max(0, Number(brush.tpl.qty) - countGhPlacedForItem(brush.tpl.id));
+    if (remQuota <= 0) {
+      showToast(`All ${brush.tpl.qty} "${brush.tpl.n}" are already placed.`);
+      return false;
+    }
+  }
+
+  let targets = [];
+  if (fillColumn) {
+    const obsAll = obstacles();
+    let cy = buffer;
+    let cGuard = 0;
+    while (cy + brush.l <= trough.l - buffer + 1e-4 && cGuard++ < 1000) {
+      const hits = obsAll.filter(o => ghRectsOverlap(gx, cy, brush.w, brush.l, o.x, o.y, o.w, o.l));
+      if (hits.length > 0) {
+        const nextY = Math.max(...hits.map(o => Number(o.y) + Number(o.l)));
+        cy = Number(Math.max(cy + 0.01, nextY).toFixed(4));
+        continue;
+      }
+      targets.push({ x: Number(gx.toFixed(4)), y: Number(cy.toFixed(4)), w: brush.w, l: brush.l });
+      cy = Number((cy + brush.l).toFixed(4));
+    }
+  } else {
+    targets = [{ x: Number(gx.toFixed(4)), y: Number(gy.toFixed(4)), w: brush.w, l: brush.l }];
+  }
+
+  let placedCount = 0;
+  for (const cell of targets) {
+    if (placedCount >= remQuota) break;
+    if (!isFree(cell.x, cell.y, cell.w, cell.l)) continue;
+    trough.pinned.push({
+      id: `MAN_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      sourceItemId: brush.tpl.id || undefined,
+      n: brush.tpl.n || 'Tray',
+      x: cell.x,
+      y: cell.y,
+      w: cell.w,
+      l: cell.l,
+      c: brush.tpl.c || '#2dd4bf',
+      isGap: false,
+      isManual: true,
+      fixedOrientation: brush.orient
+    });
+    placedCount++;
+  }
+  if (placedCount > 0) {
+    recalcGhStatsInPlace();
+    renderGhTroughs();
+    updateGhDrawBarUi();
+    renderGhCanvas();
+    if (fillColumn) showToast(`Drew ${placedCount} fixed ${brush.orient} tray(s) in column on ${getGhZoneLabel(trough, troughIndex)}.`);
+    return true;
+  }
+  return false;
+}
+
+function startGhDrawCell(troughIndex, gx, gy, gw, gl, event) {
+  if (event) {
+    if (event.button && event.button !== 0) return;
+    event.stopPropagation();
+  }
+  if (state.glasshouse.ui.dragMoved) return;
+  const useFillCol = Boolean(state.glasshouse.drawFillCol || event?.shiftKey);
+  _ghDrawPaintSavedHistory = false;
+  if (useFillCol) {
+    placeGhDrawnCell(troughIndex, gx, gy, gw, gl, true);
+    _ghDrawPaintActive = false;
+    _ghDrawPaintSavedHistory = false;
+    scheduleWorkspaceAutosave(300);
+  } else {
+    _ghDrawPaintActive = true;
+    placeGhDrawnCell(troughIndex, gx, gy, gw, gl, false);
+  }
+}
+
+function continueGhDrawCell(troughIndex, gx, gy, gw, gl) {
+  if (!_ghDrawPaintActive || state.glasshouse.toolMode !== 'manual_item') return;
+  placeGhDrawnCell(troughIndex, gx, gy, gw, gl, false);
+}
+
 function handleGhGridCellClick(troughIndex, gx, gy, gw, gl, event) {
 if (event) event.stopPropagation();
 if (state.glasshouse.ui.dragMoved) return;
@@ -8786,9 +9062,8 @@ if (!trough) return;
 if (!Array.isArray(trough.pinned)) trough.pinned = [];
 const mode = state.glasshouse.toolMode || 'pan';
 if (mode === 'pan') return;
-saveGhHistory();
-const eps = 0.005;
 if (mode === 'gap') {
+saveGhHistory();
 const fullW = document.getElementById('gh-gap-fullwidth')?.checked !== false;
 const gapLen = Math.min(trough.l - gy, Math.max(0.05, Number(document.getElementById('gh-gap-len')?.value) || gl));
 const x = fullW ? 0 : gx;
@@ -8815,41 +9090,8 @@ renderGhTroughs();
 repackOrRenderGh();
 scheduleWorkspaceAutosave(400);
 } else if (mode === 'manual_item') {
-const existingIdx = trough.pinned.findIndex(p => !p.isGap && gx >= p.x - eps && gx < p.x + p.w - eps && gy >= p.y - eps && gy < p.y + p.l - eps);
-if (existingIdx >= 0) {
-const rem = trough.pinned.splice(existingIdx, 1)[0];
-showToast(`Removed manual item "${rem.n}" at (${gx.toFixed(2)}, ${gy.toFixed(2)})m.`);
-renderGhTroughs();
-repackOrRenderGh();
-return;
-}
-const selId = document.getElementById('gh-manual-item-select')?.value || state.glasshouse.activeManualItemId;
-let tpl = state.glasshouse.items.find(it => it.id === selId);
-if (!tpl) {
-const formTpl = readGhItemForm();
-if (!formTpl) return;
-tpl = formTpl;
-}
-const itemW = Math.min(Number(tpl.w) || gw, trough.w - gx);
-const itemL = Math.min(Number(tpl.l) || gl, trough.l - gy);
-if (itemW <= 0.01 || itemL <= 0.01) return showToast('Item does not fit at this edge position.');
-const isGapPreset = /gap|walkway/i.test(tpl.n);
-trough.pinned.push({
-id: `MAN_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
-itemId: tpl.id || null,
-n: tpl.n,
-x: Number(gx.toFixed(3)),
-y: Number(gy.toFixed(3)),
-w: Number(itemW.toFixed(3)),
-l: Number(itemL.toFixed(3)),
-c: tpl.c || '#2dd4bf',
-isGap: isGapPreset,
-isManual: true
-});
-showToast(`Placed "${tpl.n}" at (${gx.toFixed(2)}m, ${gy.toFixed(2)}m) on ${getGhZoneLabel(trough, troughIndex)}.`);
-renderGhTroughs();
-repackOrRenderGh();
-scheduleWorkspaceAutosave(400);
+placeGhDrawnCell(troughIndex, gx, gy, gw, gl, Boolean(state.glasshouse.drawFillCol || event?.shiftKey));
+scheduleWorkspaceAutosave(300);
 }
 }
 function renderGhTroughs() {
@@ -8953,13 +9195,14 @@ renderGhTroughs(); renderGhItems(); repackOrRenderGh();
 function ghDragStart(event, index) { state.glasshouse.dragIndex = index; event.dataTransfer.effectAllowed = 'move'; }
 function ghDragOver(event) { event.preventDefault(); event.dataTransfer.dropEffect = 'move'; }
 function ghDrop(event, targetIndex) { event.preventDefault(); const from = state.glasshouse.dragIndex; if (from === null || from === targetIndex) return; saveGhHistory(); const [item] = state.glasshouse.items.splice(from, 1); state.glasshouse.items.splice(targetIndex, 0, item); state.glasshouse.dragIndex = null; renderGhItems(); packGlasshouse(true); }
-function selectGhItemForManualPin(id) {
+function selectGhItemForManualPin(id, orient) {
 state.glasshouse.activeManualItemId = id;
+if (orient === 'W' || orient === 'L') state.glasshouse.drawOrientation = orient;
 const sel = document.getElementById('gh-manual-item-select');
 if (sel) sel.value = id;
 setGhToolMode('manual_item');
 const item = state.glasshouse.items.find(it => it.id === id);
-if (item) showToast(`Click any grid cell on a Zone to manually place "${item.n}".`);
+if (item) showToast(`Drawing "${item.n}" [${state.glasshouse.drawOrientation}] on item grid — click or drag across zones.`);
 }
 function renderGhItems() {
 const cntEl = document.getElementById('gh-item-count');
@@ -8970,9 +9213,16 @@ const cur = sel.value || state.glasshouse.activeManualItemId || '';
 sel.innerHTML = `<option value="">Use Item Form inputs</option>` + state.glasshouse.items.map(it => `<option value="${ghEscape(it.id)}" ${it.id === cur ? 'selected' : ''}>${ghEscape(it.n)} (${it.w}×${it.l}m)</option>`).join('');
 }
 if (typeof renderGhColMixPicker === 'function') renderGhColMixPicker();
+if (typeof updateGhDrawBarUi === 'function') updateGhDrawBarUi();
 const listEl = document.getElementById('gh-inventory-list');
 if (!listEl) return;
-listEl.innerHTML = state.glasshouse.items.map((item, index) => `<div draggable="true" ondragstart="ghDragStart(event,${index})" ondragover="ghDragOver(event)" ondrop="ghDrop(event,${index})" class="p-2 border rounded flex items-center justify-between gap-2 bg-white"><div class="flex items-center gap-2 min-w-0"><span class="w-3 h-3 shrink-0 rounded-sm" style="background:${ghEscape(item.c)}"></span><span class="truncate text-[10px]"><b>${ghEscape(item.n)}</b><small class="block text-sand-500">${item.w} × ${item.l} m · ${item.qty ?? 'fill'} · packed ${item.packed || 0}</small></span></div><div class="flex gap-1.5 text-[10px]"><button onclick="selectGhItemForManualPin('${ghEscape(item.id)}')" class="px-1.5 py-0.5 rounded bg-sand-100 hover:bg-sand-200 text-sand-800 font-semibold" title="Pin this item manually onto the rough grid">Pin</button><button onclick="loadGhItemForEdit('${ghEscape(item.id)}')" class="text-cyan-700 font-semibold">Edit</button><button onclick="removeGhItem('${ghEscape(item.id)}')" class="text-rose-700 font-bold" title="Remove">×</button></div></div>`).join('') || '<p class="text-[10px] text-sand-500">No auto-pack items yet. Add items above or click on the zone grid to place gaps/items manually.</p>';
+listEl.innerHTML = state.glasshouse.items.map((item, index) => {
+  const isRect = Math.abs((Number(item.w) || 0) - (Number(item.l) || 0)) >= 0.001;
+  const drawBtns = isRect
+    ? `<button type="button" onclick="selectGhItemForManualPin('${ghEscape(item.id)}','L')" class="px-1.5 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-900 font-bold" title="Draw Lengthwise (${item.w}×${item.l}m) on exact item grid">Draw L</button><button type="button" onclick="selectGhItemForManualPin('${ghEscape(item.id)}','W')" class="px-1.5 py-0.5 rounded bg-cyan-50 hover:bg-cyan-100 border border-cyan-200 text-cyan-900 font-bold" title="Draw Sideways (${item.l}×${item.w}m) on exact item grid">Draw W</button>`
+    : `<button type="button" onclick="selectGhItemForManualPin('${ghEscape(item.id)}','L')" class="px-1.5 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-900 font-bold" title="Draw ${item.w}×${item.l}m on exact item grid">Draw Grid</button>`;
+  return `<div draggable="true" ondragstart="ghDragStart(event,${index})" ondragover="ghDragOver(event)" ondrop="ghDrop(event,${index})" class="p-2 border rounded flex items-center justify-between gap-2 bg-white"><div class="flex items-center gap-2 min-w-0"><span class="w-3 h-3 shrink-0 rounded-sm" style="background:${ghEscape(item.c)}"></span><span class="truncate text-[10px]"><b>${ghEscape(item.n)}</b><small class="block text-sand-500">${item.w} × ${item.l} m · ${item.qty ?? 'fill'} · placed ${item.packed || 0}</small></span></div><div class="flex flex-wrap items-center gap-1 text-[9.5px] shrink-0">${drawBtns}<button type="button" onclick="loadGhItemForEdit('${ghEscape(item.id)}')" class="text-cyan-700 font-semibold px-1">Edit</button><button type="button" onclick="removeGhItem('${ghEscape(item.id)}')" class="text-rose-700 font-bold px-1" title="Remove">×</button></div></div>`;
+}).join('') || '<p class="text-[10px] text-sand-500">Add pots or trays above, then use Draw L / Draw W or Auto-Pack.</p>';
 }
 function ghRectsOverlap(ax, ay, aw, al, bx, by, bw, bl) {
 const eps = 1e-5;
@@ -9900,7 +10150,8 @@ function renderGhCanvas() {
       const itemDownAttr = `onmousedown="startGhTrayDrag(event, ${troughIndex}, ${Boolean(item.isPinned)}, ${item.x}, ${item.y}, ${xOffset})"`;
       const eraseHoverAttr = isEraseMode ? `onmouseover="this.querySelector('rect').setAttribute('stroke','#e11d48');this.querySelector('rect').setAttribute('stroke-width','0.032')" onmouseout="this.querySelector('rect').setAttribute('stroke','${strokeCol}');this.querySelector('rect').setAttribute('stroke-width','${strokeW}')"` : '';
 
-      const pinBadgeHtml = item.isPinned ? `<rect x="${startX + item.w - 0.085}" y="${startY + 0.015}" width="0.07" height="0.07" rx="0.015" fill="#0f766e" stroke="#ffffff" stroke-width="0.008" pointer-events="none"/><text x="${startX + item.w - 0.05}" y="${startY + 0.054}" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="0.048" font-weight="bold" fill="#ffffff" pointer-events="none">P</text>` : '';
+      const pinLbl = item.fixedOrientation ? item.fixedOrientation : 'P';
+      const pinBadgeHtml = item.isPinned ? `<rect x="${startX + item.w - 0.085}" y="${startY + 0.015}" width="0.07" height="0.07" rx="0.015" fill="${item.fixedOrientation === 'W' ? '#0e7490' : '#0f766e'}" stroke="#ffffff" stroke-width="0.008" pointer-events="none"/><text x="${startX + item.w - 0.05}" y="${startY + 0.054}" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="0.048" font-weight="bold" fill="#ffffff" pointer-events="none">${pinLbl}</text>` : '';
       html += `<g style="cursor:${isEraseMode ? 'crosshair' : (mode === 'edit' && !state.glasshouse.layoutLocked ? 'grab' : 'pointer')}" ${itemClickAttr} ${itemDownAttr} ${eraseHoverAttr}>
         <rect class="${targetAnimCls}" x="${startX}" y="${startY}" width="${item.w}" height="${item.l}" rx="0.015" fill="${ghEscape(baseFill)}" fill-opacity="${hasStock ? '0.94' : '0.82'}" stroke="${strokeCol}" stroke-width="${strokeW}" ${item.isPinned && !isSelected ? 'stroke-dasharray="0.04 0.015"' : ''}>
           <title>${ghEscape(ref)}: ${ghEscape(item.n)}${item.isPinned ? ' [PINNED]' : ''} · ${hasStock ? 'Stocked: ' + ghEscape(rec.content) + ' [' + ghEscape(rec.barcode) + ']' : 'Unstocked (Click to target for barcode scan)'}</title>
@@ -9935,21 +10186,32 @@ function renderGhCanvas() {
       html += `<text x="${laneX}" y="-0.31" text-anchor="middle" font-family="monospace" font-size="0.065" font-weight="bold" fill="#0e7490" pointer-events="none">Zone ${troughIndex + 1} ${goUpVisually ? 'UP' : 'DOWN'}</text>`;
     }
 
-    // Click grid overlay cells when in gap or manual item placement mode
-    if (mode === 'gap' || mode === 'manual_item') {
+    // Click/Drag grid overlay cells in Gap or Item-Dimension Draw mode (corner-mapped!)
+    if (mode === 'gap') {
       for (let gy = 0; gy < trough.l - 0.001; gy = Number((gy + step).toFixed(3))) {
         const cellL = Number(Math.min(step, trough.l - gy).toFixed(3));
-        if (mode === 'gap' && fullWidthGap) {
-          html += `<rect class="gh-interactive-target" x="${xOffset}" y="${gy}" width="${trough.w}" height="${cellL}" fill="rgba(245,158,11,0.06)" stroke="rgba(217,119,6,0.35)" stroke-width="0.006" style="cursor:pointer" onmouseover="this.setAttribute('fill','rgba(245,158,11,0.28)')" onmouseout="this.setAttribute('fill','rgba(245,158,11,0.06)')" onclick="handleGhGridCellClick(${troughIndex},0,${gy},${trough.w},${cellL},event)"><title>Click to toggle full-width Section Gap at Y = ${gy.toFixed(2)} m on ${ghEscape(zLabel)}</title></rect>`;
+        if (fullWidthGap) {
+          const mr = mapGhCornerRect(trough, { x: 0, y: gy, w: trough.w, l: cellL }, sc);
+          html += `<rect class="gh-interactive-target" x="${xOffset + mr.x}" y="${mr.y}" width="${mr.w}" height="${mr.l}" fill="rgba(245,158,11,0.06)" stroke="rgba(217,119,6,0.35)" stroke-width="0.006" style="cursor:pointer" onmouseover="this.setAttribute('fill','rgba(245,158,11,0.28)')" onmouseout="this.setAttribute('fill','rgba(245,158,11,0.06)')" onclick="handleGhGridCellClick(${troughIndex},0,${gy},${trough.w},${cellL},event)"><title>Click to toggle full-width Section Gap at Y = ${gy.toFixed(2)} m on ${ghEscape(zLabel)}</title></rect>`;
         } else {
           for (let gx = 0; gx < trough.w - 0.001; gx = Number((gx + step).toFixed(3))) {
             const cellW = Number(Math.min(step, trough.w - gx).toFixed(3));
-            const hoverCol = mode === 'gap' ? 'rgba(245,158,11,0.28)' : 'rgba(14,116,144,0.26)';
-            const baseCol = mode === 'gap' ? 'rgba(245,158,11,0.05)' : 'rgba(14,116,144,0.05)';
-            html += `<rect class="gh-interactive-target" x="${xOffset + gx}" y="${gy}" width="${cellW}" height="${cellL}" fill="${baseCol}" stroke="rgba(14,116,144,0.28)" stroke-width="0.005" style="cursor:pointer" onmouseover="this.setAttribute('fill','${hoverCol}')" onmouseout="this.setAttribute('fill','${baseCol}')" onclick="handleGhGridCellClick(${troughIndex},${gx},${gy},${cellW},${cellL},event)"><title>Click to place ${mode === 'gap' ? 'Gap' : 'Item'} at (${gx.toFixed(2)}m, ${gy.toFixed(2)}m) on ${ghEscape(zLabel)}</title></rect>`;
+            const mr = mapGhCornerRect(trough, { x: gx, y: gy, w: cellW, l: cellL }, sc);
+            html += `<rect class="gh-interactive-target" x="${xOffset + mr.x}" y="${mr.y}" width="${mr.w}" height="${mr.l}" fill="rgba(245,158,11,0.05)" stroke="rgba(217,119,6,0.28)" stroke-width="0.005" style="cursor:pointer" onmouseover="this.setAttribute('fill','rgba(245,158,11,0.28)')" onmouseout="this.setAttribute('fill','rgba(245,158,11,0.05)')" onclick="handleGhGridCellClick(${troughIndex},${gx},${gy},${cellW},${cellL},event)"><title>Click to toggle Gap at (${gx.toFixed(2)}m, ${gy.toFixed(2)}m) on ${ghEscape(zLabel)}</title></rect>`;
           }
         }
       }
+    } else if (mode === 'manual_item') {
+      const brush = getGhDrawBrush();
+      const bufferDraw = Math.max(0, Number(document.getElementById('gh-edge-buffer')?.value ?? state.glasshouse.edgeBuffer ?? 0));
+      const slots = computeGhItemDrawSlots(trough, brush.w, brush.l, bufferDraw);
+      const fillPreview = brush.orient === 'W' ? 'rgba(8,145,178,0.28)' : 'rgba(5,150,105,0.28)';
+      const strokeSlot = brush.orient === 'W' ? 'rgba(8,145,178,0.52)' : 'rgba(5,150,105,0.52)';
+      const baseFillSlot = brush.orient === 'W' ? 'rgba(8,145,178,0.06)' : 'rgba(5,150,105,0.06)';
+      slots.forEach(s => {
+        const mr = mapGhCornerRect(trough, s, sc);
+        html += `<rect class="gh-interactive-target" x="${xOffset + mr.x}" y="${mr.y}" width="${mr.w}" height="${mr.l}" rx="0.01" fill="${baseFillSlot}" stroke="${strokeSlot}" stroke-width="0.008" stroke-dasharray="0.025 0.015" style="cursor:crosshair" onmouseover="this.setAttribute('fill','${fillPreview}')" onmouseout="this.setAttribute('fill','${baseFillSlot}')" onmousedown="startGhDrawCell(${troughIndex},${s.x},${s.y},${s.w},${s.l},event)" onmouseenter="continueGhDrawCell(${troughIndex},${s.x},${s.y},${s.w},${s.l})"><title>Click or drag to draw ${ghEscape(brush.tpl.n)} [${brush.orient}: ${s.w.toFixed(2)}×${s.l.toFixed(2)}m] at (${s.x.toFixed(2)}m, ${s.y.toFixed(2)}m) · Hold Shift for whole col</title></rect>`;
+      });
     }
 
     xOffset += trough.w + gap;
@@ -10714,6 +10976,13 @@ function startGhTrayDrag(event, troughIndex, isPinned, x, y, xOffset) {
 }
 
 document.addEventListener('keydown', (e) => {
+  const tag0 = (e.target?.tagName || '').toLowerCase();
+  if (tag0 === 'input' || tag0 === 'textarea' || tag0 === 'select') return;
+  if (state.glasshouse.toolMode === 'manual_item' && (e.key === 'r' || e.key === 'R')) {
+    e.preventDefault();
+    toggleGhDrawOrientation();
+    return;
+  }
   if (state.glasshouse.layoutLocked || !state.glasshouse.selectedPlacement) return;
   const tag = (e.target?.tagName || '').toLowerCase();
   if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
