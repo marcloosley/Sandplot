@@ -8632,6 +8632,7 @@ function captureGhSnapshot() {
   return {
     items: JSON.parse(JSON.stringify(state.glasshouse.items || [])),
     troughsState: (state.glasshouse.troughs || []).map(t => ({
+      complete: Boolean(t.complete),
       pinned: JSON.parse(JSON.stringify(t.pinned || [])),
       items: JSON.parse(JSON.stringify(t.items || []))
     })),
@@ -8648,6 +8649,7 @@ function applyGhSnapshot(snap) {
     if (Array.isArray(snap.troughsState)) {
       (state.glasshouse.troughs || []).forEach((t, i) => {
         const ts = snap.troughsState[i];
+        t.complete = Boolean(ts?.complete);
         t.pinned = ts ? JSON.parse(JSON.stringify(ts.pinned || [])) : [];
         t.items = ts ? JSON.parse(JSON.stringify(ts.items || [])) : [];
       });
@@ -9108,6 +9110,7 @@ function placeGhDrawnBox(troughIndex, c1, c2) {
     if (placed >= remQuota) break;
     const obsNow = [...(trough.pinned || []), ...(trough.items || [])];
     if (obsNow.some(o => ghRectsOverlap(s.x, s.y, s.w, s.l, o.x, o.y, o.w, o.l))) continue;
+    if (linkedItem.maxDeep && obsNow.filter(o => !o.isGap && (o.sourceItemId === linkedItem.id || o.id === linkedItem.id) && Math.abs(o.y - s.y) < 0.02).length >= linkedItem.maxDeep) continue;
     trough.pinned.push({
       id: `MAN_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       sourceItemId: linkedItem.id,
@@ -9119,6 +9122,7 @@ function placeGhDrawnBox(troughIndex, c1, c2) {
       c: linkedItem.c || '#2dd4bf',
       isGap: false,
       isManual: true,
+      maxDeep: linkedItem.maxDeep || undefined,
       fixedOrientation: brush.orient
     });
     placed++;
@@ -9181,6 +9185,13 @@ function placeGhDrawnCell(troughIndex, gx, gy, gw, gl, fillColumn = false) {
   for (const cell of targets) {
     if (placedCount >= remQuota) break;
     if (!isFree(cell.x, cell.y, cell.w, cell.l)) continue;
+    if (linkedItem.maxDeep) {
+      const sameRowCount = obstacles().filter(o => !o.isGap && (o.sourceItemId === linkedItem.id || o.id === linkedItem.id) && Math.abs(o.y - cell.y) < 0.02).length;
+      if (sameRowCount >= linkedItem.maxDeep) {
+        if (!fillColumn) showToast(`Row limit: max ${linkedItem.maxDeep} per row for "${linkedItem.n}".`);
+        continue;
+      }
+    }
     trough.pinned.push({
       id: `MAN_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       sourceItemId: linkedItem.id,
@@ -9192,6 +9203,7 @@ function placeGhDrawnCell(troughIndex, gx, gy, gw, gl, fillColumn = false) {
       c: linkedItem.c || '#2dd4bf',
       isGap: false,
       isManual: true,
+      maxDeep: linkedItem.maxDeep || undefined,
       fixedOrientation: brush.orient
     });
     placedCount++;
@@ -9291,12 +9303,20 @@ const hasStart = hasGhSectionGapAt(trough, 'start');
 const hasMid = hasGhSectionGapAt(trough, 'middle');
 const hasEnd = hasGhSectionGapAt(trough, 'end');
 const pinCount = trough.pinned.length;
-return `<div class="p-2 border border-sand-200 rounded-md bg-sand-50 space-y-1.5">
+const isComplete = Boolean(trough.complete);
+const placedInZone = (trough.pinned || []).filter(p => !p.isGap).length + (trough.items || []).length;
+return `<div class="p-2 border ${isComplete ? 'border-emerald-400 bg-emerald-50/40' : 'border-sand-200 bg-sand-50'} rounded-md space-y-1.5">
 <div class="grid grid-cols-[1.2fr_0.9fr_0.9fr_auto] gap-1.5 items-end">
 <label class="text-[9px] font-semibold text-sand-700">Zone / Trough Name<input type="text" value="${ghEscape(zLabel)}" onchange="updateGhTroughLabel(${index},this.value)" class="w-full border rounded px-1.5 py-0.5 text-[10px] bg-white font-bold"></label>
 <label class="text-[9px] text-sand-600">Width (m)<input type="number" min="0.1" step="0.1" value="${trough.w}" onchange="updateGhTrough(${index},'w',this.value)" class="w-full border rounded px-1 py-0.5 text-[10px] bg-white font-mono"></label>
 <label class="text-[9px] text-sand-600">Length (m)<input type="number" min="0.1" step="0.1" value="${trough.l}" onchange="updateGhTrough(${index},'l',this.value)" class="w-full border rounded px-1 py-0.5 text-[10px] bg-white font-mono"></label>
 <button onclick="removeGhTrough(${index})" title="Remove zone" class="px-2 py-0.5 text-rose-700 hover:bg-rose-50 rounded font-bold">×</button>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-1 pt-0.5 border-t border-sand-200/70 text-[9px]">
+<label class="inline-flex items-center gap-1 font-bold cursor-pointer ${isComplete ? 'text-emerald-800' : 'text-sand-700'}" title="Mark zone complete so Auto-Pack skips it and preserves existing spacing">
+  <input type="checkbox" ${isComplete ? 'checked' : ''} onchange="toggleGhZoneComplete(${index}, event)" class="rounded text-emerald-600">
+  <span>Zone Complete (${placedInZone} placed)</span>
+</label>
 </div>
 <div class="flex flex-wrap items-center justify-between gap-1 pt-0.5 border-t border-sand-200/70 text-[9px]">
 <span class="font-semibold text-sand-600">Pin Section Gap:</span>
@@ -9309,6 +9329,15 @@ ${pinCount ? `<button type="button" onclick="clearGhTroughPinned(${index})" clas
 </div>
 </div>`;
 }).join('') || '<p class="text-[10px] text-sand-500">Add a zone or trough to start planning.</p>';
+}
+function toggleGhZoneComplete(index, event) {
+  if (event) event.stopPropagation();
+  const trough = state.glasshouse.troughs?.[index];
+  if (!trough) return;
+  saveGhHistory();
+  trough.complete = !trough.complete;
+  syncGhAfterPlacementMutation({ updateTable: false });
+  showToast(`${getGhZoneLabel(trough, index)} marked ${trough.complete ? 'COMPLETE (Auto-Pack will skip this zone)' : 'INCOMPLETE (available for Auto-Pack)'}.`);
 }
 function updateGhTroughLabel(index, val) {
 const trough = state.glasshouse.troughs[index];
@@ -9356,16 +9385,38 @@ const quantityInput = document.getElementById('gh-item-qty').value; const maxDee
 if (!(width > 0 && length > 0)) { showToast('Enter positive item dimensions.'); return null; }
 return { n: document.getElementById('gh-item-n').value.trim() || `Item ${state.glasshouse.items.length + 1}`, w: width, l: length, qty: quantityInput ? Math.max(0, parseInt(quantityInput, 10)) : null, maxDeep: maxDeepInput ? Math.max(1, parseInt(maxDeepInput, 10)) : null, c: document.getElementById('gh-item-c').value };
 }
-function addGhItem() { const item = readGhItemForm(); if (!item) return; saveGhHistory(); state.glasshouse.items.push({ ...item, id: `GH_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, packed: 0 }); renderGhItems(); packGlasshouse(true); }
+function addGhItem() {
+  const item = readGhItemForm();
+  if (!item) return;
+  saveGhHistory();
+  const newItem = { ...item, id: `GH_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, packed: 0 };
+  state.glasshouse.items.push(newItem);
+  state.glasshouse.activeManualItemId = newItem.id;
+  syncGhAfterPlacementMutation({ updateTable: false });
+  showToast(`Added "${newItem.n}" to itinerary — use Draw L/W or click Auto-Pack when ready.`);
+}
 function loadGhItemForEdit(id) {
 const item = state.glasshouse.items.find(entry => entry.id === id); if (!item) return;
 state.glasshouse.editingId = id; document.getElementById('gh-item-n').value = item.n; document.getElementById('gh-item-w').value = item.w; document.getElementById('gh-item-l').value = item.l; document.getElementById('gh-item-qty').value = item.qty ?? ''; document.getElementById('gh-item-max-deep').value = item.maxDeep ?? ''; document.getElementById('gh-item-c').value = item.c; document.getElementById('btn-gh-update').classList.remove('hidden');
 }
 function updateGhItem() {
-if (!state.glasshouse.editingId) return; const values = readGhItemForm(); if (!values) return; saveGhHistory();
-const item = state.glasshouse.items.find(entry => entry.id === state.glasshouse.editingId); Object.assign(item, values); state.glasshouse.editingId = null; document.getElementById('btn-gh-update').classList.add('hidden'); renderGhItems(); packGlasshouse(true);
+  if (!state.glasshouse.editingId) return;
+  const values = readGhItemForm();
+  if (!values) return;
+  saveGhHistory();
+  const item = state.glasshouse.items.find(entry => entry.id === state.glasshouse.editingId);
+  Object.assign(item, values);
+  state.glasshouse.editingId = null;
+  document.getElementById('btn-gh-update').classList.add('hidden');
+  syncGhAfterPlacementMutation({ updateTable: false });
+  showToast(`Updated "${item.n}" in itinerary.`);
 }
-function removeGhItem(id) { saveGhHistory(); state.glasshouse.items = state.glasshouse.items.filter(item => item.id !== id); renderGhItems(); repackOrRenderGh(); }
+function removeGhItem(id) {
+  saveGhHistory();
+  state.glasshouse.items = state.glasshouse.items.filter(item => item.id !== id);
+  if (state.glasshouse.activeManualItemId === id) state.glasshouse.activeManualItemId = '';
+  syncGhAfterPlacementMutation();
+}
 function undoGhInventory() {
   if (!state.glasshouse.history || !state.glasshouse.history.length) return showToast('Nothing to undo.');
   if (!Array.isArray(state.glasshouse.redoStack)) state.glasshouse.redoStack = [];
@@ -9385,7 +9436,7 @@ function redoGhHistory() {
 }
 function ghDragStart(event, index) { state.glasshouse.dragIndex = index; event.dataTransfer.effectAllowed = 'move'; }
 function ghDragOver(event) { event.preventDefault(); event.dataTransfer.dropEffect = 'move'; }
-function ghDrop(event, targetIndex) { event.preventDefault(); const from = state.glasshouse.dragIndex; if (from === null || from === targetIndex) return; saveGhHistory(); const [item] = state.glasshouse.items.splice(from, 1); state.glasshouse.items.splice(targetIndex, 0, item); state.glasshouse.dragIndex = null; renderGhItems(); packGlasshouse(true); }
+function ghDrop(event, targetIndex) { event.preventDefault(); const from = state.glasshouse.dragIndex; if (from === null || from === targetIndex) return; saveGhHistory(); const [item] = state.glasshouse.items.splice(from, 1); state.glasshouse.items.splice(targetIndex, 0, item); state.glasshouse.dragIndex = null; renderGhItems(); scheduleWorkspaceAutosave(300); }
 function selectGhItemForManualPin(id, orient) {
 state.glasshouse.activeManualItemId = id;
 if (orient === 'W' || orient === 'L') state.glasshouse.drawOrientation = orient;
@@ -9455,10 +9506,15 @@ state.glasshouse.allowRotation = allowRotate;
 if (!state.glasshouse.troughs.length) return !silent && showToast('Add at least one zone/trough first.');
 for (const trough of state.glasshouse.troughs) {
 if (!Array.isArray(trough.pinned)) trough.pinned = [];
+if (!Array.isArray(trough.items)) trough.items = [];
 trough.usableW = trough.w - buffer * 2;
 trough.usableL = trough.l - buffer * 2;
-trough.items = [];
-trough.obstacles = trough.pinned.map(p => ({ x: Number(p.x), y: Number(p.y), w: Number(p.w), l: Number(p.l) }));
+if (!trough.complete) trough.items = [];
+trough.obstacles = [
+  ...trough.pinned.map(p => ({ x: Number(p.x), y: Number(p.y), w: Number(p.w), l: Number(p.l) })),
+  ...trough.pinned.filter(p => !p.isGap && p.maxDeep).map(p => ({ x: buffer, y: Number(p.y), w: trough.usableW, l: Number(p.l) })),
+  ...(trough.complete ? trough.items.map(it => ({ x: Number(it.x), y: Number(it.y), w: Number(it.w), l: Number(it.l) })) : [])
+];
 trough.cursorX = buffer;
 trough.cursorY = buffer;
 trough.shelfH = 0;
@@ -9479,6 +9535,12 @@ else {
   const sid = p.sourceItemId || p.itemId;
   if (sid) pinnedCountBySource[sid] = (pinnedCountBySource[sid] || 0) + 1;
 }
+}
+if (trough.complete) {
+  for (const it of trough.items) {
+    state.glasshouse.usedArea += (Number(it.w) || 0) * (Number(it.l) || 0);
+    if (it.id) pinnedCountBySource[it.id] = (pinnedCountBySource[it.id] || 0) + 1;
+  }
 }
 }
 state.glasshouse.items.forEach(item => { item.packed = pinnedCountBySource[item.id] || 0; });
@@ -9557,6 +9619,7 @@ const prePinned = pinnedCountBySource[item.id] || 0;
 let remaining = item.qty == null ? Infinity : Math.max(0, item.qty - prePinned);
 for (const [troughIndex, trough] of state.glasshouse.troughs.entries()) {
 if (remaining <= 0) break;
+if (trough.complete) continue;
 if (trough.cursorX > buffer + eps) {
   trough.cursorY = Number((trough.cursorY + Math.max(trough.shelfH, 0.01)).toFixed(4));
   trough.cursorX = buffer;
@@ -9681,14 +9744,23 @@ while (remaining > 0 && guard++ < 8000) {
       : Number(Math.max(fbX + 0.005, Math.max(...hits.map(o => o.x + o.w))).toFixed(4));
     continue;
   }
-  const packed = { id: item.id, n: item.n, c: item.c, x: Number(fbX.toFixed(4)), y: Number(fbY.toFixed(4)), w: width, l: length, isGap: false, isManual: false };
+  const packed = { id: item.id, n: item.n, c: item.c, x: Number(fbX.toFixed(4)), y: Number(fbY.toFixed(4)), w: width, l: length, maxDeep: item.maxDeep || undefined, isGap: false, isManual: false };
   trough.items.push(packed);
   trough.obstacles.push({ x: packed.x, y: packed.y, w: packed.w, l: packed.l });
+  if (item.maxDeep) {
+    // Prevent subsequent batches from backfilling sideways beside a maxDeep-limited row!
+    trough._maxDeepRowLocks = trough._maxDeepRowLocks || [];
+    trough._maxDeepRowLocks.push({ x: buffer, y: packed.y, w: trough.usableW, l: packed.l });
+  }
   fbX = rightFirstFallback ? Number((fbX - width).toFixed(4)) : Number((fbX + width).toFixed(4));
   fbCount++;
   item.packed++;
   state.glasshouse.usedArea += width * length;
   remaining--;
+}
+if (item.maxDeep && trough._maxDeepRowLocks && trough._maxDeepRowLocks.length) {
+  trough.obstacles.push(...trough._maxDeepRowLocks);
+  trough._maxDeepRowLocks = [];
 }
 }
 }
@@ -10245,8 +10317,8 @@ function renderGhCanvas() {
   const width = troughs.reduce((sum, trough) => sum + trough.w, 0) + gap * Math.max(0, troughs.length - 1);
   const height = Math.max(...troughs.map(trough => trough.l), 1);
   const vbW = width + 1.4;
-  const vbH = height + 1.35;
-  svg.setAttribute('viewBox', `-0.75 -0.7 ${vbW} ${vbH}`);
+  const vbH = height + 1.55;
+  svg.setAttribute('viewBox', `-0.75 -0.92 ${vbW} ${vbH}`);
   const container = document.getElementById('gh-svg-container');
   const prevScrollL = container ? container.scrollLeft : 0;
   const prevScrollT = container ? container.scrollTop : 0;
@@ -10279,8 +10351,15 @@ function renderGhCanvas() {
 
   for (const [troughIndex, trough] of troughs.entries()) {
     const zLabel = getGhZoneLabel(trough, troughIndex);
-    html += `<rect x="${xOffset}" y="0" width="${trough.w}" height="${trough.l}" fill="#f4f3ef" stroke="#7e7561" stroke-width="0.02"/>`;
-    html += `<text x="${xOffset + trough.w/2}" y="-0.44" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="0.115" fill="#292524">${ghEscape(zLabel)}: ${trough.w.toFixed(2)} × ${trough.l.toFixed(2)} m</text>`;
+    const hasPlacedInZone = (trough.pinned || []).some(p => !p.isGap) || (trough.items || []).length > 0;
+    const isZoneDone = Boolean(trough.complete);
+    html += `<rect x="${xOffset}" y="0" width="${trough.w}" height="${trough.l}" fill="${isZoneDone ? '#ecfdf5' : '#f4f3ef'}" stroke="${isZoneDone ? '#059669' : '#7e7561'}" stroke-width="${isZoneDone ? '0.028' : '0.02'}"/>`;
+    if (hasPlacedInZone || isZoneDone) {
+      const pillW = Math.min(Math.max(trough.w, 0.92), 1.15);
+      const pillX = xOffset + trough.w / 2 - pillW / 2;
+      html += `<g class="gh-interactive-target" style="cursor:pointer" onclick="toggleGhZoneComplete(${troughIndex}, event)"><rect x="${pillX}" y="-0.78" width="${pillW}" height="0.22" rx="0.04" fill="${isZoneDone ? '#059669' : '#ffffff'}" stroke="${isZoneDone ? '#047857' : '#78716c'}" stroke-width="0.012"/><rect x="${pillX + 0.06}" y="-0.725" width="0.11" height="0.11" rx="0.02" fill="${isZoneDone ? '#ffffff' : '#f5f5f4'}" stroke="${isZoneDone ? '#ffffff' : '#78716c'}" stroke-width="0.01"/>${isZoneDone ? `<path d="M ${pillX + 0.08} -0.67 L ${pillX + 0.11} -0.64 L ${pillX + 0.155} -0.705" fill="none" stroke="#059669" stroke-width="0.02" stroke-linecap="round" stroke-linejoin="round"/>` : ''}<text x="${pillX + 0.22}" y="-0.665" dominant-baseline="middle" font-family="monospace" font-weight="bold" font-size="0.08" fill="${isZoneDone ? '#ffffff' : '#292524'}">${isZoneDone ? 'Zone Complete' : 'Mark Complete'}</text><title>Toggle Zone Complete — completed zones are skipped by Auto-Pack so spacing &amp; layouts stay untouched</title></g>`;
+    }
+    html += `<text x="${xOffset + trough.w/2}" y="-0.44" text-anchor="middle" font-family="monospace" font-weight="bold" font-size="0.115" fill="${isZoneDone ? '#065f46' : '#292524'}">${ghEscape(zLabel)}: ${trough.w.toFixed(2)} × ${trough.l.toFixed(2)} m</text>`;
     html += `<line x1="${xOffset}" y1="-0.18" x2="${xOffset+trough.w}" y2="-0.18" stroke="#292524" stroke-width="0.008"/><line x1="${xOffset-0.16}" y1="0" x2="${xOffset-0.16}" y2="${trough.l}" stroke="#292524" stroke-width="0.008"/>`;
     html += `<text x="${xOffset+trough.w/2}" y="-0.22" text-anchor="middle" font-family="monospace" font-size="0.085" fill="#44403c">${trough.w.toFixed(2)} m</text><text x="${xOffset-0.22}" y="${trough.l/2}" text-anchor="middle" transform="rotate(-90 ${xOffset-0.22} ${trough.l/2})" font-family="monospace" font-size="0.085" fill="#44403c">${trough.l.toFixed(2)} m</text>`;
 
