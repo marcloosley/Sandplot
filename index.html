@@ -172,9 +172,9 @@ html[data-theme="amber"] .wx-seg-btn:hover, html[data-theme="custom"] .wx-seg-bt
 html[data-theme="amber"] .wx-seg-btn.active, html[data-theme="custom"] .wx-seg-btn.active { background: #382a20; color: #ffdfa8; box-shadow: inset 0 0 0 1px rgba(255, 158, 44, 0.35); }
 
 /* Dedicated Theme-Native Chart Surfaces (Clean, unboxed feel) */
-.wx-chart-surface { background-color: #f8fafc; border: 1px solid #e2e8f0; color: #334155; --wx-grid: rgba(100, 116, 139, 0.15); --wx-axis: #64748b; --wx-chance-fill: rgba(14, 165, 233, 0.15); --wx-chance-stroke: rgba(2, 132, 199, 0.45); --wx-split-fill: rgba(245, 158, 11, 0.16); --wx-split-stroke: rgba(217, 119, 6, 0.50); --wx-rain: #0ea5e9; --wx-rain-heavy: #0369a1; --wx-temp-line: #f97316; --wx-soil-line: #10b981; --wx-frost-line: #38bdf8; --wx-hover: rgba(2, 132, 199, 0.09); }
-html[data-theme="amber"] .wx-chart-surface { background-color: #19130f !important; border-color: #4a311b !important; color: #e6d3b8 !important; --wx-grid: rgba(201, 167, 125, 0.12); --wx-axis: #b89872; --wx-chance-fill: rgba(56, 189, 248, 0.17); --wx-chance-stroke: rgba(56, 189, 248, 0.50); --wx-split-fill: rgba(251, 191, 36, 0.16); --wx-split-stroke: rgba(251, 191, 36, 0.50); --wx-rain: #38bdf8; --wx-rain-heavy: #7dd3fc; --wx-temp-line: #fb923c; --wx-soil-line: #34d399; --wx-frost-line: #67e8f9; --wx-hover: rgba(255, 158, 44, 0.10); }
-html[data-theme="custom"] .wx-chart-surface { background-color: var(--custom-surface, #19130f) !important; border-color: var(--custom-border, #4a311b) !important; color: var(--custom-text, #e6d3b8) !important; --wx-grid: rgba(148, 163, 184, 0.14); --wx-axis: var(--custom-muted, #b89872); --wx-chance-fill: rgba(56, 189, 248, 0.17); --wx-chance-stroke: rgba(56, 189, 248, 0.50); --wx-split-fill: rgba(251, 191, 36, 0.16); --wx-split-stroke: rgba(251, 191, 36, 0.50); --wx-rain: #38bdf8; --wx-rain-heavy: #7dd3fc; --wx-temp-line: #fb923c; --wx-soil-line: #34d399; --wx-frost-line: #67e8f9; --wx-hover: rgba(148, 163, 184, 0.11); }
+.wx-chart-surface { background-color: #f8fafc; border: 1px solid #e2e8f0; color: #334155; --wx-grid: rgba(100, 116, 139, 0.15); --wx-axis: #64748b; --wx-chance-fill: rgba(14, 165, 233, 0.15); --wx-chance-stroke: rgba(2, 132, 199, 0.45); --wx-split-fill: rgba(245, 158, 11, 0.16); --wx-split-stroke: rgba(217, 119, 6, 0.50); --wx-rain: #0ea5e9; --wx-rain-heavy: #0369a1; --wx-snow: #9333ea; --wx-snow-cap: #e0f2fe; --wx-temp-line: #f97316; --wx-soil-line: #10b981; --wx-frost-line: #38bdf8; --wx-hover: rgba(2, 132, 199, 0.09); }
+html[data-theme="amber"] .wx-chart-surface { background-color: #19130f !important; border-color: #4a311b !important; color: #e6d3b8 !important; --wx-grid: rgba(201, 167, 125, 0.12); --wx-axis: #b89872; --wx-chance-fill: rgba(56, 189, 248, 0.17); --wx-chance-stroke: rgba(56, 189, 248, 0.50); --wx-split-fill: rgba(251, 191, 36, 0.16); --wx-split-stroke: rgba(251, 191, 36, 0.50); --wx-rain: #38bdf8; --wx-rain-heavy: #7dd3fc; --wx-snow: #c084fc; --wx-snow-cap: #f8fafc; --wx-temp-line: #fb923c; --wx-soil-line: #34d399; --wx-frost-line: #67e8f9; --wx-hover: rgba(255, 158, 44, 0.10); }
+html[data-theme="custom"] .wx-chart-surface { background-color: var(--custom-surface, #19130f) !important; border-color: var(--custom-border, #4a311b) !important; color: var(--custom-text, #e6d3b8) !important; --wx-grid: rgba(148, 163, 184, 0.14); --wx-axis: var(--custom-muted, #b89872); --wx-chance-fill: rgba(56, 189, 248, 0.17); --wx-chance-stroke: rgba(56, 189, 248, 0.50); --wx-split-fill: rgba(251, 191, 36, 0.16); --wx-split-stroke: rgba(251, 191, 36, 0.50); --wx-rain: #38bdf8; --wx-rain-heavy: #7dd3fc; --wx-snow: #c084fc; --wx-snow-cap: #f8fafc; --wx-temp-line: #fb923c; --wx-soil-line: #34d399; --wx-frost-line: #67e8f9; --wx-hover: rgba(148, 163, 184, 0.11); }
 
 /* Unboxed Multi-Day Trend Ribbon & Borderless Hairline List */
 .wx-ribbon-surface { position: relative; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
@@ -204,6 +204,7 @@ html[data-theme="amber"] .wx-frost-clear, html[data-theme="custom"] .wx-frost-cl
 .wx-swatch-sun { display: inline-block; width: 10px; height: 9px; border-radius: 2px; background: #f59e0b; }
 .wx-swatch-cloud { display: inline-block; width: 10px; height: 9px; border-radius: 2px; background: rgba(148, 163, 184, 0.65); }
 .wx-swatch-rain { display: inline-block; width: 9px; height: 10px; border-radius: 2px; background: #38bdf8; }
+.wx-swatch-snow { display: inline-block; width: 9px; height: 10px; border-radius: 2px; background: linear-gradient(180deg, #f8fafc 0%, #c084fc 55%); border: 1px solid #a855f7; }
 .wx-swatch-chance { display: inline-block; width: 11px; height: 10px; border-radius: 2px; background: rgba(56, 189, 248, 0.22); border-top: 1.5px solid rgba(56, 189, 248, 0.65); }
 .wx-swatch-temp { display: inline-block; width: 12px; height: 2.5px; border-radius: 1px; background: #fb923c; vertical-align: middle; }
 .wx-swatch-frost { display: inline-block; width: 12px; height: 0; border-top: 2px dashed #38bdf8; vertical-align: middle; }
@@ -340,6 +341,12 @@ html[data-theme="custom"] .wx-today-glance { background: var(--custom-bg, #140f0
 
 /* BOUNDED GLASSHOUSE VIEWPORT SCROLLBARS & COLLAPSIBLE PANES */
 #gh-svg-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   overflow: auto !important;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
@@ -542,6 +549,7 @@ html[data-theme="amber"] .sp-collapse-hdr:hover, html[data-theme="custom"] .sp-c
           <span class="inline-flex items-center gap-1"><span class="wx-swatch-temp"></span>Air °C</span>
           <span class="inline-flex items-center gap-1"><span class="wx-swatch-frost"></span>0°C Freeze</span>
           <span class="inline-flex items-center gap-1"><span class="wx-swatch-rain"></span>Rain mm</span>
+          <span class="inline-flex items-center gap-1"><span class="wx-swatch-snow"></span>Snow cm</span>
           <span class="inline-flex items-center gap-1"><span class="wx-swatch-chance"></span>% Chance</span>
         </div>
       </div>
@@ -1540,7 +1548,7 @@ Lodging: <span id="val-score-lodging">-</span>
   </div>
 </div>
 <div id="view-glasshouse" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
-<div id="gh-left-column" class="lg:col-span-4 flex flex-col gap-2.5">
+<div id="gh-left-column" class="lg:col-span-4 min-w-0 w-full flex flex-col gap-2.5">
   <!-- Quick Sidebar Pane Switcher (Focus Itinerary vs Full Setup) -->
   <div id="gh-left-panes-bar" class="bg-white rounded-lg border border-sand-200 px-2.5 py-1.5 flex flex-wrap items-center justify-between gap-1.5 shadow-2xs">
     <span class="text-[9.5px] font-mono font-bold uppercase tracking-wider text-sand-500">Left Panes:</span>
@@ -1683,7 +1691,7 @@ Lodging: <span id="val-score-lodging">-</span>
   </section>
 </div>
 
-<section class="lg:col-span-8 bg-white rounded-lg border border-sand-200 p-3 space-y-2.5">
+<section id="gh-right-column" class="lg:col-span-8 min-w-0 w-full bg-white rounded-lg border border-sand-200 p-3 space-y-2.5">
 <div id="gh-controls-dock" class="sticky top-[46px] z-[400] bg-white/95 backdrop-blur-xs border-b border-sand-200 -mx-3 -mt-3 px-3 pt-2.5 pb-2 rounded-t-lg shadow-2xs space-y-1.5">
 <div class="flex flex-wrap justify-between items-center gap-2 border-b border-sand-100 pb-1.5">
 <div>
@@ -1756,7 +1764,7 @@ Lodging: <span id="val-score-lodging">-</span>
 
 <!-- Contextual Sub-Bar 1: Add Gap Settings (Only shown in Add Gap mode) -->
 <div id="gh-gap-bar" class="hidden flex flex-wrap items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg border border-amber-300 bg-amber-50/80 text-[10px] font-mono">
-  <span class="font-bold text-amber-900">Walkway / Section Gap: Click near any placed items to snap flush in any direction</span>
+  <span class="font-bold text-amber-900">Walkway / Section Gap: Click or drag across any zone to snap flush to placed items</span>
   <div class="flex flex-wrap items-center gap-2.5">
     <label class="flex items-center gap-1 cursor-pointer" title="Automatically snap newly placed walkway gaps flush against the nearest placed item edge in any direction (avoiding overlaps &amp; dead pockets)"><input type="checkbox" id="gh-gap-snap-items" checked onchange="state.glasshouse.gapSnapToItems=this.checked"> Snap to Placed Items</label>
     <label class="flex items-center gap-1">Step:
@@ -1848,7 +1856,7 @@ Lodging: <span id="val-score-lodging">-</span>
   </div>
 </div>
 </div>
-<div id="gh-svg-container" class="h-[600px] min-h-[460px] resize-y overflow-auto gh-touch-scroll-mode border rounded bg-sand-50 flex p-2 select-none" onmousedown="startGhCanvasMouseDown(event)" onmousemove="doGhPan(event)" onmouseup="endGhPan()" onmouseleave="endGhPan()" onwheel="doGhZoom(event)" ontouchstart="startGhTouch(event)" ontouchmove="doGhTouch(event)" ontouchend="endGhTouch(event)"><div id="gh-transform-wrapper" class="m-auto"><svg id="gh-svg-mount"></svg></div></div>
+<div id="gh-svg-container" class="h-[min(64vh,600px)] min-h-[340px] resize-y overflow-auto gh-touch-scroll-mode border rounded bg-sand-50 p-2 select-none" onmousedown="startGhCanvasMouseDown(event)" onmousemove="doGhPan(event)" onmouseup="endGhPan()" onmouseleave="endGhPan()" onwheel="doGhZoom(event)" ontouchstart="startGhTouch(event)" ontouchmove="doGhTouch(event)" ontouchend="endGhTouch(event)"><div id="gh-transform-wrapper" class="relative shrink-0"><svg id="gh-svg-mount"></svg></div></div>
 
 <!-- BARCODE / QR POT & TRAY CONTENT STOCKING ENGINE (COLLAPSIBLE, AUTO-OPENS ON STOCK MODE) -->
 <div id="gh-barcode-panel" class="border border-sand-200 rounded-lg bg-sand-50 p-2.5 space-y-2.5">
@@ -9769,7 +9777,7 @@ const hint = document.getElementById('gh-mode-hint');
 if (hint) {
 if (mode === 'edit') hint.innerText = 'Click or drag any tray/pot to move it, or use Rotate, Nudge, Snap & Delete Sel above.';
 else if (mode === 'stock') hint.innerText = 'Click any placed pot/tray on the schematic to target it for Barcode/QR stocking.';
-else if (mode === 'gap') hint.innerText = 'Click any rough grid section on a Zone/Trough below to pin or toggle a Walkway / Section Gap.';
+else if (mode === 'gap') hint.innerText = 'Add Gap: Click or drag anywhere on a zone to place & snap a walkway gap flush against placed items (drag existing gaps too).';
 else if (mode === 'manual_item') hint.innerText = 'Draw & Allocate: Drag a bounding box to highlight & check itinerary count, click extra cells to top up, then click Fill Allocated or Fill & Lock (press R to flip L/W).';
 else if (mode === 'erase') hint.innerText = 'Erase Mode ON: Click ANY placed pot, tray, manual item, stray pot, or gap to delete it immediately.';
 else hint.innerText = 'Drag to pan, scroll to zoom, or switch to Draw Items, Edit / Move, or Erase.';
@@ -10079,6 +10087,155 @@ let _ghDrawPaintActive = false;
 let _ghDrawPaintSavedHistory = false;
 let _ghBoxAnchor = null;
 let _ghBoxCurrent = null;
+let _ghGapDragSession = null;
+
+function findGhZoneAtSvgPoint(svgPt) {
+  const layout = ensureGhRenderLayoutPopulated();
+  if (!svgPt || !layout.length) return null;
+  let best = null, bestDx = Infinity;
+  layout.forEach(z => {
+    const insideX = svgPt.x >= z.xOffset - 0.15 && svgPt.x <= z.xOffset + z.w + 0.15;
+    const insideY = svgPt.y >= -0.25 && svgPt.y <= z.l + 0.25;
+    const dx = svgPt.x < z.xOffset ? z.xOffset - svgPt.x : (svgPt.x > z.xOffset + z.w ? svgPt.x - (z.xOffset + z.w) : 0);
+    if ((insideX || dx < 0.25) && insideY && dx < bestDx) {
+      bestDx = dx;
+      best = z;
+    }
+  });
+  return best;
+}
+
+function svgBoxToZoneGapCandidate(zoneLayout, svgStart, svgEnd, fullW) {
+  const trough = state.glasshouse.troughs?.[zoneLayout.troughIndex];
+  if (!trough) return null;
+  const sc = state.glasshouse.startCorner || 'bottom-left';
+  const bx0 = Math.max(0, Math.min(trough.w, Math.min(svgStart.x, svgEnd.x) - zoneLayout.xOffset));
+  const bx1 = Math.max(0, Math.min(trough.w, Math.max(svgStart.x, svgEnd.x) - zoneLayout.xOffset));
+  const by0 = Math.max(0, Math.min(trough.l, Math.min(svgStart.y, svgEnd.y)));
+  const by1 = Math.max(0, Math.min(trough.l, Math.max(svgStart.y, svgEnd.y)));
+  const canonRect = mapGhCornerRect(trough, {
+    x: fullW ? 0 : bx0,
+    y: by0,
+    w: fullW ? trough.w : Math.max(0.10, bx1 - bx0),
+    l: Math.max(0.10, by1 - by0)
+  }, sc);
+  const gapLen = Math.max(0.05, Math.min(trough.l, canonRect.l));
+  const gapW = fullW ? trough.w : Math.max(0.10, Math.min(trough.w, canonRect.w));
+  const snapEnabled = document.getElementById('gh-gap-snap-items') ? document.getElementById('gh-gap-snap-items').checked : (state.glasshouse.gapSnapToItems !== false);
+  const pos = snapEnabled
+    ? snapGhGapToPlacedItems(trough, canonRect.x, canonRect.y, gapW, gapLen, fullW)
+    : { x: Number(canonRect.x.toFixed(4)), y: Number(canonRect.y.toFixed(4)), snappedTo: null };
+  return {
+    troughIndex: zoneLayout.troughIndex,
+    xOffset: zoneLayout.xOffset,
+    x: pos.x,
+    y: pos.y,
+    w: Number(gapW.toFixed(4)),
+    l: Number(gapLen.toFixed(4)),
+    snappedTo: pos.snappedTo
+  };
+}
+
+function renderGhGapDragPreview() {
+  const overlay = document.getElementById('gh-draw-stage-overlay');
+  if (!overlay) return;
+  if (!_ghGapDragSession || !_ghGapDragSession.preview) {
+    if (state.glasshouse.toolMode !== 'manual_item') overlay.innerHTML = '';
+    return;
+  }
+  const p = _ghGapDragSession.preview;
+  const trough = state.glasshouse.troughs?.[p.troughIndex];
+  if (!trough) { overlay.innerHTML = ''; return; }
+  const sc = state.glasshouse.startCorner || 'bottom-left';
+  const mr = mapGhCornerRect(trough, p, sc);
+  const px = (p.xOffset + mr.x).toFixed(4);
+  const py = mr.y.toFixed(4);
+  const label = `Gap ${p.w.toFixed(2)}×${p.l.toFixed(2)}m${p.snappedTo ? ' · Snap ' + p.snappedTo : ''}`;
+  const lblW = Math.max(0.95, label.length * 0.044 + 0.16);
+  const pillY = Math.max(-0.8, mr.y - 0.24);
+  overlay.innerHTML = `
+    <rect x="${px}" y="${py}" width="${mr.w.toFixed(4)}" height="${mr.l.toFixed(4)}" fill="rgba(245, 158, 11, 0.34)" stroke="#b45309" stroke-width="0.022" stroke-dasharray="0.05 0.03" rx="0.015"/>
+    <rect x="${px}" y="${pillY.toFixed(4)}" width="${lblW.toFixed(4)}" height="0.20" rx="0.04" fill="#78350f" fill-opacity="0.94" stroke="#f59e0b" stroke-width="0.012"/>
+    <text x="${(parseFloat(px) + lblW * 0.5).toFixed(4)}" y="${(pillY + 0.105).toFixed(4)}" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-weight="bold" font-size="0.068" fill="#ffffff">${ghEscape(label)}</text>
+  `;
+}
+
+function beginGhGapDrag(svgPt, options = {}) {
+  if (state.glasshouse.layoutLocked) { showToast('Layout is locked. Unlock to add gaps.'); return false; }
+  const zone = findGhZoneAtSvgPoint(svgPt);
+  if (!zone) return false;
+  const fullW = document.getElementById('gh-gap-fullwidth')?.checked !== false;
+  _ghGapDragSession = {
+    zone,
+    fullW,
+    startSvg: { x: svgPt.x, y: svgPt.y },
+    currentSvg: { x: svgPt.x, y: svgPt.y },
+    startClientX: options.clientX || 0,
+    startClientY: options.clientY || 0,
+    moved: Boolean(options.moved),
+    fallbackCell: options.fallbackCell || null,
+    preview: options.moved ? svgBoxToZoneGapCandidate(zone, svgPt, svgPt, fullW) : null
+  };
+  renderGhGapDragPreview();
+  return true;
+}
+
+function updateGhGapDrag(curSvg, clientX = 0, clientY = 0) {
+  if (!_ghGapDragSession) return;
+  _ghGapDragSession.currentSvg = { x: curSvg.x, y: curSvg.y };
+  if (!_ghGapDragSession.moved) {
+    const pix = Math.hypot(clientX - _ghGapDragSession.startClientX, clientY - _ghGapDragSession.startClientY);
+    const svgD = Math.hypot(curSvg.x - _ghGapDragSession.startSvg.x, curSvg.y - _ghGapDragSession.startSvg.y);
+    if (pix > 6 || svgD > 0.05) _ghGapDragSession.moved = true;
+  }
+  if (_ghGapDragSession.moved) {
+    _ghGapDragSession.preview = svgBoxToZoneGapCandidate(
+      _ghGapDragSession.zone,
+      _ghGapDragSession.startSvg,
+      _ghGapDragSession.currentSvg,
+      _ghGapDragSession.fullW
+    );
+    renderGhGapDragPreview();
+  }
+}
+
+function endGhGapDrag() {
+  if (!_ghGapDragSession) return null;
+  const sess = _ghGapDragSession;
+  _ghGapDragSession = null;
+  if (!sess.moved) {
+    renderGhGapDragPreview();
+    if (sess.fallbackCell) {
+      const c = sess.fallbackCell;
+      handleGhGridCellClick(c.troughIndex, c.x, c.y, c.w, c.l, null);
+    }
+    return null;
+  }
+  const cand = sess.preview;
+  renderGhGapDragPreview();
+  if (!cand) return null;
+  const trough = state.glasshouse.troughs?.[cand.troughIndex];
+  if (!trough) return null;
+  if (!Array.isArray(trough.pinned)) trough.pinned = [];
+  saveGhHistory();
+  trough.pinned.push({
+    id: `GAP_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+    n: `Gap (${cand.l.toFixed(2)}m)`,
+    x: cand.x,
+    y: cand.y,
+    w: cand.w,
+    l: cand.l,
+    c: '#9c927b',
+    isGap: true,
+    isManual: true
+  });
+  renderGhTroughs();
+  repackOrRenderGh();
+  scheduleWorkspaceAutosave(400);
+  const snapTxt = cand.snappedTo ? ` (snapped ${cand.snappedTo})` : '';
+  showToast(`Placed ${cand.w.toFixed(2)}×${cand.l.toFixed(2)}m walkway gap at Y=${cand.y.toFixed(2)}m${snapTxt}.`);
+  return cand;
+}
 
 function clientToGhSvgPoint(event) {
   const svg = document.getElementById('gh-svg-mount');
@@ -10383,12 +10540,19 @@ function endGhBboxDrag() {
 
 function startGhCanvasMouseDown(event) {
   const mode = state.glasshouse.toolMode || 'pan';
-  if (mode === 'manual_item' && event && event.button === 0) {
-    const pMode = getGhDrawPaintMode();
-    if (pMode === 'allocate') {
+  if (event && event.button === 0) {
+    if (mode === 'manual_item') {
+      const pMode = getGhDrawPaintMode();
+      if (pMode === 'allocate') {
+        const pt = clientToGhSvgPoint(event);
+        if (pt) {
+          beginGhBboxDrag(pt, { clientX: event.clientX, clientY: event.clientY, startCell: null });
+          return;
+        }
+      }
+    } else if (mode === 'gap') {
       const pt = clientToGhSvgPoint(event);
-      if (pt) {
-        beginGhBboxDrag(pt, { clientX: event.clientX, clientY: event.clientY, startCell: null });
+      if (pt && beginGhGapDrag(pt, { clientX: event.clientX, clientY: event.clientY })) {
         return;
       }
     }
@@ -10501,11 +10665,18 @@ window.addEventListener('mousemove', (ev) => {
     const pt = clientToGhSvgPoint(ev);
     if (pt) updateGhBboxDrag(pt, ev.clientX, ev.clientY);
   }
+  if (_ghGapDragSession && state.glasshouse.toolMode === 'gap') {
+    const pt = clientToGhSvgPoint(ev);
+    if (pt) updateGhGapDrag(pt, ev.clientX, ev.clientY);
+  }
 });
 
 window.addEventListener('mouseup', () => {
   if (_ghDragSession) {
     endGhBboxDrag();
+  }
+  if (_ghGapDragSession) {
+    endGhGapDrag();
   }
   if (_ghBoxAnchor && _ghBoxCurrent && _ghBoxAnchor.troughIndex === _ghBoxCurrent.troughIndex) {
     placeGhDrawnBox(_ghBoxAnchor.troughIndex, _ghBoxAnchor, _ghBoxCurrent);
@@ -11881,18 +12052,22 @@ function renderGhCanvas() {
   const container = document.getElementById('gh-svg-container');
   const prevScrollL = container ? container.scrollLeft : 0;
   const prevScrollT = container ? container.scrollTop : 0;
-  const fitKey = `${vbW.toFixed(3)}x${vbH.toFixed(3)}`;
-  if (container && container.clientWidth > 80 && container.clientHeight > 80 && (!svg.dataset.ghFitKey || svg.dataset.ghFitKey !== fitKey || state.glasshouse._forceFitNow)) {
-    const padW = Math.max(240, container.clientWidth - 28);
-    const padH = Math.max(240, container.clientHeight - 28);
-    const scale = Math.min(padW / vbW, padH / vbH);
-    state.glasshouse.ui.baseFitW = Math.max(260, Math.round(vbW * scale));
-    state.glasshouse.ui.baseFitH = Math.max(200, Math.round(vbH * scale));
+  const isRotView = Boolean(state.glasshouse.ui.rotated);
+  const contKey = container ? `${container.clientWidth}x${container.clientHeight}` : '';
+  const fitKey = `${vbW.toFixed(3)}x${vbH.toFixed(3)}|R:${isRotView ? 1 : 0}|${contKey}`;
+  if (container && container.clientWidth > 80 && container.clientHeight > 80 && (state.glasshouse.autoFit !== false || !svg.dataset.ghFitKey || svg.dataset.ghFitKey !== fitKey || state.glasshouse._forceFitNow)) {
+    const padW = Math.max(200, container.clientWidth - 28);
+    const padH = Math.max(200, container.clientHeight - 28);
+    const fitTargetW = isRotView ? vbH : vbW;
+    const fitTargetH = isRotView ? vbW : vbH;
+    const scale = Math.min(padW / fitTargetW, padH / fitTargetH);
+    state.glasshouse.ui.baseFitW = Math.max(180, Math.round(vbW * scale));
+    state.glasshouse.ui.baseFitH = Math.max(150, Math.round(vbH * scale));
     svg.dataset.ghFitKey = fitKey;
     state.glasshouse._forceFitNow = false;
   } else if (!state.glasshouse.ui.baseFitW || !state.glasshouse.ui.baseFitH) {
-    state.glasshouse.ui.baseFitW = Math.max(540, Math.round(width * 165));
-    state.glasshouse.ui.baseFitH = Math.max(340, Math.round(height * 165));
+    state.glasshouse.ui.baseFitW = Math.max(360, Math.round(width * 120));
+    state.glasshouse.ui.baseFitH = Math.max(260, Math.round(height * 120));
   }
   const step = Math.max(0.1, Number(state.glasshouse.gridStep) || 0.5);
   const mode = state.glasshouse.toolMode || 'pan';
@@ -12023,16 +12198,17 @@ function renderGhCanvas() {
 
     // Click/Drag grid overlay cells in Gap or Item-Dimension Draw mode (corner-mapped!)
     if (mode === 'gap') {
+      _ghRenderLayout.push({ troughIndex, xOffset, w: trough.w, l: trough.l, sc, slots: [] });
       for (let gy = 0; gy < trough.l - 0.001; gy = Number((gy + step).toFixed(3))) {
         const cellL = Number(Math.min(step, trough.l - gy).toFixed(3));
         if (fullWidthGap) {
           const mr = mapGhCornerRect(trough, { x: 0, y: gy, w: trough.w, l: cellL }, sc);
-          html += `<rect class="gh-interactive-target" x="${xOffset + mr.x}" y="${mr.y}" width="${mr.w}" height="${mr.l}" fill="rgba(245,158,11,0.06)" stroke="rgba(217,119,6,0.35)" stroke-width="0.006" style="cursor:pointer" onmouseover="this.setAttribute('fill','rgba(245,158,11,0.28)')" onmouseout="this.setAttribute('fill','rgba(245,158,11,0.06)')" onclick="handleGhGridCellClick(${troughIndex},0,${gy},${trough.w},${cellL},event)"><title>Click to toggle full-width Section Gap at Y = ${gy.toFixed(2)} m on ${ghEscape(zLabel)}</title></rect>`;
+          html += `<rect class="gh-interactive-target" x="${xOffset + mr.x}" y="${mr.y}" width="${mr.w}" height="${mr.l}" fill="rgba(245,158,11,0.06)" stroke="rgba(217,119,6,0.35)" stroke-width="0.006" style="cursor:crosshair" onmouseover="if(!_ghGapDragSession)this.setAttribute('fill','rgba(245,158,11,0.28)')" onmouseout="if(!_ghGapDragSession)this.setAttribute('fill','rgba(245,158,11,0.06)')" onmousedown="event.stopPropagation();const pt=clientToGhSvgPoint(event)||{x:${xOffset + mr.x},y:${mr.y}};beginGhGapDrag(pt,{clientX:event.clientX,clientY:event.clientY,fallbackCell:{troughIndex:${troughIndex},x:0,y:${gy},w:${trough.w},l:${cellL}}});"><title>Click or drag anywhere to place &amp; snap full-width Walkway Gap on ${ghEscape(zLabel)}</title></rect>`;
         } else {
           for (let gx = 0; gx < trough.w - 0.001; gx = Number((gx + step).toFixed(3))) {
             const cellW = Number(Math.min(step, trough.w - gx).toFixed(3));
             const mr = mapGhCornerRect(trough, { x: gx, y: gy, w: cellW, l: cellL }, sc);
-            html += `<rect class="gh-interactive-target" x="${xOffset + mr.x}" y="${mr.y}" width="${mr.w}" height="${mr.l}" fill="rgba(245,158,11,0.05)" stroke="rgba(217,119,6,0.28)" stroke-width="0.005" style="cursor:pointer" onmouseover="this.setAttribute('fill','rgba(245,158,11,0.28)')" onmouseout="this.setAttribute('fill','rgba(245,158,11,0.05)')" onclick="handleGhGridCellClick(${troughIndex},${gx},${gy},${cellW},${cellL},event)"><title>Click to toggle Gap at (${gx.toFixed(2)}m, ${gy.toFixed(2)}m) on ${ghEscape(zLabel)}</title></rect>`;
+            html += `<rect class="gh-interactive-target" x="${xOffset + mr.x}" y="${mr.y}" width="${mr.w}" height="${mr.l}" fill="rgba(245,158,11,0.05)" stroke="rgba(217,119,6,0.28)" stroke-width="0.005" style="cursor:crosshair" onmouseover="if(!_ghGapDragSession)this.setAttribute('fill','rgba(245,158,11,0.28)')" onmouseout="if(!_ghGapDragSession)this.setAttribute('fill','rgba(245,158,11,0.05)')" onmousedown="event.stopPropagation();const pt=clientToGhSvgPoint(event)||{x:${xOffset + mr.x},y:${mr.y}};beginGhGapDrag(pt,{clientX:event.clientX,clientY:event.clientY,fallbackCell:{troughIndex:${troughIndex},x:${gx},y:${gy},w:${cellW},l:${cellL}}});"><title>Click or drag anywhere to place &amp; snap Walkway Gap at (${gx.toFixed(2)}m, ${gy.toFixed(2)}m) on ${ghEscape(zLabel)}</title></rect>`;
           }
         }
       }
@@ -12795,12 +12971,14 @@ function compactSelectedGhZone(toFarEnd = false) {
 
 let _ghDragState = null;
 function startGhTrayDrag(event, troughIndex, isPinned, x, y, xOffset) {
-  if (state.glasshouse.toolMode !== 'edit' || state.glasshouse.layoutLocked || event.button !== 0) return;
+  const modeNow = state.glasshouse.toolMode || 'pan';
+  if ((modeNow !== 'edit' && modeNow !== 'gap') || state.glasshouse.layoutLocked || event.button !== 0) return;
   event.stopPropagation();
   const trough = state.glasshouse.troughs?.[troughIndex];
   const list = isPinned ? (trough?.pinned || []) : (trough?.items || []);
   const item = list.find(it => Math.abs(it.x - x) < 0.003 && Math.abs(it.y - y) < 0.003);
   if (!item) return;
+  if (modeNow === 'gap' && !item.isGap) return;
   const svg = document.getElementById('gh-svg-mount');
   if (!svg || !svg.getScreenCTM()) return;
   saveGhHistory();
@@ -12821,10 +12999,23 @@ function startGhTrayDrag(event, troughIndex, isPinned, x, y, xOffset) {
     const sc = state.glasshouse.startCorner || 'bottom-left';
     const dx = sc.includes('right') ? -dSvgX : dSvgX;
     const dy = sc.includes('bottom') ? -dSvgY : dSvgY;
-    const buffer = Math.max(0, Number(state.glasshouse.edgeBuffer) || 0);
+    const rawBuffer = Math.max(0, Number(state.glasshouse.edgeBuffer) || 0);
+    const buffer = _ghDragState.item.isGap ? 0 : rawBuffer;
     const snap = (v) => Math.round(v / 0.02) * 0.02;
-    const candX = Number(Math.max(buffer, Math.min(trough.w - buffer - _ghDragState.item.w, snap(_ghDragState.origX + dx))).toFixed(4));
-    const candY = Number(Math.max(buffer, Math.min(trough.l - buffer - _ghDragState.item.l, snap(_ghDragState.origY + dy))).toFixed(4));
+    let candX = Number(Math.max(buffer, Math.min(trough.w - buffer - _ghDragState.item.w, snap(_ghDragState.origX + dx))).toFixed(4));
+    let candY = Number(Math.max(buffer, Math.min(trough.l - buffer - _ghDragState.item.l, snap(_ghDragState.origY + dy))).toFixed(4));
+    if (_ghDragState.item.isGap && state.glasshouse.gapSnapToItems !== false) {
+      const obsSnap = [...(trough.pinned || []).filter(p => !p.isGap), ...(trough.items || [])];
+      const tol = 0.09;
+      for (const o of obsSnap) {
+        if (Math.abs(candY - (o.y + o.l)) <= tol) { candY = Number((o.y + o.l).toFixed(4)); }
+        else if (Math.abs((candY + _ghDragState.item.l) - o.y) <= tol) { candY = Number((o.y - _ghDragState.item.l).toFixed(4)); }
+        if (!_ghDragState.item.w || _ghDragState.item.w < trough.w - 0.02) {
+          if (Math.abs(candX - (o.x + o.w)) <= tol) { candX = Number((o.x + o.w).toFixed(4)); }
+          else if (Math.abs((candX + _ghDragState.item.w) - o.x) <= tol) { candX = Number((o.x - _ghDragState.item.w).toFixed(4)); }
+        }
+      }
+    }
     const dragObs = getNonSelectedGhObstacles(trough, new Set([_ghDragState.item]));
     const hitsX = dragObs.some(o => ghRectsOverlap(candX, _ghDragState.item.y, _ghDragState.item.w, _ghDragState.item.l, o.x, o.y, o.w, o.l));
     if (!hitsX) _ghDragState.item.x = candX;
@@ -13189,6 +13380,7 @@ function deleteSelectedGlasshouse() {
 }
 
 function applyGhTransform() {
+  const container = document.getElementById('gh-svg-container');
   const svg = document.getElementById('gh-svg-mount');
   const wrapper = document.getElementById('gh-transform-wrapper');
   const zoom = Math.max(0.5, Math.min(3.5, Number(state.glasshouse.ui.zoom) || 1));
@@ -13198,13 +13390,38 @@ function applyGhTransform() {
   state.glasshouse.ui.panY = 0;
   const baseW = state.glasshouse.ui.baseFitW || 680;
   const baseH = state.glasshouse.ui.baseFitH || 420;
+  const wPx = Math.round(baseW * zoom);
+  const hPx = Math.round(baseH * zoom);
+  const rotated = Boolean(state.glasshouse.ui.rotated);
+  const dispW = rotated ? hPx : wPx;
+  const dispH = rotated ? wPx : hPx;
+
   if (svg) {
-    svg.style.width = Math.round(baseW * zoom) + 'px';
-    svg.style.height = Math.round(baseH * zoom) + 'px';
+    svg.style.width = wPx + 'px';
+    svg.style.height = hPx + 'px';
+    if (rotated) {
+      svg.style.position = 'absolute';
+      svg.style.left = '50%';
+      svg.style.top = '50%';
+      svg.style.transformOrigin = 'center center';
+      svg.style.transform = 'translate(-50%, -50%) rotate(90deg)';
+    } else {
+      svg.style.position = '';
+      svg.style.left = '';
+      svg.style.top = '';
+      svg.style.transformOrigin = '';
+      svg.style.transform = '';
+    }
   }
   if (wrapper) {
-    wrapper.style.transformOrigin = 'center center';
-    wrapper.style.transform = state.glasshouse.ui.rotated ? 'rotate(90deg)' : 'none';
+    wrapper.style.width = dispW + 'px';
+    wrapper.style.height = dispH + 'px';
+    wrapper.style.transform = 'none';
+  }
+  // Prevent flexbox centering from ever clipping overflow off the left or top unreachable edge
+  if (container && container.clientWidth > 40) {
+    container.style.justifyContent = dispW > (container.clientWidth - 16) ? 'flex-start' : 'center';
+    container.style.alignItems = dispH > (container.clientHeight - 16) ? 'flex-start' : 'center';
   }
   const zBadge = document.getElementById('gh-zoom-badge');
   if (zBadge) {
@@ -13212,7 +13429,15 @@ function applyGhTransform() {
     zBadge.textContent = (state.glasshouse.autoFit !== false && pct === 100) ? 'Fit (100%)' : (pct + '%');
   }
 }
-function rotateGhCanvas() { state.glasshouse.ui.rotated = !state.glasshouse.ui.rotated; applyGhTransform(); }
+function rotateGhCanvas() {
+  state.glasshouse.ui.rotated = !state.glasshouse.ui.rotated;
+  state.glasshouse.autoFit = true;
+  state.glasshouse._forceFitNow = true;
+  state.glasshouse._justResetView = true;
+  renderGhCanvas();
+  const container = document.getElementById('gh-svg-container');
+  if (container) { container.scrollLeft = 0; container.scrollTop = 0; }
+}
 function zoomGhCanvas(delta) {
   const container = document.getElementById('gh-svg-container');
   const prevZoom = state.glasshouse.ui.zoom || 1;
@@ -16712,6 +16937,10 @@ function buildHourlyDaySeries(dateStr, baseData, modelsData, activeMod) {
     if (!tStr.startsWith(dateStr)) continue;
     const hourNum = parseInt(tStr.slice(11, 13), 10) || 0;
     const baseRain = Number.isFinite(baseData.hourly?.precipitation?.[i]) ? Math.max(0, baseData.hourly.precipitation[i]) : null;
+    const rawBaseSnow = Number.isFinite(baseData.hourly?.snowfall?.[i]) ? Math.max(0, baseData.hourly.snowfall[i]) : null;
+    const rawSnowDepth = Number.isFinite(baseData.hourly?.snow_depth?.[i]) ? Math.max(0, baseData.hourly.snow_depth[i] * 100) : null;
+    const hWmo = Number(baseData.hourly?.weather_code?.[i]);
+    const isSnowWmo = [56, 57, 66, 67, 71, 73, 75, 77, 85, 86].includes(hWmo);
     const baseProb = Number.isFinite(baseData.hourly?.precipitation_probability?.[i]) ? baseData.hourly.precipitation_probability[i] : null;
     const temp = Number.isFinite(baseData.hourly?.temperature_2m?.[i]) ? baseData.hourly.temperature_2m[i] : null;
     const soilTemp = Number.isFinite(baseData.hourly?.soil_temperature_0cm?.[i]) ? baseData.hourly.soil_temperature_0cm[i] : null;
@@ -16760,12 +16989,36 @@ function buildHourlyDaySeries(dateStr, baseData, modelsData, activeMod) {
     }
     if (Number.isFinite(chancePct)) chancePct = Math.max(0, Math.min(100, chancePct));
 
+    // Resolve ensemble hourly snowfall (cm) or infer wintry snow eq. when freezing/snow WMO
+    const modSnowVals = [];
+    let selModSnow = null;
+    if (mi !== undefined && modelsData?.hourly) {
+      ENSEMBLE_MODEL_KEYS.forEach(mk => {
+        const sv = modelsData.hourly["snowfall_" + WEATHER_MODELS_META[mk].apiKey]?.[mi];
+        if (Number.isFinite(sv)) {
+          const cleanS = Math.max(0, sv);
+          modSnowVals.push(cleanS);
+          if (mk === activeMod) selModSnow = cleanS;
+        }
+      });
+    }
+    let snowCm = rawBaseSnow;
+    if (activeMod !== "consensus") snowCm = selModSnow !== null ? selModSnow : rawBaseSnow;
+    else if (modSnowVals.length > 0) snowCm = modSnowVals.reduce((a, b) => a + b, 0) / modSnowVals.length;
+    if ((snowCm === null || snowCm < 0.01) && (isSnowWmo || (Number.isFinite(temp) && temp <= 1.2)) && Number.isFinite(rainMm) && rainMm >= 0.08) {
+      snowCm = Number((rainMm * (temp !== null && temp <= 0 ? 1.0 : 0.7)).toFixed(2));
+    }
+    const isSnowHour = (Number.isFinite(snowCm) && snowCm >= 0.04) || isSnowWmo;
+
     const frost = evaluateFrostStatus(temp, soilTemp, cloudCover !== null ? cloudCover : 50);
 
     hours.push({
       hour: hourNum,
       timeLabel: String(hourNum).padStart(2, "0") + ":00",
       rainMm,
+      snowCm: snowCm || 0,
+      snowDepthCm: rawSnowDepth,
+      isSnowHour,
       chancePct,
       temp,
       soilTemp: frost.surfaceMin,
@@ -16785,9 +17038,12 @@ function buildHourlyDaySeries(dateStr, baseData, modelsData, activeMod) {
     const slice = hours.slice(b * 3, b * 3 + 3);
     const validR = slice.filter(h => Number.isFinite(h.rainMm));
     const validC = slice.filter(h => Number.isFinite(h.chancePct));
+    const snowSum3h = slice.reduce((s, h) => s + (h.snowCm || 0), 0);
     bins3h.push({
       label: String(b * 3).padStart(2, "0") + "–" + String(b * 3 + 3).padStart(2, "0") + "h",
       rainSum: validR.length ? validR.reduce((s, h) => s + h.rainMm, 0) : null,
+      snowSumCm: snowSum3h,
+      hasSnow: slice.some(h => h.isSnowHour) || snowSum3h >= 0.05,
       chanceMax: validC.length ? Math.max(...validC.map(h => h.chancePct)) : null,
       isSplit: slice.some(h => h.isSplit),
       hasFrost: slice.some(h => h.frostType !== "none")
@@ -16795,9 +17051,10 @@ function buildHourlyDaySeries(dateStr, baseData, modelsData, activeMod) {
   }
 
   const sunHoursTotal = Math.round((hours.reduce((s, h) => s + (h.sunshineMin || 0), 0) / 60) * 10) / 10;
+  const snowTotalCm = Math.round(hours.reduce((s, h) => s + (h.snowCm || 0), 0) * 10) / 10;
   const cloudHours = hours.filter(h => Number.isFinite(h.cloudCover));
   const cloudAvgPct = cloudHours.length ? Math.round(cloudHours.reduce((s, h) => s + h.cloudCover, 0) / cloudHours.length) : null;
-  return { hours, bins3h, sunHoursTotal, cloudAvgPct };
+  return { hours, bins3h, sunHoursTotal, snowTotalCm, cloudAvgPct };
 }
 
 // Unboxed inline sparkline for the borderless hairline table (No discrete box around each day's sparkline)
@@ -16820,7 +17077,7 @@ function renderUnboxedDaySparkline(bins3h) {
     const cH = (cPct / 100) * plotH;
     const rH = rMm >= 0.05 ? Math.max(2.5, Math.min(plotH, (rMm / maxBinMm) * plotH)) : 0;
     const chanceFill = b.isSplit ? "rgba(245,158,11,0.22)" : "rgba(56,189,248,0.18)";
-    const rainFill = rMm >= 3.0 ? "#0284c7" : "#38bdf8";
+    const rainFill = b.hasSnow ? "#c084fc" : (rMm >= 3.0 ? "#0284c7" : "#38bdf8");
     if (cPct >= 8) {
       svg += `<rect x="${(x0 + 1).toFixed(1)}" y="${(baseY - cH).toFixed(1)}" width="${(colW - 2).toFixed(1)}" height="${cH.toFixed(1)}" rx="1" fill="${chanceFill}"/>`;
     }
@@ -16873,7 +17130,10 @@ function renderHourlyPrecipHistogram(dayObj, activeMod) {
   const glanceEl = document.getElementById("wx-day-glance");
   if (glanceEl) {
     const tempTxt = (tHighDisp !== null && tLowDisp !== null) ? `${Math.round(tHighDisp)}° / ${Math.round(tLowDisp)}°` : "--";
-    const rainTxt = dayRain !== null ? `${dayRain.toFixed(1)} mm · ${dayObj.likelihoodPct}%` : `${dayObj.likelihoodPct}%`;
+    const snowTotalDay = Number.isFinite(dayObj.snowSumCm) ? dayObj.snowSumCm : (Number.isFinite(series.snowTotalCm) ? series.snowTotalCm : 0);
+    const rainTxt = snowTotalDay >= 0.1
+      ? `Snow ${snowTotalDay.toFixed(1)} cm (${(dayRain || 0).toFixed(1)}mm) · ${dayObj.likelihoodPct}%`
+      : (dayRain !== null ? `${dayRain.toFixed(1)} mm · ${dayObj.likelihoodPct}%` : `${dayObj.likelihoodPct}%`);
     const sunTxt = Number.isFinite(series.sunHoursTotal) ? `${series.sunHoursTotal.toFixed(1)}h sun` : "-- sun";
     const cldTxt = series.cloudAvgPct !== null ? `${series.cloudAvgPct}% cloud` : "";
     const frostBadgeHtml = dayObj.frostInfo.type === "air"
@@ -17028,21 +17288,28 @@ function renderHourlyPrecipHistogram(dayObj, activeMod) {
     const rH = rMm >= 0.04 ? Math.max(3.5, Math.min(rainH, (rMm / scaleMaxMm) * rainH)) : 0;
     const rY = baseY - rH;
 
+    const sCm = Number.isFinite(h.snowCm) ? Math.max(0, h.snowCm) : 0;
+    const isSnowBar = Boolean(h.isSnowHour) || sCm >= 0.05;
     const cFill = h.isSplit ? "var(--wx-split-fill)" : "var(--wx-chance-fill)";
     const cStroke = h.isSplit ? "var(--wx-split-stroke)" : "var(--wx-chance-stroke)";
-    const rFill = rMm >= 2.5 ? "var(--wx-rain-heavy)" : "var(--wx-rain)";
+    const rFill = isSnowBar ? "var(--wx-snow)" : (rMm >= 2.5 ? "var(--wx-rain-heavy)" : "var(--wx-rain)");
 
     const frostTag = h.frostType === "air" ? " · AIR FROST" : h.frostType === "ground" ? " · GROUND FROST" : "";
+    const snowHoverTxt = sCm >= 0.04 ? ` · Snow ${sCm.toFixed(1)} cm` : (isSnowBar ? " · Sleet/Snow" : "");
     const skyTxt = (Number.isFinite(h.sunshineMin) ? ` · Sun ${h.sunshineMin}m` : "")
       + (Number.isFinite(h.cloudCover) ? ` · Cloud ${Math.round(h.cloudCover)}%` : "");
     const hoverStr = `${h.timeLabel} · ${rMm.toFixed(1)} mm/h (${cPct}% chance)`
+      + snowHoverTxt
       + (Number.isFinite(h.temp) ? ` · Air ${h.temp.toFixed(1)}°C` : "")
       + (Number.isFinite(h.soilTemp) ? ` / 0cm ${h.soilTemp.toFixed(1)}°C` : "")
       + skyTxt
       + frostTag
       + (h.modCount >= 2 ? ` [${h.wetMods}/${h.modCount} models wet]` : "");
 
-    const showValLbl = rMm >= 0.35 && (idx === 0 || rMm >= (hours[idx - 1]?.rainMm || 0)) && (idx === hours.length - 1 || rMm > (hours[idx + 1]?.rainMm || 0));
+    const snowBarH = isSnowBar && sCm >= 0.03 ? Math.max(4.5, Math.min(rainH, ((sCm * 1.2) / Math.max(1.5, scaleMaxMm)) * rainH)) : 0;
+    const barEffH = Math.max(rH, snowBarH);
+    const barEffY = baseY - barEffH;
+    const showValLbl = (rMm >= 0.35 || sCm >= 0.08) && (idx === 0 || (rMm + sCm) >= ((hours[idx - 1]?.rainMm || 0) + (hours[idx - 1]?.snowCm || 0))) && (idx === hours.length - 1 || (rMm + sCm) > ((hours[idx + 1]?.rainMm || 0) + (hours[idx + 1]?.snowCm || 0)));
     const lblY = Math.max(rainTop + 9, rY - 3).toFixed(1);
 
     let tempNodeSvg = "";
@@ -17075,8 +17342,8 @@ function renderHourlyPrecipHistogram(dayObj, activeMod) {
       <rect class="wx-svg-hit" x="${x0.toFixed(1)}" y="${skyY}" width="${colW.toFixed(1)}" height="${baseY - skyY}" fill="transparent"/>
       ${skyCellSvg}
       ${cPct >= 4 ? `<rect x="${(x0 + 1.2).toFixed(1)}" y="${cY.toFixed(1)}" width="${Math.max(2, colW - 2.4).toFixed(1)}" height="${cH.toFixed(1)}" rx="1.5" fill="${cFill}" pointer-events="none"/><line x1="${(x0 + 1.2).toFixed(1)}" y1="${cY.toFixed(1)}" x2="${(x0 + colW - 1.2).toFixed(1)}" y2="${cY.toFixed(1)}" stroke="${cStroke}" stroke-width="1.4" pointer-events="none"/>` : ""}
-      ${rH > 0 ? `<rect x="${(x0 + colW * 0.22).toFixed(1)}" y="${rY.toFixed(1)}" width="${Math.max(3, colW * 0.56).toFixed(1)}" height="${rH.toFixed(1)}" rx="2" fill="${rFill}" pointer-events="none"/>` : ""}
-      ${showValLbl ? `<text x="${cx.toFixed(1)}" y="${lblY}" text-anchor="middle" font-size="8.5" font-weight="bold" font-family="JetBrains Mono, monospace" fill="var(--wx-rain)" pointer-events="none">${rMm.toFixed(1)}</text>` : ""}
+      ${barEffH > 0 ? `<rect x="${(x0 + colW * 0.22).toFixed(1)}" y="${barEffY.toFixed(1)}" width="${Math.max(3, colW * 0.56).toFixed(1)}" height="${barEffH.toFixed(1)}" rx="2" fill="${rFill}" pointer-events="none"/>` + (isSnowBar ? `<rect x="${(x0 + colW * 0.22).toFixed(1)}" y="${barEffY.toFixed(1)}" width="${Math.max(3, colW * 0.56).toFixed(1)}" height="2.6" rx="1" fill="var(--wx-snow-cap)" pointer-events="none"/><text x="${cx.toFixed(1)}" y="${Math.min(baseY - 2, barEffY + 8).toFixed(1)}" text-anchor="middle" font-size="7" font-weight="bold" fill="#ffffff" pointer-events="none">*</text>` : "") : ""}
+      ${showValLbl ? `<text x="${cx.toFixed(1)}" y="${Math.max(rainTop + 9, barEffY - 3).toFixed(1)}" text-anchor="middle" font-size="8.5" font-weight="bold" font-family="JetBrains Mono, monospace" fill="${isSnowBar ? 'var(--wx-snow)' : 'var(--wx-rain)'}" pointer-events="none">${sCm >= 0.08 ? sCm.toFixed(1) + 'cm' : rMm.toFixed(1)}</text>` : ""}
       ${tempNodeSvg}
     </g>`;
   }).join("");
@@ -17090,6 +17357,7 @@ function buildDailyMultiModelProfile(baseData, modelsData, activeMod = "consensu
 
   return times.map((dateStr, i) => {
     const baseRain = Number.isFinite(baseData.daily?.precipitation_sum?.[i]) ? baseData.daily.precipitation_sum[i] : 0;
+    const baseSnow = Number.isFinite(baseData.daily?.snowfall_sum?.[i]) ? baseData.daily.snowfall_sum[i] : 0;
     const baseProb = Number.isFinite(baseData.daily?.precipitation_probability_max?.[i]) ? baseData.daily.precipitation_probability_max[i] : null;
     const baseTMax = baseData.daily?.temperature_2m_max?.[i];
     const baseTMin = baseData.daily?.temperature_2m_min?.[i];
@@ -17120,9 +17388,12 @@ function buildDailyMultiModelProfile(baseData, modelsData, activeMod = "consensu
       const wVal = modelsData?.daily?.["wind_speed_10m_max_" + apiSuffix]?.[i];
       const cVal = modelsData?.daily?.["weather_code_" + apiSuffix]?.[i];
       if (Number.isFinite(rVal) || Number.isFinite(txVal) || Number.isFinite(tnVal)) {
+        const sVal = modelsData?.daily?.["snowfall_sum_" + apiSuffix]?.[i];
         const cleanRain = Number.isFinite(rVal) ? Math.max(0, rVal) : baseRain;
+        const cleanSnow = Number.isFinite(sVal) ? Math.max(0, sVal) : baseSnow;
         perModel[mk] = {
           rain: cleanRain,
+          snow: cleanSnow,
           tMax: Number.isFinite(txVal) ? txVal : baseTMax,
           tMin: Number.isFinite(tnVal) ? tnVal : baseTMin,
           wind: Number.isFinite(wVal) ? wVal : baseWind,
@@ -17202,6 +17473,7 @@ function buildDailyMultiModelProfile(baseData, modelsData, activeMod = "consensu
       sunsetStr,
       daylightStr,
       baseRain,
+      snowSumCm: Number(Math.max(baseSnow, hourlySeries?.snowTotalCm || 0).toFixed(1)),
       consensusRain,
       minRain,
       maxRain,
@@ -17381,16 +17653,23 @@ function renderMultiDayTrendRibbon(visibleDays, selIdx, activeMod) {
     svg += `<circle cx="${cx.toFixed(1)}" cy="${ly.toFixed(1)}" r="2.8" fill="#38bdf8"/>`;
     svg += `<text x="${cx.toFixed(1)}" y="${(ly + 12).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="${d.frostInfo.type !== "none" ? "bold" : "normal"}" font-family="JetBrains Mono, monospace" fill="${loColor}">${Math.round(d.tMinEff)}°</text>`;
 
-    // Bottom inline precipitation bar & rain amount
-    const barH = rainMm >= 0.15 ? Math.max(3, Math.min(rainMaxH, (rainMm / maxDayRain) * rainMaxH)) : 0;
+    // Bottom inline precipitation + snow bar
+    const snowDayCm = modEntry && Number.isFinite(modEntry.snow) ? modEntry.snow : (d.snowSumCm || 0);
+    const isSnowDay = snowDayCm >= 0.1 || (info.kind === "snow" && rainMm >= 0.15);
+    const barH = isSnowDay
+      ? Math.max(4, Math.min(rainMaxH, ((snowDayCm * 1.4 || rainMm) / maxDayRain) * rainMaxH))
+      : (rainMm >= 0.15 ? Math.max(3, Math.min(rainMaxH, (rainMm / maxDayRain) * rainMaxH)) : 0);
     const barW = Math.min(26, colW * 0.36);
     svg += `<line x1="${(cx - barW * 0.6).toFixed(1)}" y1="${rainBaseY}" x2="${(cx + barW * 0.6).toFixed(1)}" y2="${rainBaseY}" stroke="var(--wx-grid)" stroke-width="1"/>`;
     if (barH > 0) {
-      svg += `<rect x="${(cx - barW * 0.5).toFixed(1)}" y="${(rainBaseY - barH).toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" rx="2" fill="var(--wx-rain)"/>`;
+      svg += `<rect x="${(cx - barW * 0.5).toFixed(1)}" y="${(rainBaseY - barH).toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" rx="2" fill="${isSnowDay ? "var(--wx-snow)" : "var(--wx-rain)"}"/>`;
+      if (isSnowDay) {
+        svg += `<rect x="${(cx - barW * 0.5).toFixed(1)}" y="${(rainBaseY - barH).toFixed(1)}" width="${barW.toFixed(1)}" height="2.6" rx="1" fill="var(--wx-snow-cap)"/>`;
+      }
     }
-    const rainLbl = rainMm >= 0.15 ? rainMm.toFixed(1) + "mm" : (d.likelihoodPct >= 25 ? d.likelihoodPct + "%" : "Dry");
-    const rainFill = rainMm >= 0.15 ? "var(--wx-rain)" : "var(--wx-axis)";
-    svg += `<text x="${cx.toFixed(1)}" y="${H - 5}" text-anchor="middle" font-size="8.5" font-weight="${rainMm >= 0.15 ? "bold" : "normal"}" font-family="JetBrains Mono, monospace" fill="${rainFill}">${rainLbl}</text>`;
+    const rainLbl = snowDayCm >= 0.1 ? (snowDayCm.toFixed(1) + "cm") : (rainMm >= 0.15 ? rainMm.toFixed(1) + "mm" : (d.likelihoodPct >= 25 ? d.likelihoodPct + "%" : "Dry"));
+    const rainFill = isSnowDay ? "var(--wx-snow)" : (rainMm >= 0.15 ? "var(--wx-rain)" : "var(--wx-axis)");
+    svg += `<text x="${cx.toFixed(1)}" y="${H - 5}" text-anchor="middle" font-size="8.5" font-weight="${(rainMm >= 0.15 || isSnowDay) ? "bold" : "normal"}" font-family="JetBrains Mono, monospace" fill="${rainFill}">${rainLbl}</text>`;
 
     // Full-column click target
     svg += `<rect class="wx-svg-hit" x="${x0}" y="0" width="${colW}" height="${H}" fill="transparent" style="cursor:pointer" onclick="selectHomeWeatherDay(${d.index})"><title>${ghEscape(dayLbl)} · ${ghEscape(info.label)} · Hi ${d.tMaxEff.toFixed(1)}°C / Lo ${d.tMinEff.toFixed(1)}°C (0cm: ${d.soilMinEff.toFixed(1)}°C) · Rain ${rainMm.toFixed(1)} mm (${d.likelihoodPct}%)</title></rect>`;
@@ -17493,9 +17772,11 @@ function renderHomeExtendedForecast() {
       const dotCls = d.confLevel === "High" ? "wx-conf-high" : d.confLevel === "Split" ? "wx-conf-split" : "wx-conf-med";
       const isSel = d.index === selIdx;
 
+      const snowCmRow = !missing ? (modEntry && Number.isFinite(modEntry.snow) ? modEntry.snow : (d.snowSumCm || 0)) : 0;
+      const hasSnowRow = snowCmRow >= 0.1;
       const hasRain = rainMm !== null && rainMm >= 0.15;
-      const rainText = missing ? "–" : (hasRain ? `${rainMm.toFixed(1)} mm` : "Dry");
-      const rainCls = hasRain ? "font-bold text-sky-500" : "text-sand-500";
+      const rainText = missing ? "–" : (hasSnowRow ? `Snow ${snowCmRow.toFixed(1)} cm` : (hasRain ? `${rainMm.toFixed(1)} mm` : "Dry"));
+      const rainCls = hasSnowRow ? "font-bold text-purple-400" : (hasRain ? "font-bold text-sky-500" : "text-sand-500");
 
       let frostCell = `<span class="text-[9.5px] text-sand-500">Soil 0cm: ${d.soilMinEff.toFixed(1)}°C</span>`;
       if (d.frostInfo.type === "air") {
@@ -18372,16 +18653,16 @@ async function fetchFieldWeather(force = false) {
   try {
     const baseUrl = "https://api.open-meteo.com/v1/forecast?latitude=" + lat.toFixed(5)
       + "&longitude=" + lon.toFixed(5)
-      + "&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m"
-      + "&hourly=precipitation,precipitation_probability,temperature_2m,weather_code,soil_temperature_0cm,soil_moisture_0_to_1cm,cloud_cover,sunshine_duration,is_day"
-      + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,sunrise,sunset,daylight_duration"
+      + "&current=temperature_2m,relative_humidity_2m,precipitation,snowfall,weather_code,wind_speed_10m,wind_direction_10m"
+      + "&hourly=precipitation,snowfall,snow_depth,precipitation_probability,temperature_2m,weather_code,soil_temperature_0cm,soil_moisture_0_to_1cm,cloud_cover,sunshine_duration,is_day"
+      + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum,precipitation_probability_max,wind_speed_10m_max,sunrise,sunset,daylight_duration"
       + "&timezone=auto&forecast_days=14";
 
     const modelsUrl = "https://api.open-meteo.com/v1/forecast?latitude=" + lat.toFixed(5)
       + "&longitude=" + lon.toFixed(5)
       + "&models=ukmo_seamless,ecmwf_ifs025,icon_seamless,meteofrance_seamless,knmi_seamless,gfs_seamless"
-      + "&hourly=precipitation"
-      + "&daily=precipitation_sum,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,weather_code"
+      + "&hourly=precipitation,snowfall"
+      + "&daily=precipitation_sum,snowfall_sum,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,weather_code"
       + "&timezone=auto&forecast_days=14";
 
     const [baseRes, modelsRes, synopticData, kpData] = await Promise.all([
@@ -18406,6 +18687,7 @@ async function fetchFieldWeather(force = false) {
     const temp = Number.isFinite(cur.temperature_2m) ? cur.temperature_2m : null;
     const rh = Number.isFinite(cur.relative_humidity_2m) ? cur.relative_humidity_2m : null;
     const rain = Number.isFinite(cur.precipitation) ? cur.precipitation : 0;
+    const snowNowCm = Number.isFinite(cur.snowfall) ? cur.snowfall : 0;
     const windKmh = Number.isFinite(cur.wind_speed_10m) ? cur.wind_speed_10m : 0;
     const windDir = getCardinalDirection(cur.wind_direction_10m);
     const wmo = WMO_WEATHER_CODES[cur.weather_code] || { kind: "mostlyclear", label: "Forecast" };
@@ -18425,7 +18707,7 @@ async function fetchFieldWeather(force = false) {
     if (descEl) descEl.innerHTML = getWeatherSvgIcon(wmo.kind || cur.weather_code, 18) + '<span>' + ghEscape(wmo.label) + '</span>';
     setTxt("wx-cur-wind", Math.round(windKmh) + " km/h" + (windDir ? " " + windDir : ""));
     setTxt("wx-cur-rh", rh !== null ? Math.round(rh) + "%" : "--%");
-    setTxt("wx-cur-rain", rain.toFixed(1) + " mm");
+    setTxt("wx-cur-rain", snowNowCm >= 0.05 ? `${rain.toFixed(1)}mm · ${snowNowCm.toFixed(1)}cm snow` : (rain.toFixed(1) + " mm"));
     setTxt("wx-cur-soil-temp", Number.isFinite(soilTemp) ? soilTemp.toFixed(1) + "°" : "--°");
     setTxt("wx-cur-soil-moist", Number.isFinite(soilMoist) ? soilMoist.toFixed(2) : "--");
 
@@ -18594,7 +18876,22 @@ function notifyPanelResized(targetEl) {
           targetEl.style.setProperty("--fp-board-h", Math.round(Math.max(220, h - 88)) + "px");
         }
       }
+      const ghView = document.getElementById("view-glasshouse");
+      if (ghView && !ghView.classList.contains("hidden") && typeof renderGhCanvas === "function") {
+        if (state.glasshouse.autoFit !== false) state.glasshouse._forceFitNow = true;
+        renderGhCanvas();
+      }
     } catch (_) {}
+  });
+}
+
+if (typeof window !== "undefined") {
+  let _spWinResizeTimer = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(_spWinResizeTimer);
+    _spWinResizeTimer = setTimeout(() => {
+      if (typeof notifyPanelResized === "function") notifyPanelResized();
+    }, 90);
   });
 }
 
