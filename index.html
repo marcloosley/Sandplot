@@ -143,6 +143,8 @@ aside#drawer button[data-nav-view]:hover .nav-mod-badge { transform: scale(1.06)
 .nav-b-13 { background-color: #dcfce7 !important; color: #15803d !important; border-color: #86efac !important; }
 .nav-b-14 { background-color: #f7fee7 !important; color: #4d7c0f !important; border-color: #a3e635 !important; }
 .nav-b-15 { background-color: #dbeafe !important; color: #1d4ed8 !important; border-color: #93c5fd !important; }
+.nav-b-16 { background-color: #fef3c7 !important; color: #92400e !important; border-color: #f59e0b !important; }
+.nav-b-17 { background-color: #f1f5f9 !important; color: #0f172a !important; border-color: #94a3b8 !important; }
 
 html[data-theme="amber"] .nav-b-0,  html[data-theme="custom"] .nav-b-0  { background-color: rgba(245, 158, 11, 0.22) !important; color: #fcd34d !important; border-color: rgba(245, 158, 11, 0.55) !important; }
 html[data-theme="amber"] .nav-b-1,  html[data-theme="custom"] .nav-b-1  { background-color: rgba(234, 88, 12, 0.24) !important; color: #fdba74 !important; border-color: rgba(249, 115, 22, 0.55) !important; }
@@ -160,6 +162,8 @@ html[data-theme="amber"] .nav-b-12, html[data-theme="custom"] .nav-b-12 { backgr
 html[data-theme="amber"] .nav-b-13, html[data-theme="custom"] .nav-b-13 { background-color: rgba(34, 197, 94, 0.22) !important; color: #86efac !important; border-color: rgba(34, 197, 94, 0.55) !important; }
 html[data-theme="amber"] .nav-b-14, html[data-theme="custom"] .nav-b-14 { background-color: rgba(163, 230, 53, 0.20) !important; color: #bef264 !important; border-color: rgba(163, 230, 53, 0.52) !important; }
 html[data-theme="amber"] .nav-b-15, html[data-theme="custom"] .nav-b-15 { background-color: rgba(59, 130, 246, 0.24) !important; color: #93c5fd !important; border-color: rgba(59, 130, 246, 0.55) !important; }
+html[data-theme="amber"] .nav-b-16, html[data-theme="custom"] .nav-b-16 { background-color: rgba(245, 158, 11, 0.25) !important; color: #fde68a !important; border-color: rgba(245, 158, 11, 0.60) !important; }
+html[data-theme="amber"] .nav-b-17, html[data-theme="custom"] .nav-b-17 { background-color: rgba(148, 163, 184, 0.24) !important; color: #f8fafc !important; border-color: rgba(148, 163, 184, 0.55) !important; }
 
 /* EDITORIAL FORECAST UI (UNBOXED CONTINUOUS FLOW + FROST & KP TELEMETRY) */
 .wx-seg-group { display: inline-flex; align-items: center; border-radius: 6px; padding: 2px; border: 1px solid #d5cfc1; background: #f4f3ef; gap: 1px; }
@@ -411,9 +415,12 @@ html[data-theme="amber"] .sp-collapse-hdr:hover, html[data-theme="custom"] .sp-c
     <button type="button" onclick="closeHeaderToolsMenu();openNamesModal();" class="w-full text-left px-2.5 py-1.5 rounded hover:bg-sand-100 text-sand-900 font-semibold flex items-center justify-between"><span>Variety Names</span><span class="text-[9px] text-sand-500">Entries</span></button>
     <button type="button" onclick="closeHeaderToolsMenu();openSentinelModal();" id="btn-header-sentinel" class="w-full text-left px-2.5 py-1.5 rounded hover:bg-sand-100 text-sand-900 font-semibold flex items-center justify-between"><span class="inline-flex items-center gap-1.5"><span id="sentinel-feed-status-dot" class="w-2 h-2 rounded-full bg-sand-400"></span><span id="sentinel-feed-btn-label">Sentinel CDSE</span></span><span class="text-[9px] text-sand-500">Feed</span></button>
     <button type="button" onclick="closeHeaderToolsMenu();toggleAppPalette();" class="w-full text-left px-2.5 py-1.5 rounded hover:bg-sand-100 text-sand-900 font-semibold flex items-center justify-between"><span>Cycle Theme</span><span class="text-[9px] text-sand-500">Quick</span></button>
+    <button type="button" onclick="closeHeaderToolsMenu();switchModule('ferts');" class="w-full text-left px-2.5 py-1.5 rounded hover:bg-sand-100 text-sand-900 font-semibold flex items-center justify-between"><span>RB209 Ferts &amp; Gandy</span><span class="text-[9px] text-sand-500">NPK</span></button>
+    <button type="button" onclick="closeHeaderToolsMenu();switchModule('help');" class="w-full text-left px-2.5 py-1.5 rounded hover:bg-sand-100 text-sand-900 font-semibold flex items-center justify-between"><span>Help &amp; System Guide</span><span class="text-[9px] text-sand-500">Docs</span></button>
     <button type="button" onclick="closeHeaderToolsMenu();openPwaInstallModal();" id="btn-header-pwa" class="w-full text-left px-2.5 py-1.5 rounded hover:bg-sand-100 text-sand-900 font-semibold flex items-center justify-between"><span>Install / Mobile App</span><span class="text-[9px] text-sand-500">PWA</span></button>
   </div>
 </div>
+<button type="button" onclick="switchModule('help')" id="btn-header-help" title="Interactive SandPlot Help &amp; Workflow Guide" class="px-2 py-1 bg-sand-50 hover:bg-sand-100 border border-sand-300 text-sand-800 rounded font-mono font-bold text-[10px] transition flex items-center gap-1"><span>?</span><span class="hidden md:inline">Help</span></button>
 </div>
 </header>
 <div id="drawer-backdrop" onclick="toggleDrawer(false)" class="fixed inset-0 bg-black/40 z-[9000] transition-opacity opacity-0 pointer-events-none no-print"></div>
@@ -453,6 +460,8 @@ html[data-theme="amber"] .sp-collapse-hdr:hover, html[data-theme="custom"] .sp-c
 <button onclick="switchModule('cropart')" data-nav-view="cropart" class="w-full text-left px-2.5 py-1.5 rounded-md font-medium text-sand-700 hover:bg-sand-100 transition flex items-center gap-2.5"><div class="nav-mod-badge nav-b-12"><span>12</span></div><div class="flex-1 min-w-0"><div class="font-semibold text-sand-900 truncate">Crop Art Generator</div><div class="text-[9.5px] text-sand-400 truncate">Image to Plot Binary</div></div></button>
 <button onclick="switchModule('fieldgame')" data-nav-view="fieldgame" class="w-full text-left px-2.5 py-1.5 rounded-md font-medium text-sand-700 hover:bg-sand-100 transition flex items-center gap-2.5"><div class="nav-mod-badge nav-b-14"><span>14</span></div><div class="flex-1 min-w-0"><div class="font-semibold text-sand-900 truncate">Combine Harvest Snake</div><div class="text-[9.5px] text-sand-400 truncate">Tractor &amp; grain trailer arcade</div></div></button>
 <button onclick="switchModule('fieldplan')" data-nav-view="fieldplan" class="w-full text-left px-2.5 py-1.5 rounded-md font-medium text-sand-700 hover:bg-sand-100 transition flex items-center gap-2.5"><div class="nav-mod-badge nav-b-15"><span>15</span></div><div class="flex-1 min-w-0"><div class="font-semibold text-sand-900 truncate">Nursery Detail Plan Viewer</div><div class="text-[9.5px] text-sand-400 truncate">Sheets, Grids &amp; File Debugger</div></div></button>
+<button onclick="switchModule('ferts')" data-nav-view="ferts" class="w-full text-left px-2.5 py-1.5 rounded-md font-medium text-sand-700 hover:bg-sand-100 transition flex items-center gap-2.5"><div class="nav-mod-badge nav-b-16"><span>16</span></div><div class="flex-1 min-w-0"><div class="font-semibold text-sand-900 truncate">RB209 Ferts, Lime &amp; Gandy</div><div class="text-[9.5px] text-sand-400 truncate">Soil NPK, Liming &amp; Tray Calibration</div></div></button>
+<button onclick="switchModule('help')" data-nav-view="help" class="w-full text-left px-2.5 py-1.5 rounded-md font-medium text-sand-700 hover:bg-sand-100 transition flex items-center gap-2.5"><div class="nav-mod-badge nav-b-17"><span>?</span></div><div class="flex-1 min-w-0"><div class="font-semibold text-sand-900 truncate">Help &amp; System Guide</div><div class="text-[9.5px] text-sand-400 truncate">Step-by-step low-clutter manual</div></div></button>
 </div>
 <div class="pt-2 border-t border-sand-100 grid grid-cols-2 gap-1.5 text-[10px] font-mono">
 <button type="button" onclick="toggleDrawer(false);openProjectFileModal();" class="px-2 py-1.5 rounded border border-sand-300 bg-sand-50 hover:bg-sand-100 text-sand-900 font-bold text-left truncate flex items-center gap-1.5"><svg class="w-3.5 h-3.5 shrink-0 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg><span>Project File</span></button>
@@ -2439,6 +2448,360 @@ Lodging: <span id="val-score-lodging">-</span>
 </div>
 </section>
 </div>
+
+<!-- VIEW 16: RB209 CEREAL FERTILISER, LIMING & GANDY CALIBRATION STUDIO -->
+<div id="view-ferts" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+  <!-- Left Input Column -->
+  <div class="lg:col-span-4 min-w-0 w-full flex flex-col gap-3">
+    <!-- Card 1: Soil Sample Analysis & RB209 Cereal Parameters -->
+    <section class="bg-white rounded-lg border border-sand-200 p-3 shadow-2xs space-y-2.5">
+      <div class="flex items-center justify-between pb-1.5 border-b border-sand-100">
+        <h2 class="text-[10.5px] font-bold uppercase tracking-wider text-amber-700">1 · Soil Sample &amp; RB209 Cereal Setup</h2>
+        <span id="fert-sns-pill" class="px-2 py-0.5 rounded bg-amber-50 border border-amber-200 font-mono text-[9.5px] font-bold text-amber-900">SNS Index 1</span>
+      </div>
+      <div class="grid grid-cols-2 gap-2 text-[10.5px]">
+        <label class="col-span-2 font-medium text-sand-700">Cereal Crop (RB209 Sec. 4)
+          <select id="fert-crop" onchange="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded bg-white font-mono text-[10.5px]">
+            <option value="winter_oats">Winter Oats (Feed / Milling)</option>
+            <option value="spring_oats">Spring Oats</option>
+            <option value="winter_wheat_feed">Winter Wheat (Feed)</option>
+            <option value="winter_wheat_milling">Winter Wheat (Milling / Group 1–2)</option>
+            <option value="winter_barley_feed">Winter Barley (Feed)</option>
+            <option value="winter_barley_malting">Winter Barley (Malting)</option>
+            <option value="spring_barley">Spring Barley (Feed / Malting)</option>
+            <option value="spring_wheat">Spring Wheat</option>
+            <option value="rye_triticale">Winter Rye / Triticale</option>
+          </select>
+        </label>
+        <label class="font-medium text-sand-700">Target Yield (t/ha)
+          <input type="number" id="fert-yield" value="7.5" min="2" max="16" step="0.5" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded font-mono text-xs">
+        </label>
+        <label class="font-medium text-sand-700">Straw Destiny
+          <select id="fert-straw" onchange="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded bg-white font-mono text-[10.5px]">
+            <option value="removed">Baled &amp; Removed</option>
+            <option value="incorporated">Chopped / Incorporated</option>
+          </select>
+        </label>
+        <label class="font-medium text-sand-700">Soil Texture Class
+          <select id="fert-soil-type" onchange="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded bg-white font-mono text-[10.5px]">
+            <option value="light">Light Sand / Shallow</option>
+            <option value="medium" selected>Medium Loam</option>
+            <option value="heavy">Deep Clay / Silt</option>
+            <option value="organic">Organic (10–20% OM)</option>
+            <option value="peaty">Peaty (&gt;20% OM)</option>
+          </select>
+        </label>
+        <label class="font-medium text-sand-700">Previous Crop / SNS
+          <select id="fert-prev-crop" onchange="onFertPrevCropChange()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded bg-white font-mono text-[10.5px]">
+            <option value="cereal" selected>Cereals / Low N (SNS 1)</option>
+            <option value="osr_legume">OSR / Beans / Peas (SNS 2)</option>
+            <option value="ley_root">Grass Ley / Potatoes (SNS 3)</option>
+            <option value="high_n">Rich Veg / Manured (SNS 4)</option>
+            <option value="manual">Manual SNS Index (0–6)</option>
+          </select>
+        </label>
+        <label class="font-medium text-sand-700">Winter Rainfall
+          <select id="fert-rainfall" onchange="onFertPrevCropChange()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded bg-white font-mono text-[10.5px]">
+            <option value="low">Low (&lt;600mm / EWR &lt;150)</option>
+            <option value="mod" selected>Moderate (600–700mm)</option>
+            <option value="high">High (&gt;700mm / West UK)</option>
+          </select>
+        </label>
+        <label class="font-medium text-sand-700">SNS Index (0–6)
+          <input type="number" id="fert-sns-index" value="1" min="0" max="6" step="1" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded font-mono text-xs">
+        </label>
+      </div>
+
+      <!-- Soil Lab Analysis Inputs (mg/L + pH) -->
+      <div class="pt-2 border-t border-sand-100 space-y-2 text-[10.5px]">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-sand-700">Soil Lab Results (mg/L &amp; pH)</span>
+          <span class="text-[9px] font-mono text-sand-500">Auto-computes RB209 Index</span>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <label class="text-sand-600">Olsen P (mg/L)
+            <input type="number" id="fert-p-mgl" value="14" min="0" max="150" step="1" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-xs">
+          </label>
+          <label class="text-sand-600">Exch. K (mg/L)
+            <input type="number" id="fert-k-mgl" value="110" min="0" max="600" step="5" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-xs">
+          </label>
+          <label class="text-sand-600">Exch. Mg (mg/L)
+            <input type="number" id="fert-mg-mgl" value="45" min="0" max="300" step="5" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-xs">
+          </label>
+        </div>
+        <div class="grid grid-cols-3 gap-2 pt-1">
+          <label class="text-sand-600">Measured pH
+            <input type="number" id="fert-ph-cur" value="5.9" min="4.0" max="8.5" step="0.1" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-xs">
+          </label>
+          <label class="text-sand-600">Target pH
+            <input type="number" id="fert-ph-target" value="6.5" min="5.5" max="7.5" step="0.1" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-xs">
+          </label>
+          <label class="text-sand-600" title="Neutralising Value % (Ground Limestone = 50–52%, Magnesian Limestone = 54%, Granulated Lime = 50%)">Lime NV (%)
+            <input type="number" id="fert-lime-nv" value="52" min="25" max="95" step="1" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-xs">
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Card 2: Fertiliser Product vs. Nutrient (kg N / P2O5 / K2O) Converter -->
+    <section class="bg-white rounded-lg border border-sand-200 p-3 shadow-2xs space-y-2.5">
+      <div class="flex items-center justify-between pb-1.5 border-b border-sand-100">
+        <h2 class="text-[10.5px] font-bold uppercase tracking-wider text-emerald-700">2 · Fertiliser Product vs. Nutrient</h2>
+        <div class="inline-flex rounded border border-sand-300 overflow-hidden bg-sand-50 font-mono text-[9px]">
+          <button type="button" id="fert-mode-to-prod" onclick="setFertCalcDirection('nutrient_to_product')" class="px-2 py-0.5 font-bold bg-emerald-700 text-white" title="Enter target kg/ha of N, P2O5 or K2O to calculate required product rate">Target → Product</button>
+          <button type="button" id="fert-mode-to-nut" onclick="setFertCalcDirection('product_to_nutrient')" class="px-2 py-0.5 font-semibold text-sand-700" title="Enter kg/ha of product to calculate kg/ha of N, P2O5, K2O &amp; SO3 applied">Product → Nutrient</button>
+        </div>
+      </div>
+
+      <div class="space-y-2 text-[10.5px]">
+        <label class="block font-medium text-sand-700">Fertiliser Product Preset
+          <select id="fert-product-preset" onchange="onFertProductPresetChange()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded bg-white font-mono text-[10.5px]">
+            <option value="34.5,0,0,0,Ammonium Nitrate (Nitram 34.5% N)" selected>Ammonium Nitrate — Nitram (34.5 - 0 - 0)</option>
+            <option value="27,0,0,0,CAN (27% N)">Calcium Ammonium Nitrate — CAN (27 - 0 - 0)</option>
+            <option value="46,0,0,0,Urea (46% N)">Prilled / Granular Urea (46 - 0 - 0)</option>
+            <option value="27,0,0,30,DoubleTop / Sulfan (27N + 30 SO3)">N+S DoubleTop / Sulfan (27 - 0 - 0 + 30 SO3)</option>
+            <option value="21,0,0,60,Ammonium Sulphate (21N + 60 SO3)">Ammonium Sulphate (21 - 0 - 0 + 60 SO3)</option>
+            <option value="18,46,0,0,DAP (18-46-0)">DAP — Diammonium Phosphate (18 - 46 - 0)</option>
+            <option value="0,46,0,0,TSP (0-46-0)">TSP — Triple Superphosphate (0 - 46 - 0)</option>
+            <option value="0,0,60,0,MOP (0-0-60)">MOP — Muriate of Potash (0 - 0 - 60)</option>
+            <option value="0,0,50,45,SOP (0-0-50 + 45 SO3)">SOP — Sulphate of Potash (0 - 0 - 50 + 45 SO3)</option>
+            <option value="20,10,10,0,Compound 20-10-10">Compound NPK (20 - 10 - 10)</option>
+            <option value="15,15,15,0,Compound 15-15-15">Compound NPK (15 - 15 - 15)</option>
+            <option value="16,16,16,0,Compound 16-16-16">Compound NPK (16 - 16 - 16)</option>
+            <option value="0,24,24,0,PK Compound 0-24-24">PK Compound (0 - 24 - 24)</option>
+            <option value="custom">Custom Grade (Edit % below)</option>
+          </select>
+        </label>
+
+        <div class="grid grid-cols-4 gap-1.5">
+          <label class="text-sand-600 text-[9.5px]">N (%)
+            <input type="number" id="fert-pct-n" value="34.5" min="0" max="100" step="0.5" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-xs">
+          </label>
+          <label class="text-sand-600 text-[9.5px]">P2O5 (%)
+            <input type="number" id="fert-pct-p" value="0" min="0" max="100" step="0.5" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-xs">
+          </label>
+          <label class="text-sand-600 text-[9.5px]">K2O (%)
+            <input type="number" id="fert-pct-k" value="0" min="0" max="100" step="0.5" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-xs">
+          </label>
+          <label class="text-sand-600 text-[9.5px]">SO3 (%)
+            <input type="number" id="fert-pct-s" value="0" min="0" max="100" step="0.5" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-xs">
+          </label>
+        </div>
+
+        <!-- Mode A: Target Nutrient -> Product Rate -->
+        <div id="fert-box-target-nut" class="p-2 rounded bg-sand-50 border border-sand-200 space-y-1.5">
+          <div class="flex flex-wrap items-center justify-between gap-1">
+            <span class="text-[9.5px] font-bold text-sand-700">Drive Rate By Nutrient:</span>
+            <div class="flex flex-wrap items-center gap-1 font-mono text-[9px]">
+              <button type="button" onclick="pullFertTargetFromRb209('N', 1)" class="px-1.5 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold" title="Copy full RB209 N recommendation">Use RB209 N</button>
+              <button type="button" onclick="pullFertTargetFromRb209('N', 0.5)" class="px-1.5 py-0.5 rounded bg-white hover:bg-sand-100 border border-sand-300 text-sand-700" title="Copy 50% split of RB209 N">50% N Split</button>
+              <button type="button" onclick="pullFertTargetFromRb209('P', 1)" class="px-1.5 py-0.5 rounded bg-white hover:bg-sand-100 border border-sand-300 text-sand-700" title="Copy RB209 P2O5 recommendation">RB209 P</button>
+              <button type="button" onclick="pullFertTargetFromRb209('K', 1)" class="px-1.5 py-0.5 rounded bg-white hover:bg-sand-100 border border-sand-300 text-sand-700" title="Copy RB209 K2O recommendation">RB209 K</button>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="text-sand-600 text-[9.5px]">Target Element
+              <select id="fert-target-element" onchange="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded bg-white font-mono text-xs">
+                <option value="N" selected>Nitrogen (kg N/ha)</option>
+                <option value="P">Phosphate (kg P2O5/ha)</option>
+                <option value="K">Potash (kg K2O/ha)</option>
+                <option value="S">Sulphur (kg SO3/ha)</option>
+              </select>
+            </label>
+            <label class="text-sand-600 text-[9.5px]">Target Nutrient (kg/ha)
+              <input type="number" id="fert-target-nut-rate" value="120" min="0" max="600" step="5" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded font-mono text-xs font-bold">
+            </label>
+          </div>
+        </div>
+
+        <!-- Mode B: Product Rate -> Nutrients Supplied -->
+        <div id="fert-box-target-prod" class="hidden p-2 rounded bg-sand-50 border border-sand-200 space-y-1.5">
+          <label class="block text-sand-700 font-medium">Enter Product Application Rate (kg product/ha)
+            <input type="number" id="fert-direct-prod-rate" value="300" min="0" max="2000" step="10" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded font-mono text-xs font-bold">
+          </label>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <label class="text-sand-600 text-[9.5px]">Field Area (ha)
+            <input type="number" id="fert-field-ha" value="4.5" min="0.01" max="1000" step="0.1" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded font-mono text-xs">
+          </label>
+          <label class="text-sand-600 text-[9.5px]">Application Split Label
+            <input type="text" id="fert-split-label" value="Main Spring Dressing (GS31)" placeholder="e.g. Split 1 GS25" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded font-mono text-[10px]">
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Card 3: Gandy / Plot Spreader Tray-Weight Calibration -->
+    <section class="bg-white rounded-lg border border-sand-200 p-3 shadow-2xs space-y-2.5">
+      <div class="flex items-center justify-between pb-1.5 border-b border-sand-100">
+        <h2 class="text-[10.5px] font-bold uppercase tracking-wider text-cyan-700">3 · Gandy &amp; Plot Tray Calibration</h2>
+        <span class="px-2 py-0.5 rounded bg-cyan-50 border border-cyan-200 font-mono text-[9px] font-bold text-cyan-900">Tray Catch (g)</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 text-[10.5px]">
+        <label class="font-medium text-sand-700" title="Effective drop/spread width of the Gandy hopper or catch pan">Gandy / Tray Width (m)
+          <input type="number" id="gandy-width-m" value="1.50" min="0.2" max="12" step="0.05" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded font-mono text-xs">
+        </label>
+        <label class="font-medium text-sand-700" title="Pull/drive calibration run distance in metres (or computed from wheel revs below)">Calibration Run (m)
+          <input type="number" id="gandy-dist-m" value="10.0" min="0.5" max="200" step="0.5" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded font-mono text-xs">
+        </label>
+        <label class="text-sand-600 text-[9.5px]" title="Optional: Enter drive wheel circumference (m) and wheel turns to set Calibration Run distance">Wheel Circ. (m) · Optional
+          <input type="number" id="gandy-wheel-circ" placeholder="e.g. 1.65" min="0.2" max="5" step="0.01" oninput="syncGandyDistFromWheel()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded font-mono text-xs">
+        </label>
+        <label class="text-sand-600 text-[9.5px]" title="Number of drive wheel revolutions turned during stationary bench calibration">Wheel Turns (Revs)
+          <input type="number" id="gandy-wheel-revs" placeholder="e.g. 6.06" min="0.5" max="200" step="0.1" oninput="syncGandyDistFromWheel()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded font-mono text-xs">
+        </label>
+        <label class="text-sand-600 text-[9.5px]" title="Weight of the empty plastic/metal catch tray in grams so Gross scale weight is displayed">Empty Tray Tare (g)
+          <input type="number" id="gandy-tare-g" value="0" min="0" max="5000" step="5" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded font-mono text-xs">
+        </label>
+        <label class="text-sand-600 text-[9.5px]" title="Record your Gandy cam / shutter gauge number for the schedule">Gandy Gauge / Cam #
+          <input type="text" id="gandy-cam-setting" value="Cam 24" placeholder="e.g. Cam 24.5" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-sand-300 rounded font-mono text-xs">
+        </label>
+      </div>
+
+      <!-- Trial Plot Sizing & Live Weighed Catch Verification -->
+      <div class="pt-2 border-t border-sand-100 space-y-2 text-[10.5px]">
+        <div class="grid grid-cols-4 gap-1.5">
+          <label class="text-sand-600 text-[9px]">Plot W (m)
+            <input type="number" id="gandy-plot-w" value="1.55" min="0.5" max="20" step="0.05" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-[11px]">
+          </label>
+          <label class="text-sand-600 text-[9px]">Plot L (m)
+            <input type="number" id="gandy-plot-l" value="6.0" min="0.5" max="50" step="0.5" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-[11px]">
+          </label>
+          <label class="text-sand-600 text-[9px]"># Plots
+            <input type="number" id="gandy-plot-count" value="72" min="1" max="5000" step="1" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-[11px]">
+          </label>
+          <label class="text-sand-600 text-[9px]">Buffer (%)
+            <input type="number" id="gandy-buffer-pct" value="15" min="0" max="100" step="5" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-1.5 py-1 border border-sand-300 rounded font-mono text-[11px]">
+          </label>
+        </div>
+
+        <div class="p-2 rounded bg-cyan-50/70 border border-cyan-200 space-y-1.5">
+          <label class="block text-[10px] font-bold text-cyan-950">Actual Weighed Net Catch in Tray (g) — Live Check
+            <input type="number" id="gandy-actual-catch-g" placeholder="Type actual weighed grams to verify accuracy..." min="0" max="20000" step="1" oninput="updateFertsCalculator()" class="w-full mt-0.5 px-2 py-1 border border-cyan-300 rounded bg-white font-mono text-xs font-bold">
+          </label>
+        </div>
+
+        <button type="button" onclick="addFertCalibrationRow()" class="w-full py-1.5 bg-cyan-700 hover:bg-cyan-800 text-white rounded font-bold text-[10.5px] transition shadow-2xs">+ Add Dressing &amp; Gandy Calibration to Schedule</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Right Sticky Output & Calibration Sheet Column -->
+  <div class="lg:col-span-8 min-w-0 w-full flex flex-col gap-3">
+    <div class="bg-white rounded-lg border border-sand-200 p-4 shadow-2xs space-y-4">
+      <!-- Top Bar: Focus Filter & Export Actions -->
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-sand-100">
+        <div>
+          <h2 class="text-xs sm:text-sm font-bold text-sand-900">RB209 Cereal Nutrient Recommendations, Liming &amp; Gandy Spreader Sheet</h2>
+          <p class="text-[10px] text-sand-500 font-mono">AHDB RB209 Section 1 (Soil pH &amp; Lime) &amp; Section 4 (Cereals N-P-K-S) · Live Product &amp; Tray Catch Calibration</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-1.5">
+          <div class="wx-seg-group" role="group" aria-label="Fertiliser view focus">
+            <button type="button" id="btn-fert-tab-all" onclick="setFertViewFocus('all')" class="wx-seg-btn active">All Sections</button>
+            <button type="button" id="btn-fert-tab-rb209" onclick="setFertViewFocus('rb209')" class="wx-seg-btn">1 · RB209 &amp; Lime</button>
+            <button type="button" id="btn-fert-tab-prod" onclick="setFertViewFocus('prod')" class="wx-seg-btn">2 · Product vs N-P-K</button>
+            <button type="button" id="btn-fert-tab-gandy" onclick="setFertViewFocus('gandy')" class="wx-seg-btn">3 · Gandy Calibration</button>
+          </div>
+          <button type="button" onclick="openPortModal('ferts')" class="px-2.5 py-1 bg-cyan-700 hover:bg-cyan-800 text-white rounded font-mono font-bold text-[10px]">Port (.sandplot)</button>
+          <button type="button" onclick="exportFertsCsv()" class="px-2.5 py-1 bg-sand-900 hover:bg-black text-white rounded font-mono font-semibold text-[10px]">Export CSV</button>
+        </div>
+      </div>
+
+      <!-- SECTION 1: RB209 SOIL INDICES, N-P-K-S & LIMING RECOMMENDATIONS -->
+      <div id="fert-out-rb209" class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-[11px] font-bold uppercase tracking-wider text-amber-800 font-mono">1 · RB209 Soil Indices, Cereal N-P-K &amp; Liming Requirement</h3>
+          <span id="fert-rb209-crop-badge" class="text-[10px] font-mono text-sand-600 font-semibold">Winter Oats · 7.5 t/ha</span>
+        </div>
+        <div id="fert-rb209-kpis" class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 font-mono"></div>
+        <div id="fert-rb209-splits" class="p-3 rounded-lg sp-subpane text-[10.5px] font-mono space-y-1.5"></div>
+      </div>
+
+      <!-- SECTION 2: FERTILISER PRODUCT VS NUTRIENT CONVERSION & FIELD / PLOT TONNAGE -->
+      <div id="fert-out-prod" class="space-y-3 pt-3 border-t border-sand-100">
+        <div class="flex items-center justify-between">
+          <h3 class="text-[11px] font-bold uppercase tracking-wider text-emerald-800 font-mono">2 · Product vs. Nutrient Conversion &amp; Bag / Plot Requirement</h3>
+          <span id="fert-prod-grade-badge" class="text-[10px] font-mono text-sand-600 font-semibold">Nitram (34.5 - 0 - 0)</span>
+        </div>
+        <div id="fert-prod-summary" class="grid grid-cols-1 md:grid-cols-3 gap-2.5 font-mono"></div>
+      </div>
+
+      <!-- SECTION 3: GANDY SPREADER TRAY-WEIGHT CALIBRATION & MULTI-DISTANCE CHART -->
+      <div id="fert-out-gandy" class="space-y-3 pt-3 border-t border-sand-100">
+        <div class="flex items-center justify-between">
+          <h3 class="text-[11px] font-bold uppercase tracking-wider text-cyan-800 font-mono">3 · Gandy Spreader Tray Catch Calibration &amp; Distance Chart</h3>
+          <span id="fert-gandy-area-badge" class="text-[10px] font-mono text-sand-600 font-semibold">1.50m × 10.0m = 15.0 m²</span>
+        </div>
+        <div id="fert-gandy-kpis" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 font-mono"></div>
+        <div id="fert-gandy-check-banner" class="hidden p-2.5 rounded-lg border font-mono text-[11px]"></div>
+        <div class="overflow-x-auto border border-sand-200 rounded-lg">
+          <table class="w-full text-left border-collapse font-mono text-[10.5px]">
+            <thead class="bg-sand-50 border-b border-sand-200 text-[9.5px] uppercase text-sand-500">
+              <tr>
+                <th class="py-1.5 px-2.5">Test Distance</th>
+                <th class="py-1.5 px-2.5">Swept Area (m²)</th>
+                <th class="py-1.5 px-2.5">Target Net Tray Catch (g)</th>
+                <th class="py-1.5 px-2.5">Gross Scale Reading w/ Tare (g)</th>
+                <th class="py-1.5 px-2.5">Equivalent Rate</th>
+              </tr>
+            </thead>
+            <tbody id="fert-gandy-dist-tbody" class="divide-y divide-sand-100"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SAVED DRESSING & GANDY CALIBRATION SCHEDULE -->
+      <div class="space-y-2 pt-3 border-t border-sand-100">
+        <div class="flex items-center justify-between">
+          <h3 class="text-[10.5px] font-bold uppercase tracking-wider text-sand-600 font-mono">Saved Trial Fertiliser &amp; Gandy Calibration Log</h3>
+          <button type="button" onclick="clearFertCalibrationLog()" class="text-[9.5px] font-mono text-rose-700 hover:underline font-semibold">Clear Log</button>
+        </div>
+        <div class="overflow-x-auto border border-sand-200 rounded-lg">
+          <table class="w-full text-left border-collapse font-mono text-[10px]">
+            <thead class="bg-sand-50 border-b border-sand-200 text-[9px] uppercase text-sand-500">
+              <tr>
+                <th class="py-1.5 px-2">Split / Dressing</th>
+                <th class="py-1.5 px-2">Product</th>
+                <th class="py-1.5 px-2">Product (kg/ha)</th>
+                <th class="py-1.5 px-2">N - P2O5 - K2O - SO3 (kg/ha)</th>
+                <th class="py-1.5 px-2">Gandy Setup</th>
+                <th class="py-1.5 px-2">Target Tray (g)</th>
+                <th class="py-1.5 px-2">Per Plot (g)</th>
+                <th class="py-1.5 px-2"></th>
+              </tr>
+            </thead>
+            <tbody id="fert-schedule-tbody" class="divide-y divide-sand-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW 17: CALM, LOW-OVERLOAD INTERACTIVE SANDPLOT HELP & SYSTEM GUIDE -->
+<div id="view-help" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+  <!-- Left Topic Navigator (Sticky, Calm, One Chapter at a Time) -->
+  <div class="lg:col-span-3 min-w-0 w-full flex flex-col gap-2.5">
+    <div class="bg-white rounded-lg border border-sand-200 p-3 shadow-2xs space-y-2.5">
+      <div class="flex items-center justify-between pb-1.5 border-b border-sand-100">
+        <h2 class="text-[10.5px] font-bold uppercase tracking-wider text-sand-700 font-mono">SandPlot System Guide</h2>
+        <span class="px-1.5 py-0.5 rounded bg-sand-100 font-mono text-[9px] text-sand-600">v12.9</span>
+      </div>
+      <input type="text" id="help-search-input" placeholder="Search topic (e.g. Gandy, RB209, Draw, GPS)..." oninput="renderHelpGuide()" class="w-full px-2.5 py-1.5 border border-sand-300 rounded font-mono text-[10.5px] focus:outline-none" aria-label="Search help topics">
+      <div id="help-topic-nav" class="space-y-1 font-mono text-[10.5px]"></div>
+      <div class="pt-2 border-t border-sand-100 text-[9.5px] text-sand-500 space-y-1">
+        <div><b class="text-sand-800">Zero Cloud Lock-in:</b> All data auto-saves locally in your browser &amp; exports to portable <code class="px-1 py-0.5 rounded bg-sand-100">.sandplot.json</code> files.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Single-Chapter Reader (Focused, Scannable, Zero Wall-of-Text) -->
+  <div class="lg:col-span-9 min-w-0 w-full">
+    <div id="help-content-mount" class="bg-white rounded-lg border border-sand-200 p-4 sm:p-5 shadow-2xs space-y-4"></div>
+  </div>
+</div>
 </main>
 <!-- GLOBAL WHOLE-APP PROJECT FILE MODAL -->
 <div id="project-file-modal" class="fixed inset-0 bg-black/50 z-[9999] hidden flex items-center justify-center p-4 backdrop-blur-xs">
@@ -2767,6 +3130,8 @@ cropart: { imgElement: null, grid: null, w: 40, h: 40, thresh: 128, plant: 'ART'
 ghRequests: [], ghActiveTab: "spray", sprayItems: [], consumableItems: [],
 fieldPlan: { sheets: [], rawPegs: [], mathPacked: [], fieldData: [], grids: [{ id: 'g1', name: 'Grid 1', boards: 4, runs: 35, rowsPerBoard: 108, startDir: 'bottom' }], stopAtGridEnd: false, engineMode: 'math', colorBy: 'generation', labelMode: 'fc', dupMode: 'merge', condensedMode: 'gen_board', condensedNumbering: 'continuous', mathStartFcOverride: '', showWidthTape: true, tapeBedM: 1.55, tapePitchM: 1.88, altStartFc: 0, altEndFc: 0, altOffset: 0, startsAtBottom: true, colWidth: 56, searchQuery: '', searchMatchIndex: 0, highlightDrift: false, diagOpen: false, diagFilter: 'all', selectedBlockKey: null, diagnostics: { duplicates: [], fcGaps: [], excelDrifts: [], boardSplits: [], overflows: [], firstDrift: null }, nurseryColors: {}, legendNames: {}, sourceName: '', duplicateCount: 0, initialized: false, loading: false },
 fieldGame: { cols: 24, rows: 16, cell: 25, snake: [], dir: { x: 1, y: 0 }, dirQueue: [], food: null, bonus: null, obstacles: [], score: 0, sheaves: 0, best: 0, speed: 115, timer: null, status: "ready", initialized: false },
+ferts: { crop: 'winter_oats', yieldTha: 7.5, straw: 'removed', soilType: 'medium', prevCrop: 'cereal', rainfall: 'mod', snsIndex: 1, olsenP: 14, exchK: 110, exchMg: 45, curPh: 5.9, targetPh: 6.5, limeNv: 52, calcDir: 'nutrient_to_product', productPreset: '34.5,0,0,0,Ammonium Nitrate (Nitram 34.5% N)', productName: 'Ammonium Nitrate (Nitram 34.5% N)', pctN: 34.5, pctP: 0, pctK: 0, pctS: 0, targetElement: 'N', targetNutRate: 120, directProdRate: 300, fieldHa: 4.5, splitLabel: 'Main Spring Dressing (GS31)', gandyWidthM: 1.50, gandyDistM: 10.0, gandyTareG: 0, gandyCam: 'Cam 24', plotW: 1.55, plotL: 6.0, plotCount: 72, bufferPct: 15, actualCatchG: null, viewFocus: 'all', schedule: [] },
+helpTopic: 'overview',
 boundaries: [], activeBoundaryId: null,
 boundary: { polygonGeo: null, bufferedPolygonGeo: null, headlandMargin: 12.0, grossAreaHa: 0, usableAreaHa: 0 },
 geo: {
@@ -2814,7 +3179,9 @@ glasshouse: 'Glasshouse Organiser',
 cropart: 'Crop Art Generator',
 forms: 'Request Forms',
 fieldgame: 'Combine Harvest Snake',
-fieldplan: 'Nursery Detail Plan Viewer'
+fieldplan: 'Nursery Detail Plan Viewer',
+ferts: 'RB209 Ferts, Lime & Gandy Calibration',
+help: 'Help & System Guide'
 };
 function switchModule(view) {
 if (!document.getElementById(`view-${view}`)) { showToast('That module is not available in this build.'); return; }
@@ -2828,7 +3195,7 @@ btn.classList.toggle('bg-sand-100', isCurrent);
 btn.classList.toggle('ring-1', isCurrent);
 btn.classList.toggle('ring-sand-300', isCurrent);
 });
-['home', 'randomiser', 'rcbd', 'disease', 'nursery', 'arranger', 'geospatial', 'analysis', 'gps-nav', 'scout', 'report', 'glasshouse', 'cropart', 'forms', 'fieldgame', 'fieldplan'].forEach(v => { const el = document.getElementById(`view-${v}`); if (el) el.classList.toggle('hidden', v !== view); });
+['home', 'randomiser', 'rcbd', 'disease', 'nursery', 'arranger', 'geospatial', 'analysis', 'gps-nav', 'scout', 'report', 'glasshouse', 'cropart', 'forms', 'fieldgame', 'fieldplan', 'ferts', 'help'].forEach(v => { const el = document.getElementById(`view-${v}`); if (el) el.classList.toggle('hidden', v !== view); });
 if (view === 'home') { renderHomeQuickStats(); fetchFieldWeather(false); }
 else if (view === 'arranger') { renderFieldCanvas(); renderStagedTrials(); }
 else if (view === 'rcbd') { if (!state.rcbd.grid) generateRcbdDesign(); }
@@ -2850,6 +3217,8 @@ else if (view === 'cropart') renderCropArtGrid();
 else if (view === 'forms') { renderSprayItemsTable(); renderConsumableItemsTable(); renderGhRequests(); renderGhFormLivePreview(); }
 else if (view === 'fieldgame') initHarvestSnakeView();
 else if (view === 'fieldplan') initializeFieldPlan();
+else if (view === 'ferts') { syncFertsInputsFromState(); updateFertsCalculator(); }
+else if (view === 'help') { renderHelpGuide(); }
 if (typeof updateFloatingRestorePill === 'function') updateFloatingRestorePill();
 setTimeout(() => { if (typeof notifyPanelResized === 'function') notifyPanelResized(); }, 220);
 }
@@ -4248,6 +4617,7 @@ function buildWorkspaceSnapshot() {
       consumableItems: state.consumableItems || []
     },
     fieldGameBest: state.fieldGame?.best || 0,
+    fertsConfig: state.ferts ? JSON.parse(JSON.stringify(state.ferts)) : null,
     weatherConfig: typeof _weatherState === 'object' && _weatherState ? {
       lat: _weatherState.lat,
       lon: _weatherState.lon,
@@ -4592,6 +4962,10 @@ function applyWorkspaceSnapshot(snapshot) {
     }
     if (typeof snapshot.fieldGameBest === 'number' && state.fieldGame) {
       state.fieldGame.best = Math.max(state.fieldGame.best || 0, snapshot.fieldGameBest);
+    }
+    if (snapshot.fertsConfig && typeof snapshot.fertsConfig === 'object' && state.ferts) {
+      Object.assign(state.ferts, snapshot.fertsConfig);
+      if (typeof syncFertsInputsFromState === 'function') syncFertsInputsFromState();
     }
     if (snapshot.weatherConfig && typeof snapshot.weatherConfig === 'object' && typeof _weatherState === 'object' && _weatherState) {
       const wc = snapshot.weatherConfig;
@@ -19366,7 +19740,8 @@ const SANDPLOT_MODULE_REGISTRY = {
   glasshouse: { label: 'Glasshouse Zones, Placements & Stock', extract: () => ({ glasshouse: buildWorkspaceSnapshot().glasshouse }) },
   cropart:    { label: 'Crop Art Matrix',      extract: () => ({ cropart: buildWorkspaceSnapshot().cropart }) },
   forms:      { label: 'Glasshouse Request Forms & Drafts', extract: () => ({ formsState: buildWorkspaceSnapshot().formsState }) },
-  fieldplan:  { label: 'Nursery Detail Plan Workbook', extract: () => ({ fieldPlanConfig: buildWorkspaceSnapshot().fieldPlanConfig }) }
+  fieldplan:  { label: 'Nursery Detail Plan Workbook', extract: () => ({ fieldPlanConfig: buildWorkspaceSnapshot().fieldPlanConfig }) },
+  ferts:      { label: 'RB209 Ferts, Lime & Gandy Calibration', extract: () => ({ fertsConfig: JSON.parse(JSON.stringify(state.ferts || {})) }) }
 };
 
 function buildModuleBundlePackage(moduleKeys) {
@@ -19561,6 +19936,17 @@ function applyImportedModuleBundle(pkg, conflictMode = 'merge') {
     if (typeof calculateFieldPlan === 'function' && (state.fieldPlan.sheets || []).length) calculateFieldPlan();
     importedNames.push('Nursery Detail Plan');
   }
+  if (mods.ferts && mods.ferts.fertsConfig) {
+    const incomingSched = Array.isArray(mods.ferts.fertsConfig.schedule) ? mods.ferts.fertsConfig.schedule : [];
+    const prevSched = Array.isArray(state.ferts?.schedule) ? state.ferts.schedule : [];
+    Object.assign(state.ferts, mods.ferts.fertsConfig);
+    if (conflictMode !== 'replace' && prevSched.length) {
+      const ids = new Set(incomingSched.map(r => r.id));
+      state.ferts.schedule = [...incomingSched, ...prevSched.filter(r => !ids.has(r.id))];
+    }
+    if (typeof syncFertsInputsFromState === 'function') { syncFertsInputsFromState(); updateFertsCalculator(); }
+    importedNames.push('RB209 Ferts & Gandy');
+  }
 
   scheduleWorkspaceAutosave(200);
   return importedNames.length ? importedNames : true;
@@ -19587,7 +19973,8 @@ function getNativeExportsForModule(modKey) {
     glasshouse: [{ label: 'Layout CSV', fn: 'exportGhCsv()' }, { label: 'Stock CSV', fn: 'exportGhStockLedgerCsv()' }, { label: 'SVG', fn: 'exportGhImage()' }, { label: 'PNG', fn: 'exportGhPng()' }],
     cropart:    [{ label: 'Grid CSV', fn: 'exportCropArtCsv()' }],
     forms:      [{ label: 'Spray .doc', fn: 'downloadSprayRequestDoc()' }, { label: 'Consumables .doc', fn: 'downloadConsumablesDoc()' }],
-    fieldplan:  [{ label: 'PNG', fn: "exportFieldPlanImage('png')" }, { label: 'SVG', fn: "exportFieldPlanImage('svg')" }, { label: 'Excel', fn: 'exportFieldPlanExcel()' }]
+    fieldplan:  [{ label: 'PNG', fn: "exportFieldPlanImage('png')" }, { label: 'SVG', fn: "exportFieldPlanImage('svg')" }, { label: 'Excel', fn: 'exportFieldPlanExcel()' }],
+    ferts:      [{ label: 'Calibration & RB209 CSV', fn: 'exportFertsCsv()' }]
   };
   return map[modKey] || [];
 }
@@ -19736,6 +20123,832 @@ document.addEventListener('click', (e) => {
   }
 });
 
+/* ============================================================================
+ * VIEW 16: AHDB RB209 CEREAL FERTILISER, LIMING & GANDY CALIBRATION ENGINE
+ * ============================================================================ */
+const RB209_CEREAL_CROPS = {
+  winter_oats:          { label: 'Winter Oats',                baseYield: 6.5, yieldAdjN: 15, nBySns: [160, 130, 100, 70, 40, 0, 0], pOfftakeRemoved: 8.8, kOfftakeRemoved: 14.5, pOfftakeInc: 7.8, kOfftakeInc: 5.6, so3Rec: 30, splits: 'Split 1 (GS25–30): ~40% N · Split 2 (GS31–32): ~60% N (avoid excessive N to prevent lodging)' },
+  spring_oats:          { label: 'Spring Oats',                baseYield: 5.5, yieldAdjN: 15, nBySns: [125, 100, 75, 50, 20, 0, 0],  pOfftakeRemoved: 8.8, kOfftakeRemoved: 14.0, pOfftakeInc: 7.8, kOfftakeInc: 5.6, so3Rec: 25, splits: 'Seedbed / GS13–25: 60% N · GS30–31: 40% N (or single early dressing if SNS >= 2)' },
+  winter_wheat_feed:    { label: 'Winter Wheat (Feed)',        baseYield: 8.0, yieldAdjN: 20, nBySns: [250, 220, 190, 160, 120, 60, 0], pOfftakeRemoved: 8.5, kOfftakeRemoved: 10.5, pOfftakeInc: 7.8, kOfftakeInc: 5.6, so3Rec: 40, splits: 'Split 1 (GS25–30): 40–60 kg N · Split 2 (GS31): ~50% N · Split 3 (GS32–37): Remainder' },
+  winter_wheat_milling: { label: 'Winter Wheat (Milling)',     baseYield: 8.0, yieldAdjN: 20, nBySns: [290, 260, 230, 200, 160, 100, 40], pOfftakeRemoved: 8.5, kOfftakeRemoved: 10.5, pOfftakeInc: 7.8, kOfftakeInc: 5.6, so3Rec: 50, splits: 'Split 1 (GS25–30): 50 kg N · Split 2 (GS31): 100 kg N · Split 3 (GS32): Remainder + GS39/Ear +40 kg N protein boost' },
+  winter_barley_feed:   { label: 'Winter Barley (Feed)',       baseYield: 7.0, yieldAdjN: 15, nBySns: [200, 170, 140, 110, 80, 40, 0], pOfftakeRemoved: 8.5, kOfftakeRemoved: 11.5, pOfftakeInc: 7.8, kOfftakeInc: 5.6, so3Rec: 35, splits: 'Split 1 (GS25–30 Late Feb/Mar): 40% N · Split 2 (GS30–31 Apr): 60% N' },
+  winter_barley_malting:{ label: 'Winter Barley (Malting)',    baseYield: 6.5, yieldAdjN: 15, nBySns: [150, 125, 100, 75, 40, 0, 0],  pOfftakeRemoved: 8.5, kOfftakeRemoved: 11.5, pOfftakeInc: 7.8, kOfftakeInc: 5.6, so3Rec: 30, splits: 'Split 1 (GS23–25): 50% N · Split 2 (before GS30): 50% N (complete early for low grain N%)' },
+  spring_barley:        { label: 'Spring Barley',              baseYield: 6.0, yieldAdjN: 15, nBySns: [145, 120, 95, 70, 35, 0, 0],   pOfftakeRemoved: 8.5, kOfftakeRemoved: 11.5, pOfftakeInc: 7.8, kOfftakeInc: 5.6, so3Rec: 25, splits: 'Seedbed / 3-leaf (GS13): 60–100% N · Finish by GS25 for malting or GS30 for feed' },
+  spring_wheat:         { label: 'Spring Wheat',               baseYield: 6.0, yieldAdjN: 20, nBySns: [185, 155, 125, 95, 60, 20, 0], pOfftakeRemoved: 8.5, kOfftakeRemoved: 10.5, pOfftakeInc: 7.8, kOfftakeInc: 5.6, so3Rec: 30, splits: 'Seedbed / GS13–23: 50% N · GS30–31: 50% N' },
+  rye_triticale:        { label: 'Winter Rye / Triticale',     baseYield: 6.5, yieldAdjN: 15, nBySns: [150, 125, 100, 70, 40, 0, 0],  pOfftakeRemoved: 8.5, kOfftakeRemoved: 11.0, pOfftakeInc: 7.8, kOfftakeInc: 5.6, so3Rec: 25, splits: 'Split 1 (GS25–30): 40% N · Split 2 (GS31–32): 60% N' }
+};
+
+function getRb209PIndex(olsenMgL) {
+  const v = Number(olsenMgL);
+  if (!Number.isFinite(v) || v <= 9) return { index: '0', num: 0, range: '0–9 mg/L', buildUp: 60 };
+  if (v <= 15) return { index: '1', num: 1, range: '10–15 mg/L', buildUp: 30 };
+  if (v <= 25) return { index: '2', num: 2, range: '16–25 mg/L (Target)', buildUp: 0 };
+  if (v <= 45) return { index: '3', num: 3, range: '26–45 mg/L', buildUp: -999 };
+  if (v <= 70) return { index: '4', num: 4, range: '46–70 mg/L', buildUp: -999 };
+  return { index: '5+', num: 5, range: '>70 mg/L', buildUp: -999 };
+}
+
+function getRb209KIndex(exchKMgL) {
+  const v = Number(exchKMgL);
+  if (!Number.isFinite(v) || v <= 60) return { index: '0', num: 0, range: '0–60 mg/L', buildUp: 60 };
+  if (v <= 120) return { index: '1', num: 1, range: '61–120 mg/L', buildUp: 30 };
+  if (v <= 180) return { index: '2-', num: 2, range: '121–180 mg/L (Target)', buildUp: 0 };
+  if (v <= 240) return { index: '2+', num: 2.5, range: '181–240 mg/L', buildUp: -35 };
+  if (v <= 400) return { index: '3', num: 3, range: '241–400 mg/L', buildUp: -999 };
+  return { index: '4+', num: 4, range: '>400 mg/L', buildUp: -999 };
+}
+
+function getRb209MgIndex(exchMgL) {
+  const v = Number(exchMgL);
+  if (!Number.isFinite(v) || v <= 25) return { index: '0', num: 0, range: '0–25 mg/L', mgoRec: 75, note: 'Deficient — apply 50–100 kg MgO/ha (or Magnesian Limestone if liming)' };
+  if (v <= 50) return { index: '1', num: 1, range: '26–50 mg/L', mgoRec: 40, note: 'Low — consider 30–50 kg MgO/ha maintenance' };
+  if (v <= 100) return { index: '2', num: 2, range: '51–100 mg/L (Adequate)', mgoRec: 0, note: 'Target index — no Mg required' };
+  return { index: '3+', num: 3, range: '>100 mg/L', mgoRec: 0, note: 'Ample Mg supply' };
+}
+
+function computeRb209LimeRecommendation(curPh, targetPh, soilType, limeNvPct) {
+  const cur = Number(curPh) || 6.0;
+  const targ = Number(targetPh) || (soilType === 'peaty' ? 5.8 : 6.5);
+  const nv = Math.max(20, Number(limeNvPct) || 52);
+  if (cur >= targ - 0.02) {
+    return { needed: false, deficit: 0, stdLimeTha: 0, productLimeTha: 0, note: `pH ${cur.toFixed(1)} meets target (${targ.toFixed(1)}) — no lime required.` };
+  }
+  const deficit = Number((targ - cur).toFixed(2));
+  // RB209 Arable 20cm plough-layer buffer factors (t/ha of 50-52% NV ground limestone per 1.0 pH unit deficit)
+  const factorBySoil = { light: 4.2, medium: 6.0, heavy: 7.4, organic: 8.8, peaty: 10.2 };
+  const factor = factorBySoil[soilType] || 6.0;
+  const stdLimeTha = Number((deficit * factor).toFixed(1));
+  const productLimeTha = Number((stdLimeTha * (52 / nv)).toFixed(1));
+  const splitNote = productLimeTha > 7.5
+    ? `Split dressing recommended (>7.5 t/ha): apply 50% plough-down and 50% cultivated into seedbed.`
+    : `Apply ${productLimeTha.toFixed(1)} t/ha (NV ${nv}%) well ahead of drilling and work into top 15–20 cm.`;
+  return { needed: true, deficit, stdLimeTha, productLimeTha, nv, note: splitNote };
+}
+
+function computeFertsAndGandyModel() {
+  const f = state.ferts;
+  const cropMeta = RB209_CEREAL_CROPS[f.crop] || RB209_CEREAL_CROPS.winter_oats;
+  const sns = Math.max(0, Math.min(6, Math.round(Number(f.snsIndex) || 1)));
+
+  // 1. Nitrogen (RB209 Section 4 by SNS Index + Soil Type & Target Yield adjustment)
+  let baseN = cropMeta.nBySns[sns] ?? 120;
+  if (f.soilType === 'light' && baseN > 0) baseN = Math.max(0, baseN - 15);
+  else if ((f.soilType === 'organic' || f.soilType === 'peaty') && baseN > 0) baseN = Math.max(0, baseN - 35);
+  const yieldDelta = (Number(f.yieldTha) || cropMeta.baseYield) - cropMeta.baseYield;
+  const yieldAdj = yieldDelta > 0 ? Math.min(60, Math.round(yieldDelta * cropMeta.yieldAdjN)) : Math.max(-40, Math.round(yieldDelta * (cropMeta.yieldAdjN * 0.5)));
+  const recN = Math.max(0, Math.round((baseN + yieldAdj) / 5) * 5);
+
+  // 2. Phosphate & Potash (RB209 Offtake = Yield * coefficient + Index build-up)
+  const pIdx = getRb209PIndex(f.olsenP);
+  const kIdx = getRb209KIndex(f.exchK);
+  const mgIdx = getRb209MgIndex(f.exchMg);
+  const y = Math.max(2, Number(f.yieldTha) || cropMeta.baseYield);
+  const pMaint = y * (f.straw === 'removed' ? cropMeta.pOfftakeRemoved : cropMeta.pOfftakeInc);
+  const kMaint = y * (f.straw === 'removed' ? cropMeta.kOfftakeRemoved : cropMeta.kOfftakeInc);
+
+  const recP2O5 = pIdx.buildUp < -100 ? 0 : Math.max(0, Math.round((pMaint + pIdx.buildUp) / 5) * 5);
+  let recK2O = 0;
+  if (kIdx.index === '2+') {
+    recK2O = f.straw === 'removed' ? Math.max(0, Math.round((kMaint - 35) / 5) * 5) : 0;
+  } else if (kIdx.buildUp >= -50) {
+    recK2O = Math.max(0, Math.round((kMaint + kIdx.buildUp) / 5) * 5);
+  }
+  const recSO3 = cropMeta.so3Rec || 30;
+
+  // 3. Liming
+  const lime = computeRb209LimeRecommendation(f.curPh, f.targetPh, f.soilType, f.limeNv);
+
+  // 4. Product vs Nutrient Conversion
+  const pctMap = { N: Number(f.pctN) || 0, P: Number(f.pctP) || 0, K: Number(f.pctK) || 0, S: Number(f.pctS) || 0 };
+  let productRateKgHa = 0;
+  let driverWarning = '';
+  if (f.calcDir === 'product_to_nutrient') {
+    productRateKgHa = Math.max(0, Number(f.directProdRate) || 0);
+  } else {
+    const elem = ['N', 'P', 'K', 'S'].includes(f.targetElement) ? f.targetElement : 'N';
+    const elemPct = pctMap[elem];
+    const targetNut = Math.max(0, Number(f.targetNutRate) || 0);
+    if (elemPct > 0.01) {
+      productRateKgHa = (targetNut / elemPct) * 100;
+    } else {
+      productRateKgHa = 0;
+      driverWarning = `Selected product contains 0% ${elem === 'P' ? 'P2O5' : elem === 'K' ? 'K2O' : elem === 'S' ? 'SO3' : 'N'} — pick a matching product or edit % grade.`;
+    }
+  }
+  const appliedN = Number(((productRateKgHa * pctMap.N) / 100).toFixed(1));
+  const appliedP = Number(((productRateKgHa * pctMap.P) / 100).toFixed(1));
+  const appliedK = Number(((productRateKgHa * pctMap.K) / 100).toFixed(1));
+  const appliedS = Number(((productRateKgHa * pctMap.S) / 100).toFixed(1));
+  const fieldHa = Math.max(0.01, Number(f.fieldHa) || 1);
+  const totalFieldKg = Number((productRateKgHa * fieldHa).toFixed(1));
+  const bags25kg = Math.ceil(totalFieldKg / 25);
+  const bags600kg = Number((totalFieldKg / 600).toFixed(2));
+
+  // 5. Gandy Spreader Tray-Weight & Trial Plot Calibration
+  const gWidth = Math.max(0.1, Number(f.gandyWidthM) || 1.5);
+  const gDist = Math.max(0.5, Number(f.gandyDistM) || 10.0);
+  const gTare = Math.max(0, Number(f.gandyTareG) || 0);
+  const sweptAreaM2 = Number((gWidth * gDist).toFixed(2));
+  // 1 kg/ha = 0.1 g/m^2 -> grams = (kg/ha * width * distance) / 10
+  const targetTrayNetG = Number(((productRateKgHa * sweptAreaM2) / 10).toFixed(1));
+  const targetTrayGrossG = Number((targetTrayNetG + gTare).toFixed(1));
+
+  const plotW = Math.max(0.2, Number(f.plotW) || 1.55);
+  const plotL = Math.max(0.5, Number(f.plotL) || 6.0);
+  const plotAreaM2 = Number((plotW * plotL).toFixed(2));
+  const plotCount = Math.max(1, Math.round(Number(f.plotCount) || 1));
+  const bufferPct = Math.max(0, Number(f.bufferPct) || 0);
+  const gramsPerPlot = Number(((productRateKgHa * plotAreaM2) / 10).toFixed(1));
+  const totalTrialNetKg = Number(((gramsPerPlot * plotCount) / 1000).toFixed(2));
+  const totalTrialWithBufKg = Number((totalTrialNetKg * (1 + bufferPct / 100)).toFixed(2));
+
+  let actualCheck = null;
+  if (f.actualCatchG !== null && f.actualCatchG !== '' && Number.isFinite(Number(f.actualCatchG)) && Number(f.actualCatchG) > 0 && sweptAreaM2 > 0) {
+    const actG = Number(f.actualCatchG);
+    const actualProdKgHa = Number(((actG * 10) / sweptAreaM2).toFixed(1));
+    const actualNKgHa = Number(((actualProdKgHa * pctMap.N) / 100).toFixed(1));
+    const errPct = targetTrayNetG > 0.01 ? Number((((actG - targetTrayNetG) / targetTrayNetG) * 100).toFixed(1)) : 0;
+    actualCheck = { actG, actualProdKgHa, actualNKgHa, errPct };
+  }
+
+  return {
+    cropMeta,
+    sns,
+    recN,
+    recP2O5,
+    recK2O,
+    recSO3,
+    pIdx,
+    kIdx,
+    mgIdx,
+    lime,
+    productRateKgHa: Number(productRateKgHa.toFixed(1)),
+    driverWarning,
+    appliedN,
+    appliedP,
+    appliedK,
+    appliedS,
+    fieldHa,
+    totalFieldKg,
+    bags25kg,
+    bags600kg,
+    gWidth,
+    gDist,
+    gTare,
+    sweptAreaM2,
+    targetTrayNetG,
+    targetTrayGrossG,
+    plotAreaM2,
+    plotCount,
+    bufferPct,
+    gramsPerPlot,
+    totalTrialNetKg,
+    totalTrialWithBufKg,
+    actualCheck
+  };
+}
+
+function onFertPrevCropChange() {
+  const prev = document.getElementById('fert-prev-crop')?.value || 'cereal';
+  const rain = document.getElementById('fert-rainfall')?.value || 'mod';
+  const snsInput = document.getElementById('fert-sns-index');
+  if (prev !== 'manual' && snsInput) {
+    const baseMap = { cereal: 1, osr_legume: 2, ley_root: 3, high_n: 4 };
+    let sns = baseMap[prev] ?? 1;
+    if (rain === 'high' && sns > 0 && prev !== 'cereal') sns = Math.max(1, sns - 1);
+    if (rain === 'low' && sns < 5 && prev !== 'cereal') sns = Math.min(6, sns + 1);
+    snsInput.value = String(sns);
+  }
+  updateFertsCalculator();
+}
+
+function onFertProductPresetChange() {
+  const val = document.getElementById('fert-product-preset')?.value || 'custom';
+  if (val !== 'custom') {
+    const parts = val.split(',');
+    const n = parseFloat(parts[0]) || 0;
+    const p = parseFloat(parts[1]) || 0;
+    const k = parseFloat(parts[2]) || 0;
+    const s = parseFloat(parts[3]) || 0;
+    const name = parts.slice(4).join(',') || 'Selected Fertiliser';
+    state.ferts.productPreset = val;
+    state.ferts.productName = name;
+    const elN = document.getElementById('fert-pct-n'); if (elN) elN.value = n;
+    const elP = document.getElementById('fert-pct-p'); if (elP) elP.value = p;
+    const elK = document.getElementById('fert-pct-k'); if (elK) elK.value = k;
+    const elS = document.getElementById('fert-pct-s'); if (elS) elS.value = s;
+    const elTarget = document.getElementById('fert-target-element');
+    if (elTarget) {
+      if (n > 0) elTarget.value = 'N';
+      else if (p > 0) elTarget.value = 'P';
+      else if (k > 0) elTarget.value = 'K';
+      else if (s > 0) elTarget.value = 'S';
+    }
+  } else {
+    state.ferts.productPreset = 'custom';
+    state.ferts.productName = 'Custom Grade';
+  }
+  updateFertsCalculator();
+}
+
+function setFertCalcDirection(dir) {
+  state.ferts.calcDir = dir === 'product_to_nutrient' ? 'product_to_nutrient' : 'nutrient_to_product';
+  const b1 = document.getElementById('fert-mode-to-prod');
+  const b2 = document.getElementById('fert-mode-to-nut');
+  const box1 = document.getElementById('fert-box-target-nut');
+  const box2 = document.getElementById('fert-box-target-prod');
+  const isToProd = state.ferts.calcDir === 'nutrient_to_product';
+  if (b1) b1.className = isToProd ? 'px-2 py-0.5 font-bold bg-emerald-700 text-white' : 'px-2 py-0.5 font-semibold text-sand-700';
+  if (b2) b2.className = !isToProd ? 'px-2 py-0.5 font-bold bg-emerald-700 text-white' : 'px-2 py-0.5 font-semibold text-sand-700';
+  if (box1) box1.classList.toggle('hidden', !isToProd);
+  if (box2) box2.classList.toggle('hidden', isToProd);
+  updateFertsCalculator();
+}
+
+function pullFertTargetFromRb209(elem, fraction = 1) {
+  const res = computeFertsAndGandyModel();
+  const map = { N: res.recN, P: res.recP2O5, K: res.recK2O, S: res.recSO3 };
+  const val = Math.round((map[elem] || 0) * fraction);
+  const elElem = document.getElementById('fert-target-element');
+  const elRate = document.getElementById('fert-target-nut-rate');
+  if (elElem) elElem.value = elem;
+  if (elRate) elRate.value = val;
+  setFertCalcDirection('nutrient_to_product');
+}
+
+function syncGandyDistFromWheel() {
+  const circ = parseFloat(document.getElementById('gandy-wheel-circ')?.value);
+  const revs = parseFloat(document.getElementById('gandy-wheel-revs')?.value);
+  if (Number.isFinite(circ) && circ > 0.1 && Number.isFinite(revs) && revs > 0.1) {
+    const dist = Number((circ * revs).toFixed(2));
+    const dEl = document.getElementById('gandy-dist-m');
+    if (dEl) dEl.value = dist;
+  }
+  updateFertsCalculator();
+}
+
+function setFertViewFocus(focusKey) {
+  state.ferts.viewFocus = ['all', 'rb209', 'prod', 'gandy'].includes(focusKey) ? focusKey : 'all';
+  ['all', 'rb209', 'prod', 'gandy'].forEach(k => {
+    const b = document.getElementById('btn-fert-tab-' + k);
+    if (b) b.className = 'wx-seg-btn' + (k === state.ferts.viewFocus ? ' active' : '');
+  });
+  const s1 = document.getElementById('fert-out-rb209');
+  const s2 = document.getElementById('fert-out-prod');
+  const s3 = document.getElementById('fert-out-gandy');
+  if (s1) s1.classList.toggle('hidden', state.ferts.viewFocus !== 'all' && state.ferts.viewFocus !== 'rb209');
+  if (s2) s2.classList.toggle('hidden', state.ferts.viewFocus !== 'all' && state.ferts.viewFocus !== 'prod');
+  if (s3) s3.classList.toggle('hidden', state.ferts.viewFocus !== 'all' && state.ferts.viewFocus !== 'gandy');
+}
+
+function syncFertsInputsFromState() {
+  const f = state.ferts;
+  if (!f) return;
+  const setVal = (id, v) => { const el = document.getElementById(id); if (el && v !== undefined && v !== null) el.value = v; };
+  setVal('fert-crop', f.crop);
+  setVal('fert-yield', f.yieldTha);
+  setVal('fert-straw', f.straw);
+  setVal('fert-soil-type', f.soilType);
+  setVal('fert-prev-crop', f.prevCrop);
+  setVal('fert-rainfall', f.rainfall);
+  setVal('fert-sns-index', f.snsIndex);
+  setVal('fert-p-mgl', f.olsenP);
+  setVal('fert-k-mgl', f.exchK);
+  setVal('fert-mg-mgl', f.exchMg);
+  setVal('fert-ph-cur', f.curPh);
+  setVal('fert-ph-target', f.targetPh);
+  setVal('fert-lime-nv', f.limeNv);
+  setVal('fert-product-preset', f.productPreset || 'custom');
+  setVal('fert-pct-n', f.pctN);
+  setVal('fert-pct-p', f.pctP);
+  setVal('fert-pct-k', f.pctK);
+  setVal('fert-pct-s', f.pctS);
+  setVal('fert-target-element', f.targetElement);
+  setVal('fert-target-nut-rate', f.targetNutRate);
+  setVal('fert-direct-prod-rate', f.directProdRate);
+  setVal('fert-field-ha', f.fieldHa);
+  setVal('fert-split-label', f.splitLabel);
+  setVal('gandy-width-m', f.gandyWidthM);
+  setVal('gandy-dist-m', f.gandyDistM);
+  setVal('gandy-tare-g', f.gandyTareG);
+  setVal('gandy-cam-setting', f.gandyCam);
+  setVal('gandy-plot-w', f.plotW);
+  setVal('gandy-plot-l', f.plotL);
+  setVal('gandy-plot-count', f.plotCount);
+  setVal('gandy-buffer-pct', f.bufferPct);
+  if (f.actualCatchG !== null && f.actualCatchG !== undefined) setVal('gandy-actual-catch-g', f.actualCatchG);
+  setFertViewFocus(f.viewFocus || 'all');
+}
+
+function readFertsInputsIntoState() {
+  const f = state.ferts;
+  const gVal = (id, fb) => { const el = document.getElementById(id); return (el && el.value !== '') ? el.value : fb; };
+  f.crop = gVal('fert-crop', f.crop);
+  f.yieldTha = parseFloat(gVal('fert-yield', f.yieldTha)) || 7.5;
+  f.straw = gVal('fert-straw', f.straw);
+  f.soilType = gVal('fert-soil-type', f.soilType);
+  f.prevCrop = gVal('fert-prev-crop', f.prevCrop);
+  f.rainfall = gVal('fert-rainfall', f.rainfall);
+  f.snsIndex = parseInt(gVal('fert-sns-index', f.snsIndex), 10);
+  if (!Number.isFinite(f.snsIndex)) f.snsIndex = 1;
+  f.olsenP = parseFloat(gVal('fert-p-mgl', f.olsenP));
+  f.exchK = parseFloat(gVal('fert-k-mgl', f.exchK));
+  f.exchMg = parseFloat(gVal('fert-mg-mgl', f.exchMg));
+  f.curPh = parseFloat(gVal('fert-ph-cur', f.curPh)) || 6.0;
+  f.targetPh = parseFloat(gVal('fert-ph-target', f.targetPh)) || 6.5;
+  f.limeNv = parseFloat(gVal('fert-lime-nv', f.limeNv)) || 52;
+  f.pctN = parseFloat(gVal('fert-pct-n', f.pctN)) || 0;
+  f.pctP = parseFloat(gVal('fert-pct-p', f.pctP)) || 0;
+  f.pctK = parseFloat(gVal('fert-pct-k', f.pctK)) || 0;
+  f.pctS = parseFloat(gVal('fert-pct-s', f.pctS)) || 0;
+  f.targetElement = gVal('fert-target-element', f.targetElement);
+  f.targetNutRate = parseFloat(gVal('fert-target-nut-rate', f.targetNutRate)) || 0;
+  f.directProdRate = parseFloat(gVal('fert-direct-prod-rate', f.directProdRate)) || 0;
+  f.fieldHa = parseFloat(gVal('fert-field-ha', f.fieldHa)) || 1.0;
+  f.splitLabel = gVal('fert-split-label', f.splitLabel);
+  f.gandyWidthM = parseFloat(gVal('gandy-width-m', f.gandyWidthM)) || 1.5;
+  f.gandyDistM = parseFloat(gVal('gandy-dist-m', f.gandyDistM)) || 10.0;
+  f.gandyTareG = parseFloat(gVal('gandy-tare-g', f.gandyTareG)) || 0;
+  f.gandyCam = gVal('gandy-cam-setting', f.gandyCam);
+  f.plotW = parseFloat(gVal('gandy-plot-w', f.plotW)) || 1.55;
+  f.plotL = parseFloat(gVal('gandy-plot-l', f.plotL)) || 6.0;
+  f.plotCount = parseInt(gVal('gandy-plot-count', f.plotCount), 10) || 72;
+  f.bufferPct = parseFloat(gVal('gandy-buffer-pct', f.bufferPct)) || 0;
+  const rawCatch = document.getElementById('gandy-actual-catch-g')?.value;
+  f.actualCatchG = (rawCatch !== undefined && rawCatch !== '') ? parseFloat(rawCatch) : null;
+}
+
+function updateFertsCalculator() {
+  readFertsInputsIntoState();
+  const f = state.ferts;
+  const m = computeFertsAndGandyModel();
+
+  const snsPill = document.getElementById('fert-sns-pill');
+  if (snsPill) snsPill.textContent = `SNS Index ${m.sns}`;
+
+  const cropBadge = document.getElementById('fert-rb209-crop-badge');
+  if (cropBadge) cropBadge.textContent = `${m.cropMeta.label} · ${f.yieldTha.toFixed(1)} t/ha (${f.straw === 'removed' ? 'Straw Baled' : 'Straw Inc.'})`;
+
+  const kpisEl = document.getElementById('fert-rb209-kpis');
+  if (kpisEl) {
+    kpisEl.innerHTML = `
+      <div class="p-2.5 rounded-lg sp-subpane space-y-1">
+        <div class="flex items-center justify-between text-[9.5px] text-sand-500"><span>Nitrogen (N)</span><span class="px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-900 font-bold">SNS ${m.sns}</span></div>
+        <div class="text-lg font-extrabold text-sand-900">${m.recN} <span class="text-xs font-normal text-sand-500">kg/ha</span></div>
+        <div class="text-[9px] text-sand-500">RB209 yield-adjusted</div>
+      </div>
+      <div class="p-2.5 rounded-lg sp-subpane space-y-1">
+        <div class="flex items-center justify-between text-[9.5px] text-sand-500"><span>Phosphate (P2O5)</span><span class="px-1.5 py-0.5 rounded bg-emerald-50 border border-emerald-200 text-emerald-900 font-bold">Idx ${m.pIdx.index}</span></div>
+        <div class="text-lg font-extrabold text-sand-900">${m.recP2O5} <span class="text-xs font-normal text-sand-500">kg/ha</span></div>
+        <div class="text-[9px] text-sand-500">Olsen P: ${f.olsenP} mg/L</div>
+      </div>
+      <div class="p-2.5 rounded-lg sp-subpane space-y-1">
+        <div class="flex items-center justify-between text-[9.5px] text-sand-500"><span>Potash (K2O)</span><span class="px-1.5 py-0.5 rounded bg-cyan-50 border border-cyan-200 text-cyan-900 font-bold">Idx ${m.kIdx.index}</span></div>
+        <div class="text-lg font-extrabold text-sand-900">${m.recK2O} <span class="text-xs font-normal text-sand-500">kg/ha</span></div>
+        <div class="text-[9px] text-sand-500">Exch K: ${f.exchK} mg/L</div>
+      </div>
+      <div class="p-2.5 rounded-lg sp-subpane space-y-1">
+        <div class="flex items-center justify-between text-[9.5px] text-sand-500"><span>Sulphur &amp; Mg</span><span class="px-1.5 py-0.5 rounded bg-sand-100 border border-sand-200 text-sand-800 font-bold">Mg Idx ${m.mgIdx.index}</span></div>
+        <div class="text-lg font-extrabold text-sand-900">${m.recSO3} <span class="text-xs font-normal text-sand-500">kg SO3</span></div>
+        <div class="text-[9px] text-sand-500">${m.mgIdx.mgoRec > 0 ? '+' + m.mgIdx.mgoRec + ' kg MgO/ha' : 'Mg adequate'}</div>
+      </div>
+      <div class="p-2.5 rounded-lg sp-subpane space-y-1">
+        <div class="flex items-center justify-between text-[9.5px] text-sand-500"><span>Liming (pH ${f.curPh.toFixed(1)}→${f.targetPh.toFixed(1)})</span><span class="px-1.5 py-0.5 rounded bg-sand-100 border border-sand-200 text-sand-800 font-bold">NV ${f.limeNv}%</span></div>
+        <div class="text-lg font-extrabold ${m.lime.needed ? 'text-amber-600' : 'text-emerald-600'}">${m.lime.productLimeTha.toFixed(1)} <span class="text-xs font-normal text-sand-500">t/ha</span></div>
+        <div class="text-[9px] text-sand-500">${m.lime.needed ? (m.lime.stdLimeTha.toFixed(1) + ' t/ha @ 52% NV') : 'No lime needed'}</div>
+      </div>
+    `;
+  }
+
+  const splitsEl = document.getElementById('fert-rb209-splits');
+  if (splitsEl) {
+    splitsEl.innerHTML = `
+      <div><b class="text-sand-900">RB209 Split Timing Guide:</b> <span class="text-sand-700">${ghEscape(m.cropMeta.splits)}</span></div>
+      <div><b class="text-sand-900">Liming &amp; Magnesium Note:</b> <span class="text-sand-700">${ghEscape(m.lime.note)} · ${ghEscape(m.mgIdx.note)}</span></div>
+    `;
+  }
+
+  // Section 2: Product vs Nutrient Conversion
+  const gradeBadge = document.getElementById('fert-prod-grade-badge');
+  if (gradeBadge) gradeBadge.textContent = `${f.productName || 'Product'} (${f.pctN}-${f.pctP}-${f.pctK}${f.pctS ? ' +' + f.pctS + ' SO3' : ''})`;
+
+  const prodSumEl = document.getElementById('fert-prod-summary');
+  if (prodSumEl) {
+    const dN = (m.appliedN - m.recN).toFixed(0);
+    const dP = (m.appliedP - m.recP2O5).toFixed(0);
+    const dK = (m.appliedK - m.recK2O).toFixed(0);
+    prodSumEl.innerHTML = `
+      <div class="p-3 rounded-lg sp-subpane space-y-1">
+        <span class="text-[9.5px] text-sand-500 block uppercase">Required Product Rate</span>
+        <div class="text-2xl font-extrabold text-emerald-600">${m.productRateKgHa.toFixed(1)} <span class="text-xs font-normal text-sand-500">kg product/ha</span></div>
+        <div class="text-[9.5px] text-sand-600">${m.driverWarning ? '<span class="text-rose-600 font-bold">' + ghEscape(m.driverWarning) + '</span>' : 'Supplies: <b>' + m.appliedN + ' N</b> · <b>' + m.appliedP + ' P2O5</b> · <b>' + m.appliedK + ' K2O</b> · <b>' + m.appliedS + ' SO3</b> kg/ha'}</div>
+      </div>
+      <div class="p-3 rounded-lg sp-subpane space-y-1">
+        <span class="text-[9.5px] text-sand-500 block uppercase">Balance vs. RB209 Full-Season Target</span>
+        <div class="text-sm font-bold text-sand-900">N: ${dN >= 0 ? '+' + dN : dN} · P2O5: ${dP >= 0 ? '+' + dP : dP} · K2O: ${dK >= 0 ? '+' + dK : dK} <span class="text-[10px] font-normal text-sand-500">kg/ha</span></div>
+        <div class="text-[9.5px] text-sand-500">Dressing: ${ghEscape(f.splitLabel || 'Single Application')}</div>
+      </div>
+      <div class="p-3 rounded-lg sp-subpane space-y-1">
+        <span class="text-[9.5px] text-sand-500 block uppercase">Field (${m.fieldHa} ha) &amp; Trial Order</span>
+        <div class="text-base font-extrabold text-sand-900">${m.totalFieldKg.toFixed(0)} kg <span class="text-xs font-normal text-sand-500">(${(m.totalFieldKg / 1000).toFixed(2)} t)</span></div>
+        <div class="text-[9.5px] text-sand-600">${m.bags25kg} × 25kg bags · or ${m.bags600kg} × 600kg IBCs · Trial: <b>${m.totalTrialWithBufKg} kg</b> (${m.plotCount} plots)</div>
+      </div>
+    `;
+  }
+
+  // Section 3: Gandy Spreader Tray-Weight Calibration
+  const areaBadge = document.getElementById('fert-gandy-area-badge');
+  if (areaBadge) areaBadge.textContent = `${m.gWidth.toFixed(2)}m width × ${m.gDist.toFixed(1)}m run = ${m.sweptAreaM2.toFixed(2)} m² swept`;
+
+  const gKpisEl = document.getElementById('fert-gandy-kpis');
+  if (gKpisEl) {
+    gKpisEl.innerHTML = `
+      <div class="p-3 rounded-lg sp-subpane space-y-1">
+        <span class="text-[9.5px] text-sand-500 block uppercase">Target Net Tray Catch</span>
+        <div class="text-2xl font-extrabold text-cyan-600">${m.targetTrayNetG.toFixed(1)} <span class="text-xs font-normal text-sand-500">g</span></div>
+        <div class="text-[9px] text-sand-500">For ${m.gDist.toFixed(1)}m run @ ${m.productRateKgHa.toFixed(1)} kg/ha</div>
+      </div>
+      <div class="p-3 rounded-lg sp-subpane space-y-1">
+        <span class="text-[9.5px] text-sand-500 block uppercase">Gross Scale Weight (w/ Tare)</span>
+        <div class="text-xl font-extrabold text-sand-900">${m.targetTrayGrossG.toFixed(1)} <span class="text-xs font-normal text-sand-500">g</span></div>
+        <div class="text-[9px] text-sand-500">Includes ${m.gTare.toFixed(0)}g empty tray tare</div>
+      </div>
+      <div class="p-3 rounded-lg sp-subpane space-y-1">
+        <span class="text-[9.5px] text-sand-500 block uppercase">Single Plot (${f.plotW}×${f.plotL}m)</span>
+        <div class="text-xl font-extrabold text-sand-900">${m.gramsPerPlot.toFixed(1)} <span class="text-xs font-normal text-sand-500">g/plot</span></div>
+        <div class="text-[9px] text-sand-500">Plot area: ${m.plotAreaM2.toFixed(2)} m²</div>
+      </div>
+      <div class="p-3 rounded-lg sp-subpane space-y-1">
+        <span class="text-[9.5px] text-sand-500 block uppercase">Trial Weigh-Out (${m.plotCount} plots)</span>
+        <div class="text-xl font-extrabold text-sand-900">${m.totalTrialWithBufKg.toFixed(2)} <span class="text-xs font-normal text-sand-500">kg</span></div>
+        <div class="text-[9px] text-sand-500">${m.totalTrialNetKg.toFixed(2)} kg net + ${m.bufferPct}% hopper buffer</div>
+      </div>
+    `;
+  }
+
+  const chkBanner = document.getElementById('fert-gandy-check-banner');
+  if (chkBanner) {
+    if (m.actualCheck) {
+      chkBanner.classList.remove('hidden');
+      const ac = m.actualCheck;
+      const absErr = Math.abs(ac.errPct);
+      const tone = absErr <= 2.5
+        ? 'bg-emerald-50 border-emerald-300 text-emerald-950'
+        : (absErr <= 6.0 ? 'bg-amber-50 border-amber-300 text-amber-950' : 'bg-rose-50 border-rose-300 text-rose-950');
+      const advice = absErr <= 2.5
+        ? 'CALIBRATED OK (Within ±2.5% tolerance)'
+        : (ac.errPct > 0 ? `OVER-APPLYING by +${ac.errPct}% — close Gandy cam slightly & re-test` : `UNDER-APPLYING by ${ac.errPct}% — open Gandy cam slightly & re-test`);
+      chkBanner.className = `p-2.5 rounded-lg border font-mono text-[11px] ${tone}`;
+      chkBanner.innerHTML = `<b>Live Tray Check (${ac.actG.toFixed(1)}g vs ${m.targetTrayNetG.toFixed(1)}g target):</b> Actual Rate = <b>${ac.actualProdKgHa} kg/ha product</b> (${ac.actualNKgHa} kg N/ha) · <b>${advice}</b>`;
+    } else {
+      chkBanner.classList.add('hidden');
+    }
+  }
+
+  const distTbody = document.getElementById('fert-gandy-dist-tbody');
+  if (distTbody) {
+    const stdDists = [
+      { d: 5.0, tag: '5 m Quick Bench Check' },
+      { d: f.plotL, tag: `1 Plot Length (${f.plotL} m)` },
+      { d: 10.0, tag: '10 m Standard Pull' },
+      { d: 20.0, tag: '20 m Extended Run' },
+      { d: 25.0, tag: '25 m Calibration Strip' },
+      { d: 50.0, tag: '50 m Field Verification' }
+    ];
+    distTbody.innerHTML = stdDists.map(row => {
+      const area = Number((m.gWidth * row.d).toFixed(2));
+      const netG = Number(((m.productRateKgHa * area) / 10).toFixed(1));
+      const grossG = Number((netG + m.gTare).toFixed(1));
+      const isCur = Math.abs(row.d - m.gDist) < 0.05;
+      return `<tr class="${isCur ? 'bg-cyan-50/70 font-bold' : ''}">
+        <td class="py-1.5 px-2.5">${ghEscape(row.tag)}</td>
+        <td class="py-1.5 px-2.5">${area.toFixed(2)} m²</td>
+        <td class="py-1.5 px-2.5 text-cyan-700 font-bold">${netG.toFixed(1)} g</td>
+        <td class="py-1.5 px-2.5">${grossG.toFixed(1)} g</td>
+        <td class="py-1.5 px-2.5">${m.productRateKgHa.toFixed(1)} kg/ha (${m.appliedN} kg N)</td>
+      </tr>`;
+    }).join('');
+  }
+
+  renderFertScheduleTable();
+}
+
+function addFertCalibrationRow() {
+  const f = state.ferts;
+  const m = computeFertsAndGandyModel();
+  if (!Array.isArray(f.schedule)) f.schedule = [];
+  f.schedule.push({
+    id: 'FERT_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+    splitLabel: f.splitLabel || ('Dressing ' + (f.schedule.length + 1)),
+    cropLabel: m.cropMeta.label,
+    productName: f.productName || 'Custom Grade',
+    grade: `${f.pctN}-${f.pctP}-${f.pctK}${f.pctS ? '+' + f.pctS + 'S' : ''}`,
+    productRateKgHa: m.productRateKgHa,
+    appliedN: m.appliedN,
+    appliedP: m.appliedP,
+    appliedK: m.appliedK,
+    appliedS: m.appliedS,
+    gandySetup: `${m.gWidth.toFixed(2)}m × ${m.gDist.toFixed(1)}m (${f.gandyCam || 'Cam --'})`,
+    targetTrayNetG: m.targetTrayNetG,
+    gramsPerPlot: m.gramsPerPlot,
+    totalTrialWithBufKg: m.totalTrialWithBufKg
+  });
+  renderFertScheduleTable();
+  scheduleWorkspaceAutosave(250);
+  showToast(`Added "${f.splitLabel || 'Dressing'}" (${m.productRateKgHa} kg/ha · Tray ${m.targetTrayNetG}g) to schedule.`);
+}
+
+function removeFertCalibrationRow(id) {
+  state.ferts.schedule = (state.ferts.schedule || []).filter(r => r.id !== id);
+  renderFertScheduleTable();
+  scheduleWorkspaceAutosave(250);
+}
+
+function clearFertCalibrationLog() {
+  state.ferts.schedule = [];
+  renderFertScheduleTable();
+  scheduleWorkspaceAutosave(250);
+  showToast('Cleared fertiliser & Gandy calibration log.');
+}
+
+function renderFertScheduleTable() {
+  const tbody = document.getElementById('fert-schedule-tbody');
+  if (!tbody) return;
+  const rows = state.ferts.schedule || [];
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="py-3 text-center text-sand-400">No dressings logged yet — configure a product &amp; Gandy tray setup on the left and click "+ Add Dressing &amp; Gandy Calibration to Schedule".</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(r => `<tr>
+    <td class="py-1.5 px-2 font-bold">${ghEscape(r.splitLabel)}<span class="block text-[8.5px] font-normal text-sand-500">${ghEscape(r.cropLabel)}</span></td>
+    <td class="py-1.5 px-2">${ghEscape(r.productName)}<span class="block text-[8.5px] text-sand-500">[${ghEscape(r.grade)}]</span></td>
+    <td class="py-1.5 px-2 font-bold text-emerald-700">${Number(r.productRateKgHa).toFixed(1)} kg/ha</td>
+    <td class="py-1.5 px-2">${r.appliedN} N · ${r.appliedP} P · ${r.appliedK} K · ${r.appliedS} S</td>
+    <td class="py-1.5 px-2">${ghEscape(r.gandySetup)}</td>
+    <td class="py-1.5 px-2 font-bold text-cyan-700">${Number(r.targetTrayNetG).toFixed(1)} g</td>
+    <td class="py-1.5 px-2">${Number(r.gramsPerPlot).toFixed(1)} g (${r.totalTrialWithBufKg} kg tot)</td>
+    <td class="py-1.5 px-2 text-right"><button type="button" onclick="removeFertCalibrationRow('${ghEscape(r.id)}')" class="text-rose-600 font-bold px-1">×</button></td>
+  </tr>`).join('');
+}
+
+function exportFertsCsv() {
+  const f = state.ferts;
+  const m = computeFertsAndGandyModel();
+  const lines = [
+    ['Section', 'Parameter / Split', 'Product / Crop', 'Rate_kg_ha', 'N_kg_ha', 'P2O5_kg_ha', 'K2O_kg_ha', 'SO3_kg_ha', 'Gandy_Setup', 'Target_Tray_Net_g', 'Per_Plot_g', 'Total_Trial_kg', 'Notes'],
+    ['RB209_Recommendation', `SNS_${m.sns}_PIdx_${m.pIdx.index}_KIdx_${m.kIdx.index}`, m.cropMeta.label, '', m.recN, m.recP2O5, m.recK2O, m.recSO3, '', '', '', '', `Yield ${f.yieldTha} t/ha (${f.straw}); Lime: ${m.lime.productLimeTha} t/ha @ NV ${f.limeNv}%`],
+    ['Active_Calibration', f.splitLabel, f.productName, m.productRateKgHa, m.appliedN, m.appliedP, m.appliedK, m.appliedS, `${m.gWidth}m x ${m.gDist}m (${f.gandyCam})`, m.targetTrayNetG, m.gramsPerPlot, m.totalTrialWithBufKg, `Swept ${m.sweptAreaM2} m2; Gross tray w/ tare: ${m.targetTrayGrossG} g`]
+  ];
+  (f.schedule || []).forEach(r => {
+    lines.push(['Logged_Schedule', r.splitLabel, r.productName, r.productRateKgHa, r.appliedN, r.appliedP, r.appliedK, r.appliedS, r.gandySetup, r.targetTrayNetG, r.gramsPerPlot, r.totalTrialWithBufKg, r.grade]);
+  });
+  const csv = lines.map(row => row.map(v => '"' + String(v ?? '').replace(/"/g, '""') + '"').join(',')).join('\n');
+  downloadGhFile('SandPlot_RB209_Ferts_Gandy_Calibration.csv', csv, 'text/csv;charset=utf-8');
+  showToast('Exported RB209 Fertiliser & Gandy Calibration CSV.');
+}
+
+/* ============================================================================
+ * VIEW 17: LOW-OVERLOAD INTERACTIVE SANDPLOT HELP & SYSTEM GUIDE
+ * ============================================================================ */
+const SANDPLOT_HELP_CHAPTERS = [
+  {
+    id: 'overview',
+    num: '0',
+    title: 'Overview & Data Flow',
+    subtitle: 'How modules connect + local autosave',
+    steps: ['1. Design or load trial matrices (Modules 1–4, 15)', '2. Arrange & drop plots on GPS maps or benches (Modules 5–6, 11)', '3. Navigate, score, calibrate & export (Modules 8–10, 16, Port/Share)'],
+    cards: [
+      {
+        title: 'How SandPlot Connects Together',
+        view: 'home',
+        btnLabel: 'Open Home & Weather',
+        body: 'SandPlot is a self-contained precision agronomy workspace. Trial matrices generated in Modules 1–4 stage directly into the Field Arranger (Module 5), project onto real-world coordinates in Geospatial Studio (Module 6), and feed live into Sentinel-2 Diagnostics (7), Field GPS Navigator (8), Field Scout (9), and Scaled CAD Blueprints (10).'
+      },
+      {
+        title: 'Autosave, Project Files & Per-Page Porting',
+        view: 'home',
+        btnLabel: 'Open Port / Share',
+        action: 'openPortModal()',
+        body: 'Every change auto-saves in your browser (IndexedDB + localStorage). Use "Project" in the top bar to save or link a full-workspace .sandplot.json file, or click "Port / Share" on any page to send a single module (or compact SP1:... Share Code) to a colleague without overwriting their other pages.'
+      }
+    ],
+    tip: 'Click the ⤢ Expand button on any split-pane page to maximize the canvas full-width, and press Esc (or click ⤡ Restore Split) anytime to return.'
+  },
+  {
+    id: 'generators',
+    num: '1–4',
+    title: 'Trial Generators (1–4)',
+    subtitle: 'Randomiser, RCBD, Disease & Nursery Grids',
+    steps: ['1. Set test entries, check varieties & block dimensions', '2. Run hill-climbing optimizer (or paste custom Excel grid)', '3. Stage to Field Arranger or export CSV / .sandplot'],
+    cards: [
+      {
+        title: '1 · Augmented Randomiser & 2 · RCBD Matrix Generator',
+        view: 'randomiser',
+        btnLabel: 'Open Randomiser',
+        body: 'Generates check-augmented un-replicated designs (Module 1) or randomized complete block designs with sub-block layout control (Module 2). The optimizer penalizes duplicate checks in the same row/column and lets you drag-swap any two cells manually.'
+      },
+      {
+        title: '3 · Disease Nursery & 4 · Multi-Block Nursery Grid',
+        view: 'disease',
+        btnLabel: 'Open Disease Nursery',
+        body: 'Module 3 locks periodic marker/spreader plots (MRK) at fixed intervals and separates hulled/naked replicated & un-replicated lines. Module 4 builds serpentine or Cartesian multi-block nursery matrices with horizontal and vertical alleyway spacers.'
+      }
+    ],
+    tip: 'On all trial generator pages, the right-hand preview window stays pinned in view while you scroll down to the bottom paste/optimizer controls on the left.'
+  },
+  {
+    id: 'spatial',
+    num: '5–6',
+    title: 'Field Arranger & Maps (5–6)',
+    subtitle: '2D master field packing, GPS plots & UK Map',
+    steps: ['1. Stage one or more trials into Module 5 (Field Arranger)', '2. Pack or drag blocks on the master grid & Send to Geospatial (Module 6)', '3. Align anchor/bearing inside field boundary & save UK Map pins'],
+    cards: [
+      {
+        title: '5 · Field Arranger (2D Bin-Pack Optimizer)',
+        view: 'arranger',
+        btnLabel: 'Open Field Arranger',
+        body: 'Combines multiple staged trials onto one master field canvas. Drag trial blocks manually or click "Run Bin-Pack Optimizer" to pack them automatically, then click "Send to Geospatial Studio".'
+      },
+      {
+        title: '6 · Geospatial Studio & Saved UK Overview Maps',
+        view: 'geospatial',
+        btnLabel: 'Open Geospatial Studio',
+        body: 'Drops your field layout onto satellite/topographic maps using real metre dimensions (plot width, length, gaps, compass bearing). Below the field map, the UK Overview Map lets you drop exact-anchored pins, toggle Yield / Agro-Zone / Urban / Radar data layers, apply visual colour grades, and save named UK maps.'
+      }
+    ],
+    tip: 'Hold Shift + Drag on the Geospatial Field Map to translate the entire plot grid smoothly across the field.'
+  },
+  {
+    id: 'fieldops',
+    num: '7–10',
+    title: 'Sentinel, GPS, Scout & CAD',
+    subtitle: 'NDVI imagery, walk-and-score, DXF & ISOXML',
+    steps: ['1. Formalise plot polygons in Geospatial Studio', '2. Inspect Sentinel-2 NDVI (7) or walk plots with GPS Navigator (8)', '3. Print scaled A4/A3 CAD blueprints or export tractor ISOXML / QGIS (10)'],
+    cards: [
+      {
+        title: '7 · Sentinel-2 Diagnostics & 8 · Field GPS Navigator',
+        view: 'gps-nav',
+        btnLabel: 'Open Field GPS Nav',
+        body: 'Module 7 queries Copernicus Sentinel-2 scenes for plot-level NDVI/NDRE trends. Module 8 tracks your live GPS position in the field, highlights the plot you are standing in, supports 2-point stake calibration, and logs phenotyping scores.'
+      },
+      {
+        title: '9 · Field Scout & 10 · Project Report & CAD Blueprint',
+        view: 'report',
+        btnLabel: 'Open CAD & Report',
+        body: 'Module 9 generates NDVI-stratified scouting waypoints. Module 10 renders an engineering-grade A4/A3 CAD sheet with draggable dimension callouts, wheelings, range/plot coordinate schedules, and exports to DXF, SVG, PNG, QGIS GeoPackage (.gpkg), and tractor ISOXML.'
+      }
+    ],
+    tip: 'In Module 10 (CAD), drag any dimension label or legend box to reposition it before clicking Print.'
+  },
+  {
+    id: 'glasshouse',
+    num: '11 & 13',
+    title: 'Glasshouse Suite (11 & 13)',
+    subtitle: 'Bounding-box Draw & Allocate, Walkway Gaps & Stock',
+    steps: ['1. Add benches/zones and add pot/tray batches to the Itinerary', '2. Use "Draw Items" (drag bounding box + click extra cells) → "Fill Allocated"', '3. Snap walkway gaps in any direction, auto-pack rest, or scan barcodes'],
+    cards: [
+      {
+        title: '11 · Glasshouse Organiser: Draw & Allocate + Auto-Pack',
+        view: 'glasshouse',
+        btnLabel: 'Open Glasshouse Organiser',
+        body: 'In Draw Items mode (Box & Cells), drag a bounding box across any zone to see a live count of allocated pots out of your itinerary total. Click extra individual cells to top up the allocation, then click "Fill Allocated" (or "Fill & Lock") to lock them in place. Use "Add Gap" to click or drag walkway gaps that snap flush against placed items in any direction.'
+      },
+      {
+        title: 'Barcode / QR Stocking & 13 · Glasshouse Request Forms',
+        view: 'forms',
+        btnLabel: 'Open Request Forms',
+        body: 'Switch to Stock / Scan in Module 11 to scan pot barcodes into placed tray slots. Module 13 generates printable Glasshouse Spray & Consumable Request Forms (.doc / print preview).'
+      }
+    ],
+    tip: 'Click "Focus Itinerary" at the top of the Glasshouse left column to collapse setup panes so your batch list stays right next to the canvas.'
+  },
+  {
+    id: 'ferts',
+    num: '16',
+    title: 'RB209 Ferts, Lime & Gandy (16)',
+    subtitle: 'Soil NPK indices, liming & spreader tray weights',
+    steps: ['1. Enter cereal crop, target yield, soil pH & lab P/K/Mg (mg/L)', '2. Convert target kg N/P/K/ha ↔ kg Fertiliser Product/ha', '3. Calculate Gandy catch-tray gram weights & verify actual catch'],
+    cards: [
+      {
+        title: 'RB209 Cereal N-P-K & Liming Calculator',
+        view: 'ferts',
+        btnLabel: 'Open RB209 Ferts & Gandy',
+        body: 'Converts soil lab Olsen P, Exchangeable K, and Mg (mg/L) into AHDB RB209 Indices (0 to 4+, including 2- and 2+), computes cereal N-P-K-S recommendations adjusted forSNS Index, soil texture, target yield, and straw removal, and calculates t/ha of lime adjusted for product Neutralising Value (NV%).'
+      },
+      {
+        title: 'Two-Way Product Converter & Gandy Tray Calibration',
+        view: 'ferts',
+        btnLabel: 'Open Gandy Calibration',
+        body: 'Converts either Target Nutrient (kg N/P2O5/K2O/ha) → Product Rate (kg/ha) or Product Rate → Nutrients Supplied. Then computes exact Gandy catch-tray gram weights for any hopper width and pull distance (or wheel revolutions), per-plot gram requirements, and live % error from your weighed catch.'
+      }
+    ],
+    tip: 'Click "Use RB209 N" (or "50% N Split") in Card 2 to pipe the RB209 recommendation straight into the Product & Gandy Tray calculator.'
+  },
+  {
+    id: 'utilities',
+    num: '12, 14–15',
+    title: 'Nursery Plan, Themes & Tips',
+    subtitle: 'Excel plan debugger, colour themes & shortcuts',
+    steps: ['1. Inspect multi-sheet Excel nursery books in Module 15', '2. Customize dark/light palettes via the top Theme button', '3. Use keyboard shortcuts for rapid editing'],
+    cards: [
+      {
+        title: '15 · Nursery Detail Plan Viewer & File Debugger',
+        view: 'fieldplan',
+        btnLabel: 'Open Nursery Detail Plan',
+        body: 'Loads multi-sheet Excel nursery workbooks, audits FC sequence gaps, duplicate entries, board splits, and drift against pure mathematical serpentine packing, and exports visual + condensed schematics.'
+      },
+      {
+        title: 'Keyboard Shortcuts & Stylistic Themes',
+        view: 'home',
+        btnLabel: 'Open Theme Studio',
+        action: 'openPaletteModal()',
+        body: 'Press Ctrl+Z / Ctrl+Y in Glasshouse to Undo/Redo, R to flip L/W tray orientation, Arrow keys to nudge selected trays, and Esc to clear draw highlights or exit Expanded View. Click the top Theme button to choose from 10 curated dark and daylight palettes.'
+      }
+    ],
+    tip: 'Every 2-column page has a draggable vertical divider bar between the left and right columns — drag it left or right, or double-click it to reset.'
+  }
+];
+
+function selectHelpTopic(topicId) {
+  state.helpTopic = topicId;
+  const searchEl = document.getElementById('help-search-input');
+  if (searchEl && searchEl.value) searchEl.value = '';
+  renderHelpGuide();
+}
+
+function renderHelpGuide() {
+  const navEl = document.getElementById('help-topic-nav');
+  const mountEl = document.getElementById('help-content-mount');
+  if (!navEl || !mountEl) return;
+
+  const query = (document.getElementById('help-search-input')?.value || '').trim().toLowerCase();
+  const activeId = state.helpTopic || 'overview';
+
+  navEl.innerHTML = SANDPLOT_HELP_CHAPTERS.map(ch => {
+    const isAct = !query && ch.id === activeId;
+    return `<button type="button" onclick="selectHelpTopic('${ch.id}')" class="w-full text-left px-2.5 py-2 rounded-md transition flex items-center gap-2.5 ${isAct ? 'bg-amber-600 text-white font-bold shadow-2xs' : 'hover:bg-sand-100 text-sand-800'}">
+      <span class="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold ${isAct ? 'bg-black/20 text-white' : 'bg-sand-100 text-sand-700'}">${ghEscape(ch.num)}</span>
+      <div class="min-w-0 flex-1">
+        <div class="truncate text-[10.5px]">${ghEscape(ch.title)}</div>
+        <div class="truncate text-[8.5px] ${isAct ? 'text-amber-100' : 'text-sand-400'}">${ghEscape(ch.subtitle)}</div>
+      </div>
+    </button>`;
+  }).join('');
+
+  const renderChapterHtml = (ch) => `
+    <div class="space-y-3">
+      <div class="flex flex-wrap items-baseline justify-between gap-2 pb-2 border-b border-sand-100">
+        <div>
+          <span class="text-[9.5px] font-mono uppercase tracking-wider text-amber-700 font-bold">Modules ${ghEscape(ch.num)}</span>
+          <h2 class="text-sm sm:text-base font-extrabold text-sand-900">${ghEscape(ch.title)}</h2>
+        </div>
+        <span class="text-[10px] font-mono text-sand-500">${ghEscape(ch.subtitle)}</span>
+      </div>
+
+      <!-- 3-Step Visual Workflow Strip -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-2 font-mono text-[10px]">
+        ${ch.steps.map(st => `<div class="p-2.5 rounded-lg sp-subpane font-semibold text-sand-900">${ghEscape(st)}</div>`).join('')}
+      </div>
+
+      <!-- Focused Module Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        ${ch.cards.map(c => {
+          const clickAttr = c.action ? c.action : `switchModule('${c.view}')`;
+          return `<div class="p-3.5 rounded-lg sp-subpane flex flex-col justify-between gap-3">
+            <div class="space-y-1.5">
+              <h3 class="text-xs font-bold text-sand-900">${ghEscape(c.title)}</h3>
+              <p class="text-[11px] text-sand-700 leading-relaxed">${ghEscape(c.body)}</p>
+            </div>
+            <div class="pt-1">
+              <button type="button" onclick="${clickAttr}" class="px-2.5 py-1 rounded bg-cyan-700 hover:bg-cyan-800 text-white font-mono font-bold text-[10px] transition">${ghEscape(c.btnLabel)} →</button>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+
+      <div class="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-950 font-mono text-[10px]">
+        <b>Quick Tip:</b> ${ghEscape(ch.tip)}
+      </div>
+    </div>
+  `;
+
+  if (query) {
+    const matched = SANDPLOT_HELP_CHAPTERS.filter(ch =>
+      ch.title.toLowerCase().includes(query) ||
+      ch.subtitle.toLowerCase().includes(query) ||
+      ch.tip.toLowerCase().includes(query) ||
+      ch.cards.some(c => c.title.toLowerCase().includes(query) || c.body.toLowerCase().includes(query))
+    );
+    mountEl.innerHTML = matched.length
+      ? matched.map(renderChapterHtml).join('<hr class="my-4 border-sand-200">')
+      : `<div class="py-8 text-center font-mono text-xs text-sand-500">No help topics matched "${ghEscape(query)}". Try "RB209", "Gandy", "Draw", "GPS", or "CAD".</div>`;
+    return;
+  }
+
+  const chapter = SANDPLOT_HELP_CHAPTERS.find(ch => ch.id === activeId) || SANDPLOT_HELP_CHAPTERS[0];
+  mountEl.innerHTML = renderChapterHtml(chapter);
+}
+
 window.addEventListener("DOMContentLoaded", async () => {
   try {
     try {
@@ -19760,6 +20973,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     await restoreLinkedProjectFileFromIdb();
     initPwaInstallSupport();
     initHomeDashboard();
+    syncFertsInputsFromState();
+    updateFertsCalculator();
+    renderHelpGuide();
     initUniversalResizablePanels();
     switchModule("home");
     document.addEventListener("change", () => scheduleWorkspaceAutosave(350));
