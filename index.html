@@ -303,7 +303,9 @@ html[data-theme="amber"] .sp-resize-corner { color: rgba(201, 167, 125, 0.65); }
 .sp-subpane { border-radius: 10px; border: 1px solid #e2dfd6; background-color: #faf9f6; }
 html[data-theme="amber"] .sp-subpane { background-color: #1d1611 !important; border-color: #5e3f22 !important; color: #f3e5d0 !important; }
 html[data-theme="custom"] .sp-subpane { background-color: var(--custom-surface, #1d1611) !important; border-color: var(--custom-border, #5e3f22) !important; color: var(--custom-text, #f3e5d0) !important; }
-.wx-today-glance { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(148, 163, 184, 0.25); background: rgba(255, 255, 255, 0.65); }
+.wx-today-glance { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(148, 163, 184, 0.24); background: rgba(255, 255, 255, 0.72); }
+.sp-chev-discrete { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 9px; opacity: 0.62; transition: opacity 0.14s ease, transform 0.14s ease, background-color 0.14s ease; }
+.sp-collapse-hdr:hover .sp-chev-discrete { opacity: 1; background-color: rgba(148, 163, 184, 0.14); }
 @media (min-width: 640px) { .wx-today-glance { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (min-width: 1280px) { .wx-today-glance { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
 html[data-theme="amber"] .wx-today-glance { background: #140f0c !important; border-color: #5e3f22 !important; }
@@ -312,6 +314,13 @@ html[data-theme="custom"] .wx-today-glance { background: var(--custom-bg, #140f0
 @media (min-width: 1024px) {
   .sp-split-lg.sp-split-ready { grid-template-columns: var(--sp-split-cols, minmax(260px, 4fr) 10px minmax(320px, 8fr)) !important; }
   .sp-split-lg.sp-split-ready > * { grid-column: auto !important; min-width: 0; }
+  .sp-split-sticky-right:not(.sp-pane-maximized) > .sp-pane-right {
+    position: sticky;
+    top: 52px;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
   .sp-split-lg.sp-pane-maximized { grid-template-columns: minmax(0, 1fr) !important; }
   .sp-split-lg.sp-pane-maximized > .sp-pane-collapsed-away { display: none !important; }
   .sp-split-lg.sp-pane-maximized > .sp-col-splitter { display: none !important; }
@@ -455,93 +464,86 @@ html[data-theme="amber"] .sp-collapse-hdr:hover, html[data-theme="custom"] .sp-c
 </aside>
 <main id="app-workspace" class="flex-1 w-full mx-auto p-3 sm:p-4 space-y-4">
 <!-- VIEW 0: HOME & FIELD WEATHER LAUNCHPAD (EDITORIAL FLOW) -->
-<div id="view-home" class="space-y-3.5">
-  <!-- Clean Front-Page Window Manager & Declutter Bar -->
-  <div id="home-windows-bar" class="bg-white rounded-xl border border-sand-200 px-3.5 py-2 shadow-2xs flex flex-wrap items-center justify-between gap-2">
-    <div class="flex flex-wrap items-center gap-1.5">
-      <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-sand-500 mr-1">Windows:</span>
-      <button type="button" id="btn-home-win-hourly" onclick="toggleHomeWindow('hourly')" class="px-2.5 py-1 rounded-md font-mono text-[10px] font-bold bg-amber-600 text-white transition inline-flex items-center gap-1" title="Show/hide 24-Hour Sky, Rain &amp; Frost Profile"><span id="pill-chev-hourly">▼</span> 24h Profile</button>
-      <button type="button" id="btn-home-win-forecast" onclick="toggleHomeWindow('forecast')" class="px-2.5 py-1 rounded-md font-mono text-[10px] font-bold bg-amber-600 text-white transition inline-flex items-center gap-1" title="Show/hide 10–14 Day Multi-Model Ensemble Forecast"><span id="pill-chev-forecast">▼</span> 10-Day Forecast</button>
-      <button type="button" id="btn-home-win-windy" onclick="toggleHomeWindow('windy')" class="px-2.5 py-1 rounded-md font-mono text-[10px] font-semibold bg-sand-50 border border-sand-300 text-sand-700 transition inline-flex items-center gap-1" title="Show/hide Live Windy Radar &amp; Streamlines Map"><span id="pill-chev-windy">▶</span> Wind &amp; Radar Map</button>
-      <button type="button" id="btn-home-win-synoptic" onclick="toggleHomeWindow('synoptic')" class="px-2.5 py-1 rounded-md font-mono text-[10px] font-semibold bg-sand-50 border border-sand-300 text-sand-700 transition inline-flex items-center gap-1" title="Show/hide Synoptic Cloud Formations &amp; Barometric Cross-Section"><span id="pill-chev-synoptic">▶</span> Synoptic &amp; Cloud Lab</button>
-    </div>
-    <div class="flex flex-wrap items-center gap-1.5 font-mono text-[9.5px]">
-      <button type="button" onclick="setHomeWindowPreset('focus')" class="px-2 py-1 rounded border border-sand-300 bg-sand-50 hover:bg-sand-100 text-sand-800 font-bold transition" title="Clean view: Current Telemetry + 24h Profile + 10-Day Forecast (collapses heavy maps)">Focus View</button>
-      <button type="button" onclick="setHomeWindowPreset('all')" class="px-2 py-1 rounded border border-sand-300 bg-sand-50 hover:bg-sand-100 text-sand-700 transition" title="Expand all weather, radar &amp; synoptic windows">Expand All</button>
-      <button type="button" onclick="setHomeWindowPreset('minimal')" class="px-2 py-1 rounded border border-sand-300 bg-sand-50 hover:bg-sand-100 text-sand-700 transition" title="Collapse all sub-windows to show only live conditions &amp; frost watch">Compact Summary</button>
-    </div>
-  </div>
-
-  <!-- Unified Clean Weather, Today Spotlight & Multi-Model Forecast Surface -->
-  <section id="home-weather-panel" class="bg-white rounded-xl border border-sand-200 p-4 sm:p-5 shadow-2xs space-y-4">
-    <!-- Top Row: Right-Now Conditions + Quiet Field Telemetry + Location -->
-    <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 pb-3 border-b border-sand-100">
-      <div class="flex flex-wrap items-center gap-4 sm:gap-6">
-        <!-- Crisp Live Temperature & Sky Condition -->
-        <div class="flex items-center gap-3.5">
-          <div id="wx-cur-temp" class="text-4xl sm:text-5xl font-bold tracking-tight text-sand-900 font-mono leading-none">--°</div>
-          <div>
-            <div class="flex flex-wrap items-center gap-2">
-              <span id="wx-cur-desc" class="inline-flex items-center gap-1.5 text-sm sm:text-base font-bold text-sand-900">--</span>
-              <span id="wx-cur-frost-chip"></span>
-            </div>
-            <div class="flex flex-wrap items-center gap-2 text-[10.5px] font-mono text-sand-600 mt-1">
-              <span id="home-weather-loc-label" class="font-bold text-sand-800">Gogerddan / Aberystwyth</span>
-              <span class="text-sand-400">·</span>
-              <span id="home-coords-badge">52.4313, -4.0203</span>
-              <span class="text-sand-400">·</span>
-              <span id="wx-sun-inline" title="Sunrise, Sunset &amp; Daylight duration for selected day">Sunrise --:-- · Sunset --:--</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="hidden sm:block h-10 w-px bg-sand-200"></div>
-
-        <!-- Clean Right-Now Agronomic & Kp Telemetry -->
-        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[11px]">
-          <div>
-            <span class="text-sand-500 text-[9.5px] block">Wind Now</span>
-            <div id="wx-cur-wind" class="font-bold text-sand-900 text-xs">-- km/h</div>
-          </div>
-          <div>
-            <span class="text-sand-500 text-[9.5px] block">Humidity</span>
-            <div id="wx-cur-rh" class="font-bold text-sand-900 text-xs">--%</div>
-          </div>
-          <div>
-            <span class="text-sand-500 text-[9.5px] block">Precip Now</span>
-            <div id="wx-cur-rain" class="font-bold text-sand-900 text-xs">-- mm</div>
-          </div>
-          <div title="0 cm seedbed/grass surface temperature &amp; 0–1 cm volumetric soil moisture">
-            <span class="text-sand-500 text-[9.5px] block">Soil 0cm · Moisture</span>
-            <div class="font-bold text-sand-900 text-xs"><span id="wx-cur-soil-temp">--°</span> <span class="text-sand-500 font-normal">·</span> <span id="wx-cur-soil-moist">--</span></div>
-          </div>
-          <div title="NOAA Planetary Kp Index &amp; 72h Forecast (0–9): Kp &lt; 4 is quiet for RTK-GPS; Kp ≥ 5 warns of geomagnetic storming">
-            <span class="text-sand-500 text-[9.5px] block">Geomagnetic Kp (72h)</span>
-            <div id="wx-cur-kp" class="font-bold text-sand-900 flex flex-wrap items-center gap-1.5">Kp --</div>
-          </div>
-        </div>
+<div id="view-home" class="space-y-4">
+  <!-- Unified Clean Weather Briefing: Stylized Today Intake + Discrete Collapsible Sections -->
+  <section id="home-weather-panel" class="bg-white rounded-xl border border-sand-200 p-4 sm:p-6 shadow-2xs space-y-4">
+    <!-- Subtle Location & Time Micro-Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-2 text-[10.5px] font-mono text-sand-600">
+      <div class="flex flex-wrap items-center gap-2">
+        <span id="home-weather-loc-label" class="font-bold text-sand-900 text-xs">Gogerddan / Aberystwyth</span>
+        <span class="text-sand-400">·</span>
+        <span id="home-coords-badge">52.4313, -4.0203</span>
+        <span class="text-sand-400">·</span>
+        <span id="wx-sun-inline" title="Sunrise, Sunset &amp; Daylight duration for selected day">Sunrise --:-- · Sunset --:--</span>
       </div>
-
-      <!-- Right: Clock + Location Picker -->
-      <div class="flex flex-wrap items-center justify-between xl:justify-end gap-3">
-        <div class="font-mono text-right leading-tight pr-1">
-          <div id="home-clock-time" class="text-sm font-bold text-sand-900">00:00:00</div>
-          <div id="home-clock-date" class="text-[10px] text-sand-500">Loading...</div>
+      <div class="flex flex-wrap items-center gap-2.5">
+        <div class="flex items-center gap-1.5 pr-1">
+          <span id="home-clock-time" class="font-bold text-sand-900">00:00:00</span>
+          <span class="text-sand-400">·</span>
+          <span id="home-clock-date" class="text-sand-500">Loading...</span>
         </div>
         <div class="flex items-center gap-1">
-          <input type="text" id="home-weather-loc-input" placeholder="Town, postcode or lat,lon..." onkeydown="if(event.key==='Enter')searchHomeWeatherLocation()" class="px-2.5 py-1 rounded-md border border-sand-300 text-[11px] font-mono w-44 sm:w-48 focus:outline-none" aria-label="Town, postcode or lat,lon...">
+          <input type="text" id="home-weather-loc-input" placeholder="Town, postcode or lat,lon..." onkeydown="if(event.key==='Enter')searchHomeWeatherLocation()" class="px-2.5 py-1 rounded-md border border-sand-300 text-[11px] font-mono w-40 sm:w-44 focus:outline-none" aria-label="Town, postcode or lat,lon...">
           <button type="button" onclick="searchHomeWeatherLocation()" class="px-2.5 py-1 bg-vermilion-600 hover:bg-vermilion-700 text-white rounded-md font-bold text-[10px] transition">Go</button>
           <button type="button" onclick="syncHomeWeatherToActiveField()" class="px-2 py-1 bg-sand-50 hover:bg-sand-100 border border-sand-300 text-sand-700 rounded-md font-mono text-[10px] inline-flex items-center gap-1 transition" title="Sync weather to active Trial Anchor or loaded AreaFeature"><svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Field</button>
         </div>
       </div>
     </div>
 
-    <!-- Collapsible Window 1: Clear "Today" Spotlight & 24-Hour Crisper Forecast Graph -->
-    <div id="wx-hourly-section" class="sp-subpane p-3.5 space-y-3">
+    <!-- Clean Hero Initial Intake: Prominent Right-Now & Today Headline -->
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-1">
+      <div class="flex items-center gap-4">
+        <div id="wx-cur-temp" class="text-5xl sm:text-6xl font-extrabold tracking-tight text-sand-900 font-mono leading-none">--°</div>
+        <div class="space-y-1">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <span id="wx-cur-desc" class="inline-flex items-center gap-2 text-base sm:text-xl font-bold text-sand-900 tracking-tight">--</span>
+            <span id="wx-cur-frost-chip"></span>
+          </div>
+          <div id="wx-today-headline" class="text-xs sm:text-sm font-mono font-semibold text-sand-700">Today · Fetching daily highs, rainfall &amp; sky cover...</div>
+        </div>
+      </div>
+
+      <!-- Quiet Live Agronomic + Geomagnetic Kp Telemetry -->
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[11px]">
+        <div>
+          <span class="text-sand-500 text-[9.5px] block">Wind Now</span>
+          <div id="wx-cur-wind" class="font-bold text-sand-900 text-xs">-- km/h</div>
+        </div>
+        <div>
+          <span class="text-sand-500 text-[9.5px] block">Humidity</span>
+          <div id="wx-cur-rh" class="font-bold text-sand-900 text-xs">--%</div>
+        </div>
+        <div>
+          <span class="text-sand-500 text-[9.5px] block">Precip Now</span>
+          <div id="wx-cur-rain" class="font-bold text-sand-900 text-xs">-- mm</div>
+        </div>
+        <div title="0 cm seedbed/grass surface temperature &amp; 0–1 cm volumetric soil moisture">
+          <span class="text-sand-500 text-[9.5px] block">Soil 0cm · Moisture</span>
+          <div class="font-bold text-sand-900 text-xs"><span id="wx-cur-soil-temp">--°</span> <span class="text-sand-500 font-normal">·</span> <span id="wx-cur-soil-moist">--</span></div>
+        </div>
+        <div title="NOAA Planetary Kp Index &amp; 72h Forecast (0–9): Kp &lt; 4 is quiet for RTK-GPS; Kp ≥ 5 warns of geomagnetic storming">
+          <span class="text-sand-500 text-[9.5px] block">Geomagnetic Kp</span>
+          <div id="wx-cur-kp" class="font-bold text-sand-900 flex flex-wrap items-center gap-1.5">Kp --</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clean High-Legibility Today / Selected-Day Intake Strip -->
+    <div id="wx-day-glance" class="wx-today-glance font-mono">
+      <div><span class="text-[10px] text-sand-500 block uppercase tracking-wide">Today High / Low</span><span class="text-base sm:text-lg font-extrabold text-sand-900 tracking-tight">--° / --°</span></div>
+      <div><span class="text-[10px] text-sand-500 block uppercase tracking-wide">Rain / Snow</span><span class="text-base sm:text-lg font-extrabold text-sky-500 tracking-tight">-- mm · --%</span></div>
+      <div><span class="text-[10px] text-sand-500 block uppercase tracking-wide">Sunshine · Cloud</span><span class="text-base sm:text-lg font-extrabold text-sand-900 tracking-tight">--h · --%</span></div>
+      <div><span class="text-[10px] text-sand-500 block uppercase tracking-wide">0cm Min · Frost</span><span class="text-base sm:text-lg font-extrabold text-sand-900 tracking-tight">--°C</span></div>
+      <div><span class="text-[10px] text-sand-500 block uppercase tracking-wide">Peak Wind</span><span class="text-base sm:text-lg font-extrabold text-sand-900 tracking-tight">-- km/h</span></div>
+      <div><span class="text-[10px] text-sand-500 block uppercase tracking-wide">Daylight Window</span><span class="text-base sm:text-lg font-extrabold text-sand-900 tracking-tight">--:-- – --:--</span></div>
+    </div>
+
+    <!-- Collapsible Section 1: 24-Hour Detail Graph -->
+    <div id="wx-hourly-section" class="sp-subpane p-3.5 space-y-2.5">
       <div class="flex flex-wrap items-center justify-between gap-2 font-mono">
-        <button type="button" onclick="toggleHomeWindow('hourly')" class="sp-collapse-hdr flex items-center gap-2 text-left rounded px-1.5 py-0.5 -ml-1.5">
-          <span id="home-chev-hourly" class="sp-chev bg-sand-100 text-sand-700">▼</span>
+        <button type="button" onclick="toggleHomeWindow('hourly')" class="sp-collapse-hdr flex items-center gap-1.5 text-left rounded px-1 py-0.5 -ml-1">
           <span class="text-xs sm:text-sm font-bold text-sand-900" id="wx-hourly-day-title">Today · 24h Sky, Rain, Temp &amp; Frost Profile</span>
+          <span id="home-chev-hourly" class="sp-chev-discrete text-sand-600">▼</span>
         </button>
         <div class="flex flex-wrap items-center gap-3 text-[10px] text-sand-600">
           <span class="inline-flex items-center gap-1" title="Minutes of direct sunshine per hour"><span class="wx-swatch-sun"></span>Sunshine</span>
@@ -554,23 +556,10 @@ html[data-theme="amber"] .sp-collapse-hdr:hover, html[data-theme="custom"] .sp-c
         </div>
       </div>
 
-      <div id="home-win-hourly-body" class="space-y-2.5">
-        <!-- Clear Dedicated Summary Metrics for Selected Day (Default: Today) -->
-        <div id="wx-day-glance" class="wx-today-glance font-mono">
-          <div><span class="text-[9.5px] text-sand-500 block">High / Low Air</span><span class="text-sm font-bold text-sand-900">--° / --°</span></div>
-          <div><span class="text-[9.5px] text-sand-500 block">Rain &amp; Probability</span><span class="text-sm font-bold text-sand-900">-- mm · --%</span></div>
-          <div><span class="text-[9.5px] text-sand-500 block">Sunshine · Cloud</span><span class="text-sm font-bold text-sand-900">--h · --%</span></div>
-          <div><span class="text-[9.5px] text-sand-500 block">Min 0cm Surface / Frost</span><span class="text-sm font-bold text-sand-900">--°C</span></div>
-          <div><span class="text-[9.5px] text-sand-500 block">Peak Wind</span><span class="text-sm font-bold text-sand-900">-- km/h</span></div>
-          <div><span class="text-[9.5px] text-sand-500 block">Daylight</span><span class="text-sm font-bold text-sand-900">--:-- – --:--</span></div>
-        </div>
-
-        <!-- Crisp 3-Band 24-Hour Graph (SKY band | Temp & Freeze band | Rain & Chance band) -->
+      <div id="home-win-hourly-body" class="space-y-2">
         <div id="wx-hourly-bars-wrap" class="wx-chart-surface h-64 w-full rounded-lg p-2 select-none overflow-hidden relative"></div>
-
-        <!-- Clean Hover Inspector Line (Never truncated or obscuring labels) -->
         <div class="flex flex-wrap items-center justify-between gap-2 text-[10.5px] font-mono pt-0.5">
-          <span id="wx-hourly-hover" class="text-sand-700 font-semibold">Hover or tap any hour on the chart above for sunshine, cloud %, rain, 2m air &amp; 0cm surface frost detail</span>
+          <span id="wx-hourly-hover" class="text-sand-700 font-semibold">Hover or tap any hour on the chart above for sunshine, cloud %, precip, 2m air &amp; 0cm surface detail</span>
           <div class="flex items-center gap-2 text-[9.5px] text-sand-500 shrink-0">
             <span id="home-weather-updated">Connecting...</span>
             <button type="button" id="btn-wx-autorefresh" onclick="toggleWeatherAutoRefresh()" class="px-1.5 py-0.5 rounded border border-sand-200 bg-sand-50 hover:bg-sand-100 text-sand-700 font-semibold inline-flex items-center gap-1 transition" title="Toggle automatic 15-minute background weather refresh"><svg class="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>15m Auto: ON</button>
@@ -579,18 +568,17 @@ html[data-theme="amber"] .sp-collapse-hdr:hover, html[data-theme="custom"] .sp-c
       </div>
     </div>
 
-    <!-- Compact 5–10 Day Outlook & Frost Watch Summary -->
-    <div id="home-outlook-summary" class="flex flex-wrap items-center gap-x-3.5 gap-y-1.5 py-1.5 px-1 border-b border-sand-100 text-[10.5px] font-mono text-sand-700">
+    <!-- Clean 5–10 Day Outlook & Frost Watch Line -->
+    <div id="home-outlook-summary" class="flex flex-wrap items-center gap-x-3.5 gap-y-1.5 py-1.5 px-1 border-b border-sand-100 text-[11px] font-mono text-sand-700">
       <span class="text-sand-500">Loading 5–10 day outlook &amp; frost watch...</span>
     </div>
 
-    <!-- Collapsible Window 2: Multi-Day Ensemble Forecast & Trend Ribbon -->
+    <!-- Collapsible Section 2: 10–14 Day Multi-Model Ensemble Forecast & Validation -->
     <div id="wx-multiday-section" class="sp-subpane p-3.5 space-y-2.5">
       <div class="flex flex-wrap items-center justify-between gap-2">
-        <button type="button" onclick="toggleHomeWindow('forecast')" class="sp-collapse-hdr flex items-center gap-2 text-left rounded px-1.5 py-0.5 -ml-1.5 font-mono">
-          <span id="home-chev-forecast" class="sp-chev bg-sand-100 text-sand-700">▼</span>
-          <span class="text-[11px] font-bold text-sand-900">10–14 Day Multi-Model Ensemble Forecast &amp; Frost Schedule</span>
-          <span class="px-1.5 py-0.5 rounded bg-sand-100 border border-sand-200 text-[9px] text-sand-600">Click any day to inspect hourly profile</span>
+        <button type="button" onclick="toggleHomeWindow('forecast')" class="sp-collapse-hdr flex items-center gap-1.5 text-left rounded px-1 py-0.5 -ml-1 font-mono">
+          <span class="text-xs font-bold text-sand-900">10–14 Day Ensemble Forecast &amp; Frost Schedule</span>
+          <span id="home-chev-forecast" class="sp-chev-discrete text-sand-600">▼</span>
         </button>
         <div class="flex flex-wrap items-center gap-1.5">
           <div class="wx-seg-group" role="group" aria-label="Forecast layout">
@@ -607,7 +595,10 @@ html[data-theme="amber"] .sp-collapse-hdr:hover, html[data-theme="custom"] .sp-c
 
       <div id="home-win-forecast-body" class="space-y-3 pt-1 border-t border-sand-100">
         <div class="flex flex-wrap items-center justify-between gap-2">
-          <span class="text-[9.5px] font-mono text-sand-500">Weather Model Ensemble:</span>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-[9.5px] font-mono text-sand-500">Weather Model Ensemble:</span>
+            <span id="wx-regional-best-badge" class="hidden px-2 py-0.5 rounded bg-emerald-50 border border-emerald-300 font-mono text-[9.5px] font-bold text-emerald-800" title="Validates the past 3–4 days against Open-Meteo's high-resolution local analysis baseline for this location. Note: Seamless archives reflect short-range analyses rather than raw rain-gauge stations or frozen Day-3 runs."></span>
+          </div>
           <div class="wx-seg-group flex-wrap" title="Curated 6-Model UK/Atlantic High-Skill Ensemble">
             <button type="button" id="btn-wx-mod-consensus" onclick="setHomeWeatherModel('consensus')" class="wx-seg-btn active" title="6-Model High-Skill UK/European Ensemble Consensus">6-Model Consensus</button>
             <button type="button" id="btn-wx-mod-ukmo" onclick="setHomeWeatherModel('ukmo')" class="wx-seg-btn" title="UK Met Office Seamless (2km UKV high-res convection-permitting + Global)">UKMO 2km</button>
@@ -636,10 +627,9 @@ html[data-theme="amber"] .sp-collapse-hdr:hover, html[data-theme="custom"] .sp-c
   <!-- Collapsible Window 3: Clean Wind Streamlines & Radar Map -->
   <section id="home-windy-panel" class="bg-white rounded-xl border border-sand-200 p-3.5 sm:p-4 shadow-2xs space-y-2.5">
     <div class="flex flex-wrap items-center justify-between gap-2">
-      <button type="button" onclick="toggleHomeWindow('windy')" class="sp-collapse-hdr flex items-center gap-2 text-left rounded px-1.5 py-0.5 -ml-1.5">
-        <span id="home-chev-windy" class="sp-chev bg-sand-100 text-sand-700">▶</span>
+      <button type="button" onclick="toggleHomeWindow('windy')" class="sp-collapse-hdr flex items-center gap-1.5 text-left rounded px-1 py-0.5 -ml-1">
         <span class="text-xs font-bold text-sand-900 tracking-tight">Live Wind Streamlines, Radar &amp; Isobar Map (Windy.com)</span>
-        <span id="home-win-windy-badge" class="px-2 py-0.5 rounded bg-sand-100 border border-sand-200 font-mono text-[9px] text-sand-600">Collapsed · Click to open map</span>
+        <span id="home-chev-windy" class="sp-chev-discrete text-sand-600">▶</span>
       </button>
       <div class="flex flex-wrap items-center gap-1.5">
         <div class="wx-seg-group" role="group" aria-label="Windy map overlay">
@@ -664,14 +654,13 @@ html[data-theme="amber"] .sp-collapse-hdr:hover, html[data-theme="custom"] .sp-c
   <section id="home-synoptic-panel" class="bg-white rounded-xl border border-sand-200 p-3.5 sm:p-4 shadow-2xs space-y-3.5">
     <!-- Top Header & Horizon / Guide Controls -->
     <div class="flex flex-wrap items-center justify-between gap-2">
-      <button type="button" onclick="toggleHomeWindow('synoptic')" class="sp-collapse-hdr flex items-center gap-2 text-left rounded px-1.5 py-0.5 -ml-1.5">
-        <span id="home-chev-synoptic" class="sp-chev bg-sand-100 text-sand-700">▶</span>
+      <button type="button" onclick="toggleHomeWindow('synoptic')" class="sp-collapse-hdr flex items-center gap-1.5 text-left rounded px-1 py-0.5 -ml-1">
         <div>
-          <div class="flex flex-wrap items-center gap-2">
+          <div class="flex flex-wrap items-center gap-1.5">
             <h2 class="text-xs sm:text-sm font-bold text-sand-900 tracking-tight">Synoptic Cloud Formations, Vertical Profile &amp; Barometric Lab</h2>
-            <span id="home-win-synoptic-badge" class="px-2 py-0.5 rounded bg-sand-100 border border-sand-200 font-mono text-[9px] text-sand-600">Collapsed · Click to expand</span>
+            <span id="home-chev-synoptic" class="sp-chev-discrete text-sand-600">▶</span>
           </div>
-          <p class="text-[9.5px] text-sand-500 font-mono mt-0.5">Low/Mid/High cloud etages, LCL cloud base, Iso-0°C, MSLP barograph, Z500 &amp; T850 air-mass diagnostics</p>
+          <p class="text-[9.5px] text-sand-500 font-mono mt-0.5">Low/Mid/High cloud etages, LCL cloud base, Iso-0°C, MSLP barograph, Z500 &amp; T850 diagnostics</p>
         </div>
       </button>
 
@@ -17142,13 +17131,18 @@ function renderHourlyPrecipHistogram(dayObj, activeMod) {
     const soilTxt = Number.isFinite(dayObj.soilMinEff) ? `${dayObj.soilMinEff.toFixed(1)}°C` : "--";
     const windTxt = Number.isFinite(windDisp) ? `${Math.round(windDisp)} km/h` : "--";
     const dayStr = (dayObj.sunriseStr && dayObj.sunsetStr) ? `${dayObj.sunriseStr}–${dayObj.sunsetStr}` : "--";
+    const headlineEl = document.getElementById("wx-today-headline");
+    if (headlineEl) {
+      const leadLabel = dayObj.index === 0 ? "Today" : dayTitle;
+      headlineEl.textContent = `${leadLabel}: High ${tHighDisp !== null ? Math.round(tHighDisp) + '°' : '--'} · Low ${tLowDisp !== null ? Math.round(tLowDisp) + '°' : '--'} · ${sunTxt}${cldTxt ? ' · ' + cldTxt : ''}`;
+    }
     glanceEl.innerHTML = `
-      <div><span class="text-[9.5px] text-sand-500 block">High / Low Air</span><span class="text-sm font-bold text-sand-900">${tempTxt}</span></div>
-      <div><span class="text-[9.5px] text-sand-500 block">Rain · Chance</span><span class="text-sm font-bold text-sky-500">${rainTxt}</span></div>
-      <div><span class="text-[9.5px] text-sand-500 block">Sunshine · Cloud</span><span class="text-sm font-bold text-sand-900">${sunTxt}${cldTxt ? ' · ' + cldTxt : ''}</span></div>
-      <div><span class="text-[9.5px] text-sand-500 block">0cm Min · Frost</span><span class="text-sm font-bold text-sand-900 inline-flex items-center flex-wrap">${soilTxt}${frostBadgeHtml}</span></div>
-      <div><span class="text-[9.5px] text-sand-500 block">Peak Wind</span><span class="text-sm font-bold text-sand-900">${windTxt}</span></div>
-      <div><span class="text-[9.5px] text-sand-500 block">Daylight Window</span><span class="text-sm font-bold text-sand-900">${dayStr}${dayObj.daylightStr ? ' (' + dayObj.daylightStr + ')' : ''}</span></div>
+      <div><span class="text-[10px] text-sand-500 block uppercase tracking-wide">High / Low Air</span><span class="text-base sm:text-lg font-extrabold text-sand-900 tracking-tight">${tempTxt}</span></div>
+      <div><span class="text-[10px] text-sand-500 block uppercase tracking-wide">Rain · Chance</span><span class="text-base sm:text-lg font-extrabold text-sky-500 tracking-tight">${rainTxt}</span></div>
+      <div><span class="text-[10px] text-sand-500 block uppercase tracking-wide">Sunshine · Cloud</span><span class="text-base sm:text-lg font-extrabold text-sand-900 tracking-tight">${sunTxt}${cldTxt ? ' · ' + cldTxt : ''}</span></div>
+      <div><span class="text-[10px] text-sand-500 block uppercase tracking-wide">0cm Min · Frost</span><span class="text-base sm:text-lg font-extrabold text-sand-900 tracking-tight inline-flex items-center flex-wrap">${soilTxt}${frostBadgeHtml}</span></div>
+      <div><span class="text-[10px] text-sand-500 block uppercase tracking-wide">Peak Wind</span><span class="text-base sm:text-lg font-extrabold text-sand-900 tracking-tight">${windTxt}</span></div>
+      <div><span class="text-[10px] text-sand-500 block uppercase tracking-wide">Daylight Window</span><span class="text-base font-extrabold text-sand-900 tracking-tight">${dayStr}${dayObj.daylightStr ? ' <span class="text-xs font-normal text-sand-500">(' + dayObj.daylightStr + ')</span>' : ''}</span></div>
     `;
   }
 
@@ -17351,11 +17345,79 @@ function renderHourlyPrecipHistogram(dayObj, activeMod) {
   wrap.innerHTML = `<svg viewBox="0 0 ${W} ${H}" shape-rendering="geometricPrecision" class="w-full h-full block" role="img" aria-label="24-hour sunshine, cloud cover, precipitation, temperature and frost profile">${gridSvg}${barsSvg}${tempCurveSvg}${nowSvg}</svg>`;
 }
 
+function evaluateRegionalModelSkill(baseData, modelsData, todayStr) {
+  const times = baseData?.daily?.time || [];
+  if (!times.length || !modelsData?.daily) return null;
+  const pastIndices = [];
+  times.forEach((d, i) => {
+    if (todayStr && d < todayStr) pastIndices.push(i);
+  });
+  if (!pastIndices.length) return null;
+
+  const modelTimes = modelsData.daily.time || times;
+  const mIndexByDate = {};
+  modelTimes.forEach((d, i) => { mIndexByDate[d] = i; });
+
+  const byModel = {};
+  ENSEMBLE_MODEL_KEYS.forEach(mk => {
+    const suf = WEATHER_MODELS_META[mk].apiKey;
+    let tErrSum = 0, tErrCnt = 0, rErrSum = 0, rErrCnt = 0;
+    pastIndices.forEach(bi => {
+      const dateStr = times[bi];
+      const mi = mIndexByDate[dateStr];
+      if (mi === undefined) return;
+      const obsMax = baseData.daily?.temperature_2m_max?.[bi];
+      const obsMin = baseData.daily?.temperature_2m_min?.[bi];
+      const obsRain = baseData.daily?.precipitation_sum?.[bi];
+      const mMax = modelsData.daily["temperature_2m_max_" + suf]?.[mi];
+      const mMin = modelsData.daily["temperature_2m_min_" + suf]?.[mi];
+      const mRain = modelsData.daily["precipitation_sum_" + suf]?.[mi];
+      if (Number.isFinite(obsMax) && Number.isFinite(mMax)) { tErrSum += Math.abs(mMax - obsMax); tErrCnt++; }
+      if (Number.isFinite(obsMin) && Number.isFinite(mMin)) { tErrSum += Math.abs(mMin - obsMin); tErrCnt++; }
+      if (Number.isFinite(obsRain) && Number.isFinite(mRain)) { rErrSum += Math.abs(mRain - obsRain); rErrCnt++; }
+    });
+    if (tErrCnt > 0 || rErrCnt > 0) {
+      const tempMae = tErrCnt ? tErrSum / tErrCnt : null;
+      const rainMae = rErrCnt ? rErrSum / rErrCnt : null;
+      const score = Math.max(0, Math.round(100 - (tempMae || 0) * 14 - (rainMae || 0) * 9));
+      byModel[mk] = {
+        key: mk,
+        short: WEATHER_MODELS_META[mk].short,
+        tempMae: tempMae !== null ? Number(tempMae.toFixed(2)) : null,
+        rainMae: rainMae !== null ? Number(rainMae.toFixed(2)) : null,
+        score,
+        days: pastIndices.length
+      };
+    }
+  });
+
+  const ranked = Object.values(byModel).sort((a, b) => b.score - a.score || (a.tempMae ?? 99) - (b.tempMae ?? 99));
+  if (!ranked.length) return null;
+  return {
+    bestKey: ranked[0].key,
+    best: ranked[0],
+    ranked,
+    byModel,
+    daysCount: pastIndices.length
+  };
+}
+
 function buildDailyMultiModelProfile(baseData, modelsData, activeMod = "consensus") {
   const times = baseData?.daily?.time || [];
   const [lat, lon] = getActiveWeatherCoords();
+  const todayStr = String(baseData?.current?.time || "").slice(0, 10) || new Date().toISOString().slice(0, 10);
+  const startIdx = times.findIndex(d => d >= todayStr);
+  const firstForecastIdx = startIdx >= 0 ? startIdx : 0;
 
-  return times.map((dateStr, i) => {
+  // Map modelsData daily index by exact ISO date string so past_days alignment is immune to offsets
+  const modelDateMap = {};
+  (modelsData?.daily?.time || times).forEach((dt, idx) => { modelDateMap[dt] = idx; });
+
+  const out = [];
+  for (let i = firstForecastIdx; i < times.length; i++) {
+    const dateStr = times[i];
+    const mi = modelDateMap[dateStr] !== undefined ? modelDateMap[dateStr] : i;
+    const outIdx = out.length;
     const baseRain = Number.isFinite(baseData.daily?.precipitation_sum?.[i]) ? baseData.daily.precipitation_sum[i] : 0;
     const baseSnow = Number.isFinite(baseData.daily?.snowfall_sum?.[i]) ? baseData.daily.snowfall_sum[i] : 0;
     const baseProb = Number.isFinite(baseData.daily?.precipitation_probability_max?.[i]) ? baseData.daily.precipitation_probability_max[i] : null;
@@ -17382,13 +17444,13 @@ function buildDailyMultiModelProfile(baseData, modelsData, activeMod = "consensu
 
     ENSEMBLE_MODEL_KEYS.forEach(mk => {
       const apiSuffix = WEATHER_MODELS_META[mk].apiKey;
-      const rVal = modelsData?.daily?.["precipitation_sum_" + apiSuffix]?.[i];
-      const txVal = modelsData?.daily?.["temperature_2m_max_" + apiSuffix]?.[i];
-      const tnVal = modelsData?.daily?.["temperature_2m_min_" + apiSuffix]?.[i];
-      const wVal = modelsData?.daily?.["wind_speed_10m_max_" + apiSuffix]?.[i];
-      const cVal = modelsData?.daily?.["weather_code_" + apiSuffix]?.[i];
+      const rVal = modelsData?.daily?.["precipitation_sum_" + apiSuffix]?.[mi];
+      const txVal = modelsData?.daily?.["temperature_2m_max_" + apiSuffix]?.[mi];
+      const tnVal = modelsData?.daily?.["temperature_2m_min_" + apiSuffix]?.[mi];
+      const wVal = modelsData?.daily?.["wind_speed_10m_max_" + apiSuffix]?.[mi];
+      const cVal = modelsData?.daily?.["weather_code_" + apiSuffix]?.[mi];
       if (Number.isFinite(rVal) || Number.isFinite(txVal) || Number.isFinite(tnVal)) {
-        const sVal = modelsData?.daily?.["snowfall_sum_" + apiSuffix]?.[i];
+        const sVal = modelsData?.daily?.["snowfall_sum_" + apiSuffix]?.[mi];
         const cleanRain = Number.isFinite(rVal) ? Math.max(0, rVal) : baseRain;
         const cleanSnow = Number.isFinite(sVal) ? Math.max(0, sVal) : baseSnow;
         perModel[mk] = {
@@ -17466,8 +17528,8 @@ function buildDailyMultiModelProfile(baseData, modelsData, activeMod = "consensu
     const soilMinEff = hourlySoilMins.length ? Math.min(...hourlySoilMins) : (tMinEff - 1.8);
     const frostInfo = evaluateFrostStatus(tMinEff, soilMinEff);
 
-    return {
-      index: i,
+    out.push({
+      index: outIdx,
       dateStr,
       sunriseStr,
       sunsetStr,
@@ -17493,8 +17555,9 @@ function buildDailyMultiModelProfile(baseData, modelsData, activeMod = "consensu
       confLabel,
       confScore,
       hourlySeries
-    };
-  });
+    });
+  }
+  return out;
 }
 
 function summarizeWeatherWindow(daysSlice, shortRange) {
@@ -17681,6 +17744,25 @@ function renderMultiDayTrendRibbon(visibleDays, selIdx, activeMod) {
 function renderHomeExtendedForecast() {
   if (!_weatherState.cachedBase) return;
   const activeMod = _weatherState.selectedModel || "consensus";
+  const todayStrEval = String(_weatherState.cachedBase?.current?.time || "").slice(0, 10) || new Date().toISOString().slice(0, 10);
+  const skill = evaluateRegionalModelSkill(_weatherState.cachedBase, _weatherState.cachedModels, todayStrEval);
+  _weatherState.regionalSkill = skill;
+  const bestBadgeEl = document.getElementById("wx-regional-best-badge");
+  if (bestBadgeEl) {
+    if (skill && skill.best) {
+      bestBadgeEl.classList.remove("hidden");
+      bestBadgeEl.textContent = `Past ${skill.daysCount}d Best Fit: ${skill.best.short} (${skill.best.tempMae ?? '--'}°C · ${skill.best.rainMae ?? '--'}mm MAE vs analysis)`;
+    } else {
+      bestBadgeEl.classList.add("hidden");
+    }
+  }
+  const baseBtnLabels = { consensus: "6-Model Consensus", ukmo: "UKMO 2km", ecmwf: "ECMWF", icon: "ICON", arpege: "ARPEGE", dmi: "HARMONIE", gfs: "GFS" };
+  Object.keys(baseBtnLabels).forEach(k => {
+    const b = document.getElementById("btn-wx-mod-" + k);
+    if (!b) return;
+    b.textContent = (skill && skill.bestKey === k) ? (baseBtnLabels[k] + " ★") : baseBtnLabels[k];
+  });
+
   const profile = buildDailyMultiModelProfile(_weatherState.cachedBase, _weatherState.cachedModels, activeMod);
   if (!profile.length) return;
 
@@ -18656,14 +18738,14 @@ async function fetchFieldWeather(force = false) {
       + "&current=temperature_2m,relative_humidity_2m,precipitation,snowfall,weather_code,wind_speed_10m,wind_direction_10m"
       + "&hourly=precipitation,snowfall,snow_depth,precipitation_probability,temperature_2m,weather_code,soil_temperature_0cm,soil_moisture_0_to_1cm,cloud_cover,sunshine_duration,is_day"
       + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum,precipitation_probability_max,wind_speed_10m_max,sunrise,sunset,daylight_duration"
-      + "&timezone=auto&forecast_days=14";
+      + "&timezone=auto&past_days=4&forecast_days=14";
 
     const modelsUrl = "https://api.open-meteo.com/v1/forecast?latitude=" + lat.toFixed(5)
       + "&longitude=" + lon.toFixed(5)
       + "&models=ukmo_seamless,ecmwf_ifs025,icon_seamless,meteofrance_seamless,knmi_seamless,gfs_seamless"
       + "&hourly=precipitation,snowfall"
       + "&daily=precipitation_sum,snowfall_sum,temperature_2m_max,temperature_2m_min,wind_speed_10m_max,weather_code"
-      + "&timezone=auto&forecast_days=14";
+      + "&timezone=auto&past_days=4&forecast_days=14";
 
     const [baseRes, modelsRes, synopticData, kpData] = await Promise.all([
       fetch(baseUrl),
@@ -19028,6 +19110,9 @@ function attachSplitGridResizer(gridEl, breakpointPrefix = "lg") {
   const visualRight = visualLeft === c0 ? c1 : c0;
   visualLeft.classList.add("sp-pane-left");
   visualRight.classList.add("sp-pane-right");
+  if (gridEl.id !== "view-glasshouse") {
+    gridEl.classList.add("sp-split-sticky-right");
+  }
 
   const wLeft = getColSpanWeight(visualLeft, breakpointPrefix);
   const wRight = getColSpanWeight(visualRight, breakpointPrefix);
