@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="SandPlot">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='26' fill='%23251d18'/%3E%3Crect x='8' y='8' width='112' height='112' rx='20' fill='none' stroke='%23ff9e2c' stroke-width='4'/%3E%3Ctext x='64' y='78' text-anchor='middle' font-family='monospace' font-weight='bold' font-size='54' fill='%23ffdfa8'%3ESP%3C/text%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='38' fill='%23251d18'/%3E%3Crect x='12' y='12' width='156' height='156' rx='28' fill='none' stroke='%23ff9e2c' stroke-width='5'/%3E%3Ctext x='90' y='110' text-anchor='middle' font-family='monospace' font-weight='bold' font-size='76' fill='%23ffdfa8'%3ESP%3C/text%3E%3C/svg%3E">
-<title>SandPlot • Precision Agronomy Sandbox v12.9</title>
+<title>SandPlot • Precision Agronomy Sandbox v12.10</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -426,7 +426,7 @@ html[data-theme="amber"] .sp-collapse-hdr:hover, html[data-theme="custom"] .sp-c
 <div class="w-6 h-6 rounded bg-vermilion-600 text-white flex items-center justify-center font-bold font-mono text-[11px] shrink-0">SP</div>
 <div class="flex items-baseline gap-1.5 min-w-0">
 <span class="font-bold tracking-tight text-sand-900 text-sm shrink-0">SandPlot</span>
-<span class="hidden xl:inline text-[9px] font-mono text-sand-500">v12.9</span>
+<span class="hidden xl:inline text-[9px] font-mono text-sand-500">v12.10</span>
 <span class="text-sand-400 text-xs">·</span>
 <span class="text-[11px] font-mono text-sand-600 truncate" id="active-module-title">Home &amp; Field Weather</span>
 </div>
@@ -2948,19 +2948,159 @@ Lodging: <span id="val-score-lodging">-</span>
 <section class="bg-white border border-sand-200 rounded-lg p-3 shadow-2xs space-y-2.5">
 <div class="flex flex-wrap justify-between items-center gap-3">
 <div class="flex items-center gap-2">
-<h2 class="text-sm font-bold text-sand-900">Nursery Detail Plan Viewer &amp; Workbook Debugger</h2>
+<h2 class="text-sm font-bold text-sand-900">Nursery Schematic, Fieldbook &amp; Metadata Studio</h2>
 <span id="fp-file-badge" class="px-2 py-0.5 rounded bg-sand-100 border border-sand-200 font-mono text-[10px] text-sand-600">Sample Demo</span>
-<button type="button" class="sp-info-pill" title="Pick workbook sheets &amp; generations, configure flexible serpentine board/run grids, and check files against the fixed mathematical schematic.">i</button>
+<button type="button" class="sp-info-pill" title="Toggle Fieldbook &amp; Metadata views, configure per-section display/export rules (Entry, Name, Cross, Pedigree, FC), configure serpentine grids, and batch-export multiple outputs.">i</button>
 </div>
 <div class="flex flex-wrap items-center gap-1.5">
 <label class="px-3 py-1.5 bg-blue-700 hover:bg-blue-800 text-white rounded font-bold text-[10px] cursor-pointer shadow-2xs flex items-center gap-1"><svg class="w-3.5 h-3.5 shrink-0 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg> Upload XLSX<input id="fp-upload" type="file" accept=".xlsx,.xls,.csv" onchange="handleFieldPlanUpload(event)" class="hidden"></label>
-<button type="button" onclick="loadFieldPlanDemo()" class="px-2.5 py-1.5 bg-sand-50 hover:bg-sand-100 border border-sand-300 rounded text-[10px] font-semibold text-sand-800" title="Load multi-sheet demo for testing grids &amp; diagnostics">Demo</button>
+<button type="button" onclick="loadFieldPlanDemo()" class="px-2.5 py-1.5 bg-sand-50 hover:bg-sand-100 border border-sand-300 rounded text-[10px] font-semibold text-sand-800" title="Load multi-sheet demo with Entry, Name, Cross, Pedigree &amp; Fieldbook metadata">Demo</button>
+<button type="button" id="fp-btn-toggle-fieldbook" onclick="toggleFieldPlanMetaBar()" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-[10px] font-bold shadow-2xs flex items-center gap-1" title="Toggle Fieldbook viewer, live metadata display pills (Entry, Name, Cross, Pedigree, FC) &amp; per-section rules">Fieldbooks &amp; Metadata ▾</button>
+<button type="button" id="fp-btn-toggle-export-studio" onclick="toggleFieldPlanExportStudio()" class="px-2.5 py-1.5 bg-teal-700 hover:bg-teal-800 text-white rounded text-[10px] font-bold shadow-2xs flex items-center gap-1" title="Configure metadata export columns, per-section export formats &amp; multiple batch outputs">Export Options ▾</button>
 <div class="flex overflow-hidden rounded bg-emerald-700 text-white text-[10px] font-bold shadow-2xs">
-<button type="button" onclick="exportFieldPlanImage('png')" class="px-2.5 py-1.5 border-r border-white/20 hover:bg-emerald-800">PNG</button>
-<button type="button" onclick="exportFieldPlanImage('svg')" class="px-2.5 py-1.5 border-r border-white/20 hover:bg-emerald-800">SVG</button>
-<button type="button" onclick="exportFieldPlanExcel()" class="px-2.5 py-1.5 hover:bg-emerald-800">Excel</button>
+<button type="button" onclick="exportFieldPlanImage('png')" class="px-2.5 py-1.5 border-r border-white/20 hover:bg-emerald-800" title="Export schematic PNG with current / per-section metadata labels">PNG</button>
+<button type="button" onclick="exportFieldPlanImage('svg')" class="px-2.5 py-1.5 border-r border-white/20 hover:bg-emerald-800" title="Export schematic SVG with current / per-section metadata labels">SVG</button>
+<button type="button" onclick="exportFieldPlanExcel()" class="px-2.5 py-1.5 hover:bg-emerald-800" title="Export Excel workbook with configured metadata sheets &amp; section rules">Excel</button>
 </div>
 </div>
+</div>
+
+<!-- TOGGLEABLE DRAWER 1: FIELDBOOK & METADATA DISPLAY + PER-SECTION RULES STUDIO -->
+<div id="fp-meta-toggle-drawer" class="hidden rounded-lg bg-indigo-50/60 p-3 space-y-3 text-[10px]">
+  <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-indigo-200/70">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="font-bold uppercase tracking-wider text-indigo-950 font-mono">Schematic Metadata &amp; Fieldbook View Controls</span>
+      <span class="text-[9.5px] text-indigo-800">Toggle which metadata fields appear on schematic blocks &amp; configure different metadata formats per section</span>
+    </div>
+    <div class="flex flex-wrap items-center gap-1.5">
+      <button type="button" onclick="toggleFieldPlanFieldbookPanel()" id="fp-btn-show-fb-table" class="px-2.5 py-1 rounded bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-[9.5px] shadow-2xs">Hide Fieldbook Table ▴</button>
+      <button type="button" onclick="applyFieldPlanMetaPreset('fc')" class="px-2 py-0.5 rounded bg-white hover:bg-indigo-100 text-indigo-900 font-semibold text-[9.5px]">FC Only</button>
+      <button type="button" onclick="applyFieldPlanMetaPreset('entry_fc')" class="px-2 py-0.5 rounded bg-white hover:bg-indigo-100 text-indigo-900 font-semibold text-[9.5px]">Entry + FC</button>
+      <button type="button" onclick="applyFieldPlanMetaPreset('name_fc')" class="px-2 py-0.5 rounded bg-white hover:bg-indigo-100 text-indigo-900 font-semibold text-[9.5px]">Name + FC</button>
+      <button type="button" onclick="applyFieldPlanMetaPreset('entry_name_fc')" class="px-2 py-0.5 rounded bg-white hover:bg-indigo-100 text-indigo-900 font-semibold text-[9.5px]">Entry + Name + FC</button>
+      <button type="button" onclick="applyFieldPlanMetaPreset('pedigree_fc')" class="px-2 py-0.5 rounded bg-white hover:bg-indigo-100 text-indigo-900 font-semibold text-[9.5px]">Pedigree + FC</button>
+      <button type="button" onclick="applyFieldPlanMetaPreset('per_section')" class="px-2 py-0.5 rounded bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold text-[9.5px]">Use Per-Section Rules</button>
+    </div>
+  </div>
+
+  <!-- Global Multi-Select Metadata Pills -->
+  <div class="space-y-1.5">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <span class="text-[9.5px] font-bold text-indigo-950 font-mono">1 · Active Global Metadata Fields on Schematic Blocks (click multiple to combine):</span>
+      <div class="flex flex-wrap items-center gap-2">
+        <label class="flex items-center gap-1 text-[9.5px] font-semibold text-indigo-950">Extra Workbook Col:
+          <select id="fp-custom-meta-col" onchange="setFieldPlanCustomMetaCol(this.value)" class="px-1.5 py-0.5 rounded bg-white font-mono text-[9.5px]">
+            <option value="">(None)</option>
+          </select>
+        </label>
+        <label class="flex items-center gap-1 text-[9.5px] font-semibold text-indigo-950">Separator:
+          <select id="fp-meta-sep" onchange="setFieldPlanMetaSeparator(this.value)" class="px-1.5 py-0.5 rounded bg-white font-mono text-[9.5px]">
+            <option value=" · ">· Dot</option>
+            <option value=" | ">| Pipe</option>
+            <option value=" / ">/ Slash</option>
+            <option value=" ">Space</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div id="fp-meta-field-pills" class="flex flex-wrap items-center gap-1.5"></div>
+  </div>
+
+  <!-- Per-Section Display & Export Rules Matrix -->
+  <div class="space-y-1.5 pt-2 border-t border-indigo-200/70">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[9.5px] font-bold text-indigo-950 font-mono">2 · Per-Section Display &amp; Export Rules (toggle how different sections render &amp; export):</span>
+        <label class="flex items-center gap-1 bg-white px-2 py-0.5 rounded text-[9.5px] font-bold text-indigo-950">Group Sections By:
+          <select id="fp-section-group-by" onchange="setFieldPlanSectionGroupBy(this.value)" class="bg-transparent border-0 font-bold text-[9.5px]">
+            <option value="sheet">Workbook Sheet</option>
+            <option value="generation">Generation / Tag</option>
+            <option value="nursery">Nursery Column</option>
+            <option value="stage">Stage Column</option>
+          </select>
+        </label>
+      </div>
+      <div class="flex flex-wrap items-center gap-1">
+        <button type="button" onclick="autoAssignSmartSectionRules()" class="px-2 py-0.5 rounded bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-[9px]" title="Auto-assign smart defaults: Trials/18s → Entry+Name+FC, F2/F3 → Cross+FC, Borders/Checks → Name+FC">Auto-Smart Section Rules</button>
+        <button type="button" onclick="resetAllSectionRulesToGlobal()" class="px-2 py-0.5 rounded bg-white hover:bg-indigo-100 text-indigo-900 font-semibold text-[9px]">Reset All to Global</button>
+      </div>
+    </div>
+    <div class="overflow-x-auto max-h-56 custom-scrollbar bg-white rounded p-1.5">
+      <table class="w-full text-left border-collapse text-[10px]">
+        <thead>
+          <tr class="border-b border-sand-200 text-[9px] uppercase text-sand-500 font-mono">
+            <th class="py-1 px-1.5 w-8 text-center" title="Include this section in exports">Exp</th>
+            <th class="py-1 px-1.5">Section Name</th>
+            <th class="py-1 px-1.5">Blocks / FCs</th>
+            <th class="py-1 px-1.5">Available Metadata Sample</th>
+            <th class="py-1 px-1.5">Section Display &amp; Export Mode</th>
+            <th class="py-1 px-1.5">Custom Per-Section Fields (when Mode = Custom)</th>
+          </tr>
+        </thead>
+        <tbody id="fp-section-rules-tbody" class="divide-y divide-sand-100"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- TOGGLEABLE DRAWER 2: MULTI-METADATA & MULTI-OUTPUT EXPORT STUDIO -->
+<div id="fp-export-studio-drawer" class="hidden rounded-lg bg-teal-50/70 p-3 space-y-3 text-[10px]">
+  <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-teal-200/80">
+    <div>
+      <span class="font-bold uppercase tracking-wider text-teal-950 font-mono">Multi-Metadata &amp; Multi-Output Export Studio</span>
+      <span class="text-[9.5px] text-teal-800 ml-2">Choose metadata columns, section rules, and batch-export multiple schematic views or multi-tab Fieldbook workbooks</span>
+    </div>
+    <div class="flex flex-wrap items-center gap-1.5">
+      <button type="button" onclick="exportFieldPlanExcel()" class="px-2.5 py-1 rounded bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[9.5px] shadow-2xs">Export Configured Excel (.xlsx)</button>
+      <button type="button" onclick="exportFieldPlanBatchImages('png')" class="px-2.5 py-1 rounded bg-teal-700 hover:bg-teal-800 text-white font-bold text-[9.5px] shadow-2xs" title="Download a separate PNG image for each checked Visual Variant below">Batch Export PNG Variants</button>
+      <button type="button" onclick="exportFieldPlanBatchImages('svg')" class="px-2.5 py-1 rounded bg-teal-800 hover:bg-teal-900 text-white font-bold text-[9.5px] shadow-2xs" title="Download a separate SVG image for each checked Visual Variant below">Batch Export SVG Variants</button>
+      <button type="button" onclick="exportFieldPlanMetadataCsv('blocks')" class="px-2.5 py-1 rounded bg-white hover:bg-teal-100 text-teal-950 font-bold text-[9.5px] shadow-2xs">Block Metadata CSV</button>
+      <button type="button" onclick="exportFieldPlanMetadataCsv('fieldbook')" class="px-2.5 py-1 rounded bg-white hover:bg-teal-100 text-teal-950 font-bold text-[9.5px] shadow-2xs">Full Fieldbook CSV</button>
+      <button type="button" onclick="exportFieldPlanPerSectionCsvs()" class="px-2.5 py-1 rounded bg-amber-600 hover:bg-amber-700 text-white font-bold text-[9.5px] shadow-2xs" title="Download a separate CSV file for each enabled section using that section's chosen metadata">Batch CSV per Section</button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
+    <!-- Left: Metadata Columns to Include in Exports -->
+    <div class="lg:col-span-5 bg-white rounded p-2.5 space-y-2">
+      <div class="flex items-center justify-between">
+        <span class="font-bold text-teal-950 font-mono text-[9.5px]">1 · Metadata Columns to Include in Schedule &amp; Fieldbook Exports</span>
+        <div class="flex gap-1">
+          <button type="button" onclick="setAllFieldPlanExportCols(true)" class="px-1.5 py-0.5 rounded bg-sand-100 hover:bg-sand-200 text-[8.5px] font-semibold">All</button>
+          <button type="button" onclick="setAllFieldPlanExportCols(false)" class="px-1.5 py-0.5 rounded bg-sand-100 hover:bg-sand-200 text-[8.5px] font-semibold">Core</button>
+        </div>
+      </div>
+      <div id="fp-export-col-checks" class="flex flex-wrap gap-1.5"></div>
+    </div>
+
+    <!-- Middle: Worksheets & Outputs to Generate in Excel -->
+    <div class="lg:col-span-4 bg-white rounded p-2.5 space-y-1.5">
+      <span class="font-bold text-teal-950 font-mono text-[9.5px] block">2 · Sheets &amp; Schedules Included in Excel (.xlsx) Export</span>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[9.5px]">
+        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" id="fp-exp-inc-condensed" checked onchange="syncFieldPlanExportOpts()"> <span>Condensed Math Board Plan</span></label>
+        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" id="fp-exp-inc-visual" checked onchange="syncFieldPlanExportOpts()"> <span>Visual Plan (Active/Section Rules)</span></label>
+        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" id="fp-exp-inc-blocks" checked onchange="syncFieldPlanExportOpts()"> <span>Block Metadata Schedule</span></label>
+        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" id="fp-exp-inc-fieldbook" checked onchange="syncFieldPlanExportOpts()"> <span>Expanded Fieldbook (9-Line Col C)</span></label>
+        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" id="fp-exp-inc-per-section" checked onchange="syncFieldPlanExportOpts()"> <span>Separate Tab per Section</span></label>
+        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" id="fp-exp-inc-variants" onchange="syncFieldPlanExportOpts()"> <span>Multi-Variant Visual Plan Tabs</span></label>
+      </div>
+    </div>
+
+    <!-- Right: Multi-Output Visual Schematic Variants (for Multi-Tab Excel & Batch PNG/SVG) -->
+    <div class="lg:col-span-3 bg-white rounded p-2.5 space-y-1.5">
+      <span class="font-bold text-teal-950 font-mono text-[9.5px] block">3 · Batch Visual Variants (PNG / SVG / Excel Tabs)</span>
+      <div id="fp-export-variant-checks" class="grid grid-cols-2 gap-1 text-[9.5px]">
+        <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="per_section" checked class="fp-var-chk"> <span>Per-Section Rules</span></label>
+        <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="fc" checked class="fp-var-chk"> <span>FC Range</span></label>
+        <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="entry_fc" checked class="fp-var-chk"> <span>Entry + FC</span></label>
+        <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="cross_fc" checked class="fp-var-chk"> <span>Name/Cross + FC</span></label>
+        <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="entry_name_fc" class="fp-var-chk"> <span>Entry + Name + FC</span></label>
+        <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="pedigree_fc" class="fp-var-chk"> <span>Pedigree + FC</span></label>
+        <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="entry_only" class="fp-var-chk"> <span>Entry Only</span></label>
+        <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" value="name_only" class="fp-var-chk"> <span>Name Only</span></label>
+      </div>
+    </div>
+  </div>
 </div>
 
 <details class="sp-progressive">
@@ -2978,13 +3118,23 @@ Lodging: <span id="val-score-lodging">-</span>
         <option value="generation">Sheet / Gen</option>
         <option value="nursery">Nursery Col</option>
         <option value="stage">Stage Col</option>
+        <option value="control">Control / Type</option>
       </select>
     </label>
     <label class="flex items-center gap-1 bg-sand-50 border border-sand-200 px-2 py-1 rounded text-[10px] font-bold text-sand-800">Label
-      <select id="fp-label-mode" onchange="renderFieldPlan()" class="bg-transparent border-0 font-bold text-[10px]">
+      <select id="fp-label-mode" onchange="onFieldPlanLabelModeSelect(this.value)" class="bg-transparent border-0 font-bold text-[10px]">
         <option value="fc">FC Range</option>
-        <option value="cross_fc">Name + FC</option>
-        <option value="gen_fc">Gen + FC</option>
+        <option value="entry_fc">Entry + FC</option>
+        <option value="cross_fc">Name / Cross + FC</option>
+        <option value="entry_name_fc">Entry + Name + FC</option>
+        <option value="pedigree_fc">Pedigree + FC</option>
+        <option value="gen_fc">Gen / Stage + FC</option>
+        <option value="nursery_fc">Nursery + FC</option>
+        <option value="selection_fc">Selection + FC</option>
+        <option value="entry_only">Entry Only</option>
+        <option value="name_only">Name / Cross Only</option>
+        <option value="custom_fields">Custom Toggled Fields</option>
+        <option value="per_section">Per-Section Rules</option>
       </select>
     </label>
     <label class="flex items-center gap-1 bg-sand-50 border border-sand-200 px-2 py-1 rounded text-[10px] font-bold text-sand-800" title="How to handle duplicate FC numbers across sheets">Dupes
@@ -3009,7 +3159,7 @@ Lodging: <span id="val-score-lodging">-</span>
       <section class="xl:col-span-7 bg-white border border-sand-200 rounded-lg p-3 shadow-2xs flex flex-col justify-between space-y-2">
         <div>
           <div class="flex flex-wrap items-center justify-between gap-2 pb-1.5 border-b border-sand-100">
-            <h3 class="text-[11px] font-bold text-sand-900">Workbook Sheets &amp; Generation Picker</h3>
+            <h3 class="text-[11px] font-bold text-sand-900">Workbook Sheets, Generation &amp; Section Metadata Picker</h3>
             <div class="flex items-center gap-1">
               <button type="button" onclick="setAllFieldPlanSheets(true)" class="px-2 py-0.5 bg-sand-50 hover:bg-sand-100 border border-sand-300 rounded text-[9.5px] font-semibold">All Data</button>
               <button type="button" onclick="setAllFieldPlanSheets(false)" class="px-2 py-0.5 bg-sand-50 hover:bg-sand-100 border border-sand-300 rounded text-[9.5px] font-semibold">None</button>
@@ -3022,6 +3172,7 @@ Lodging: <span id="val-score-lodging">-</span>
                   <th class="py-1 px-1.5 w-7">Use</th>
                   <th class="py-1 px-1.5">Sheet Name</th>
                   <th class="py-1 px-1.5">Generation / Tag</th>
+                  <th class="py-1 px-1.5">Section Label / Export</th>
                   <th class="py-1 px-1.5 text-right">FC Rows</th>
                   <th class="py-1 px-1.5">FC Range</th>
                   <th class="py-1 px-1.5">Detected Columns</th>
@@ -3128,7 +3279,7 @@ Lodging: <span id="val-score-lodging">-</span>
 </div>
 <div class="flex flex-wrap items-center gap-2">
 <div class="flex items-center gap-1 bg-sand-50 border border-sand-300 rounded px-2 py-0.5">
-<input id="fp-search" type="text" placeholder="Find FC, Cross, Sheet..." oninput="handleFieldPlanSearch(this.value)" class="bg-transparent border-0 text-[10px] w-36 focus:outline-none font-mono" aria-label="Find FC, Cross, Sheet...">
+<input id="fp-search" type="text" placeholder="Find FC, Entry, Name, Cross, Pedigree..." oninput="handleFieldPlanSearch(this.value)" class="bg-transparent border-0 text-[10px] w-44 focus:outline-none font-mono" aria-label="Find FC, Entry, Name, Cross, Pedigree...">
 <button type="button" onclick="jumpNextFieldPlanMatch()" class="px-1.5 py-0.5 bg-sand-200 hover:bg-sand-300 rounded text-[9px] font-bold text-sand-800" title="Jump to next matching block">Next ↵</button>
 <span id="fp-search-count" class="text-[9px] font-mono text-sand-500"></span>
 </div>
@@ -3144,12 +3295,45 @@ Lodging: <span id="val-score-lodging">-</span>
 <!-- WINDOW 1: DETAILED VISUAL SCHEMATIC GRID (PRIMARY FIRST-GLANCE VIEW) -->
 <section class="bg-white border border-sand-200 rounded-lg p-2 shadow-2xs">
 <div class="flex flex-wrap items-center justify-between px-1 pb-2 gap-2">
-<h3 class="text-[10px] font-bold uppercase text-sand-600 font-mono">1 · Detailed Cross &amp; FC Block Plan · Runs Left → Right (Board 1 at Bottom)</h3>
-<span class="text-[9.5px] text-sand-500">Click any block to inspect Excel row provenance</span>
+<div class="flex flex-wrap items-center gap-2">
+  <h3 class="text-[10px] font-bold uppercase text-sand-600 font-mono">1 · Detailed Cross, Entry &amp; FC Block Schematic · Runs Left → Right (Board 1 at Bottom)</h3>
+  <span id="fp-active-label-badge" class="px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-900 font-mono text-[9px] font-bold">Labels: FC Range</span>
+</div>
+<span class="text-[9.5px] text-sand-500">Click any block to inspect Excel row provenance &amp; Fieldbook block sheet</span>
 </div>
 <div id="fp-scroll" class="overflow-auto max-h-[70vh] border border-sand-300 bg-sand-200 custom-scrollbar">
 <div id="fp-grid-export" class="field-plan-grid min-h-[220px] p-2 gap-0"></div>
 </div>
+</section>
+
+<!-- WINDOW 3: LIVE FIELDBOOK & BLOCK METADATA EXPLORER (TOGGLED ON VIA FIELDBOOKS & METADATA BUTTON OR BLOCK CLICK) -->
+<section id="fp-fieldbook-viewer-card" class="hidden bg-white border border-sand-200 rounded-lg p-3 shadow-2xs space-y-2.5">
+  <div class="flex flex-wrap items-center justify-between gap-2 pb-1.5 border-b border-sand-100">
+    <div class="flex flex-wrap items-center gap-2">
+      <h3 class="text-[11px] font-bold uppercase text-indigo-950 font-mono">Fieldbook &amp; Metadata Explorer</h3>
+      <div class="flex rounded bg-sand-100 p-0.5 text-[9.5px] font-bold font-mono">
+        <button type="button" id="fp-fb-tab-colc" onclick="setFieldPlanFieldbookTab('colc')" class="px-2 py-0.5 rounded bg-indigo-700 text-white">Fieldbook Sheet (9-Line Col C)</button>
+        <button type="button" id="fp-fb-tab-blocks" onclick="setFieldPlanFieldbookTab('blocks')" class="px-2 py-0.5 rounded text-sand-700 hover:bg-sand-200">Block Metadata Schedule</button>
+        <button type="button" id="fp-fb-tab-rows" onclick="setFieldPlanFieldbookTab('rows')" class="px-2 py-0.5 rounded text-sand-700 hover:bg-sand-200">Expanded Pegs / Rows</button>
+      </div>
+    </div>
+    <div class="flex flex-wrap items-center gap-1.5 text-[9.5px]">
+      <label class="flex items-center gap-1 bg-sand-50 px-2 py-0.5 rounded font-semibold text-sand-800">Section:
+        <select id="fp-fb-section-filter" onchange="renderFieldPlanFieldbookExplorer()" class="bg-transparent border-0 font-bold text-[9.5px]">
+          <option value="all">All Active Sections</option>
+        </select>
+      </label>
+      <label class="flex items-center gap-1 bg-sand-50 px-2 py-0.5 rounded font-semibold text-sand-800">Run:
+        <select id="fp-fb-run-filter" onchange="renderFieldPlanFieldbookExplorer()" class="bg-transparent border-0 font-bold text-[9.5px]">
+          <option value="all">All Runs</option>
+        </select>
+      </label>
+      <button type="button" onclick="exportFieldPlanMetadataCsv('fieldbook')" class="px-2 py-0.5 rounded bg-indigo-700 hover:bg-indigo-800 text-white font-bold">Export Fieldbook CSV</button>
+      <button type="button" onclick="exportFieldPlanMetadataCsv('blocks')" class="px-2 py-0.5 rounded bg-teal-700 hover:bg-teal-800 text-white font-bold">Export Block Schedule CSV</button>
+      <button type="button" onclick="toggleFieldPlanFieldbookPanel(false)" class="px-1.5 py-0.5 rounded bg-sand-100 hover:bg-sand-200 text-sand-700 font-bold" title="Close Fieldbook Explorer">✕</button>
+    </div>
+  </div>
+  <div id="fp-fieldbook-explorer-mount" class="overflow-x-auto max-h-96 custom-scrollbar"></div>
 </section>
 
 <!-- WINDOW 2: CONDENSED MATHEMATICAL BOARD & RUN REFERENCE SCHEMATIC (TUCKED INTO DISCLOSURE) -->
@@ -3897,7 +4081,7 @@ nursery: { plotRows: 10, plotCols: 5, blockRows: 2, blockCols: 2, gapRows: 1, ga
 glasshouse: { troughs: [{ id: 0, label: "Zone 1", w: 1.2, l: 5, pinned: [], items: [] }, { id: 1, label: "Zone 2", w: 1.2, l: 5, pinned: [], items: [] }, { id: 2, label: "Zone 3", w: 1.2, l: 5, pinned: [], items: [] }, { id: 3, label: "Zone 4", w: 1.2, l: 5, pinned: [], items: [] }], items: [], history: [], redoStack: [], totalArea: 0, usedArea: 0, gapArea: 0, editingId: null, dragIndex: null, packed: [], toolMode: "pan", gridStep: 0.5, gapLength: 0.5, gapFullWidth: true, startCorner: "bottom-left", packMode: "auto-best", colOrder: "left-first", preferredColMix: null, layoutLocked: false, autoPinOnEdit: true, selectedPlacement: null, selectedPlacements: [], multiSelectMode: false, autoFit: true, activeManualItemId: "", drawOrientation: "L", drawFillCol: false, drawPaintMode: "allocate", savedGlasshouses: [], activeGlasshouseId: "", lockStockMeta: false, keepBarcodeFocus: true, scanHistory: [], ui: { zoom: 1, panX: 0, panY: 0, isPanning: false, dragMoved: false, startX: 0, startY: 0, rotated: false } },
 cropart: { imgElement: null, grid: null, w: 40, h: 40, thresh: 128, plant: 'ART', blank: 'N-ALLEY' },
 ghRequests: [], ghActiveTab: "spray", sprayItems: [], consumableItems: [],
-fieldPlan: { sheets: [], rawPegs: [], mathPacked: [], fieldData: [], grids: [{ id: 'g1', name: 'Grid 1', boards: 4, runs: 35, rowsPerBoard: 108, startDir: 'bottom' }], stopAtGridEnd: false, engineMode: 'math', colorBy: 'generation', labelMode: 'fc', dupMode: 'merge', condensedMode: 'gen_board', condensedNumbering: 'continuous', mathStartFcOverride: '', showWidthTape: true, tapeBedM: 1.55, tapePitchM: 1.88, altStartFc: 0, altEndFc: 0, altOffset: 0, startsAtBottom: true, colWidth: 56, searchQuery: '', searchMatchIndex: 0, highlightDrift: false, diagOpen: false, diagFilter: 'all', selectedBlockKey: null, diagnostics: { duplicates: [], fcGaps: [], excelDrifts: [], boardSplits: [], overflows: [], firstDrift: null }, nurseryColors: {}, legendNames: {}, sourceName: '', duplicateCount: 0, initialized: false, loading: false },
+fieldPlan: { sheets: [], rawPegs: [], mathPacked: [], fieldData: [], grids: [{ id: 'g1', name: 'Grid 1', boards: 4, runs: 35, rowsPerBoard: 108, startDir: 'bottom' }], stopAtGridEnd: false, engineMode: 'math', colorBy: 'generation', labelMode: 'fc', activeMetaFields: ['fc'], customMetaCol: '', metaSeparator: ' · ', sectionGroupBy: 'sheet', sectionRules: {}, availableMetaCols: [], metaBarOpen: false, exportStudioOpen: false, fieldbookPanelOpen: false, fieldbookTab: 'colc', exportCols: ['fc', 'run_board', 'rows', 'entry', 'name', 'cross', 'pedigree', 'selection', 'stage', 'nursery', 'utc', 'control', 'reason', 'comment'], exportSheets: { condensed: true, visual: true, blocks: true, fieldbook: true, perSection: true, variants: false }, dupMode: 'merge', condensedMode: 'gen_board', condensedNumbering: 'continuous', mathStartFcOverride: '', showWidthTape: true, tapeBedM: 1.55, tapePitchM: 1.88, altStartFc: 0, altEndFc: 0, altOffset: 0, startsAtBottom: true, colWidth: 56, searchQuery: '', searchMatchIndex: 0, highlightDrift: false, diagOpen: false, diagFilter: 'all', selectedBlockKey: null, diagnostics: { duplicates: [], fcGaps: [], excelDrifts: [], boardSplits: [], overflows: [], firstDrift: null }, nurseryColors: {}, legendNames: {}, sourceName: '', duplicateCount: 0, initialized: false, loading: false },
 fieldGame: { cols: 24, rows: 16, cell: 25, snake: [], dir: { x: 1, y: 0 }, dirQueue: [], food: null, bonus: null, obstacles: [], score: 0, sheaves: 0, best: 0, speed: 115, timer: null, status: "ready", initialized: false },
 ferts: { crop: 'winter_oats', yieldTha: 7.5, straw: 'removed', soilType: 'medium', prevCrop: 'cereal', rainfall: 'mod', snsIndex: 1, olsenP: 14, exchK: 110, exchMg: 45, curPh: 5.9, targetPh: 6.5, limeNv: 52, calcDir: 'nutrient_to_product', productPreset: '34.5,0,0,0,Ammonium Nitrate (Nitram 34.5% N)', productName: 'Ammonium Nitrate (Nitram 34.5% N)', pctN: 34.5, pctP: 0, pctK: 0, pctS: 0, targetElement: 'N', targetNutRate: 120, directProdRate: 300, fieldHa: 4.5, splitLabel: 'Main Spring Dressing (GS31)', gandyWidthM: 1.50, gandyDistM: 10.0, gandyTareG: 0, gandyCam: 'Cam 24', plotW: 1.55, plotL: 6.0, plotCount: 72, bufferPct: 15, actualCatchG: null, viewFocus: 'rb209', schedule: [] },
 boundaries: [], activeBoundaryId: null,
@@ -5713,6 +5897,14 @@ function buildWorkspaceSnapshot() {
       engineMode: state.fieldPlan.engineMode,
       colorBy: state.fieldPlan.colorBy,
       labelMode: state.fieldPlan.labelMode,
+      activeMetaFields: state.fieldPlan.activeMetaFields || ['fc'],
+      customMetaCol: state.fieldPlan.customMetaCol || '',
+      metaSeparator: state.fieldPlan.metaSeparator || ' · ',
+      sectionGroupBy: state.fieldPlan.sectionGroupBy || 'sheet',
+      sectionRules: state.fieldPlan.sectionRules || {},
+      availableMetaCols: state.fieldPlan.availableMetaCols || [],
+      exportCols: state.fieldPlan.exportCols || [],
+      exportSheets: state.fieldPlan.exportSheets || {},
       dupMode: state.fieldPlan.dupMode,
       condensedMode: state.fieldPlan.condensedMode,
       condensedNumbering: state.fieldPlan.condensedNumbering,
@@ -6067,6 +6259,14 @@ function applyWorkspaceSnapshot(snapshot) {
       if (typeof fpc.engineMode === 'string') state.fieldPlan.engineMode = fpc.engineMode;
       if (typeof fpc.colorBy === 'string') state.fieldPlan.colorBy = fpc.colorBy;
       if (typeof fpc.labelMode === 'string') state.fieldPlan.labelMode = fpc.labelMode;
+      if (Array.isArray(fpc.activeMetaFields) && fpc.activeMetaFields.length) state.fieldPlan.activeMetaFields = fpc.activeMetaFields;
+      if (typeof fpc.customMetaCol === 'string') state.fieldPlan.customMetaCol = fpc.customMetaCol;
+      if (typeof fpc.metaSeparator === 'string') state.fieldPlan.metaSeparator = fpc.metaSeparator;
+      if (typeof fpc.sectionGroupBy === 'string') state.fieldPlan.sectionGroupBy = fpc.sectionGroupBy;
+      if (fpc.sectionRules && typeof fpc.sectionRules === 'object') state.fieldPlan.sectionRules = fpc.sectionRules;
+      if (Array.isArray(fpc.availableMetaCols)) state.fieldPlan.availableMetaCols = fpc.availableMetaCols;
+      if (Array.isArray(fpc.exportCols) && fpc.exportCols.length) state.fieldPlan.exportCols = fpc.exportCols;
+      if (fpc.exportSheets && typeof fpc.exportSheets === 'object') state.fieldPlan.exportSheets = { ...state.fieldPlan.exportSheets, ...fpc.exportSheets };
       if (typeof fpc.dupMode === 'string') state.fieldPlan.dupMode = fpc.dupMode;
       if (typeof fpc.condensedMode === 'string') state.fieldPlan.condensedMode = fpc.condensedMode;
       if (typeof fpc.condensedNumbering === 'string') state.fieldPlan.condensedNumbering = fpc.condensedNumbering;
@@ -21297,27 +21497,92 @@ function shouldSkipSheetByDefault(sheetName, fcCount) {
   return false;
 }
 
+const FIELD_PLAN_META_FIELDS = [
+  { key: 'fc', label: 'FC Range', short: 'FC' },
+  { key: 'entry', label: 'Entry #', short: 'Entry' },
+  { key: 'name', label: 'Name / Variety', short: 'Name' },
+  { key: 'cross', label: 'Cross / ID', short: 'Cross' },
+  { key: 'pedigree', label: 'Pedigree', short: 'Pedigree' },
+  { key: 'selection', label: 'Selection / Ref', short: 'Sel' },
+  { key: 'stage', label: 'Stage / Gen', short: 'Gen' },
+  { key: 'nursery', label: 'Nursery', short: 'Nurs' },
+  { key: 'utc', label: 'UTC / Source', short: 'UTC' },
+  { key: 'control', label: 'Control / Status', short: 'Ctrl' },
+  { key: 'reason', label: 'Cross Reason', short: 'Reason' },
+  { key: 'comment', label: 'Comment', short: 'Note' },
+  { key: 'rows', label: 'Row Count', short: 'Rows' },
+  { key: 'run_board', label: 'Run & Board', short: 'R/B' },
+  { key: 'custom', label: 'Extra Col', short: 'Col' }
+];
+
+const FIELD_PLAN_SECTION_MODES = [
+  { value: 'global', label: 'Follow Global Toggles' },
+  { value: 'fc', label: 'FC Range Only' },
+  { value: 'entry_fc', label: 'Entry + FC' },
+  { value: 'cross_fc', label: 'Name / Cross + FC' },
+  { value: 'entry_name_fc', label: 'Entry + Name + FC' },
+  { value: 'pedigree_fc', label: 'Pedigree + FC' },
+  { value: 'gen_fc', label: 'Stage / Gen + FC' },
+  { value: 'nursery_fc', label: 'Nursery + FC' },
+  { value: 'selection_fc', label: 'Selection + FC' },
+  { value: 'entry_only', label: 'Entry Only' },
+  { value: 'name_only', label: 'Name / Cross Only' },
+  { value: 'custom_fields', label: 'Custom Section Fields' }
+];
+
 function buildFieldPlanDemoSheets() {
-  const mkPegs = (sheetId, sheetName, startFc, crosses, rowsPerCross, stage, nursery, startRun, isAlt) => {
+  const mkPegs = (sheetId, sheetName, startFc, items, rowsPerCross, stage, nursery, startRun, isAlt) => {
     const pegs = [];
     let fc = startFc;
     let phys = 1;
-    crosses.forEach((cr, cIdx) => {
-      for (let r = 1; r <= rowsPerCross; r++) {
+    items.forEach((item, cIdx) => {
+      const cr = typeof item === 'string' ? item : item.cross;
+      const nm = (typeof item === 'object' && item.name) ? item.name : cr;
+      const ent = (typeof item === 'object' && item.entry) ? item.entry : `27TC-${String(cIdx + 1).padStart(2, '0')}`;
+      const ped = (typeof item === 'object' && item.pedigree) ? item.pedigree : (cr.includes('/') ? cr.replace(/\s*\/\s*/g, ' x ') : `${cr} x Mascani`);
+      const utc = (typeof item === 'object' && item.utc) ? item.utc : `UTC26-${101 + cIdx}`;
+      const ctrl = (typeof item === 'object' && item.control) ? item.control : (cIdx === 0 ? 'Control (C1)' : 'Test Line');
+      const rsn = (typeof item === 'object' && item.reason) ? item.reason : 'High Yield & Crown Rust Resistance';
+      const cmt = (typeof item === 'object' && item.comment) ? item.comment : (cIdx === 0 ? 'Standard check block' : 'Selected F2/F3 family');
+      const trt = (typeof item === 'object' && item.traits) ? item.traits : 'EE: med | ht: med | colour: yellow';
+      const rCount = (typeof item === 'object' && item.rows) ? item.rows : rowsPerCross;
+
+      for (let r = 1; r <= rCount; r++) {
         const step = isAlt ? 2 : 1;
         const runOffset = Math.floor((phys - 1) / 108);
+        const mod6 = ((r - 1) % 12) + 1;
+        const seqVal = mod6 <= 6 ? mod6 : (13 - mod6);
         pegs.push({
           fc,
           rangeIdx: r,
-          seq: r <= 6 ? r : (13 - r),
-          name: cr,
+          seq: seqVal,
+          entry: ent,
+          name: nm,
           cross: cr,
+          pedigree: ped,
           selection: `${cr}-${r}`,
           nursery,
           stage,
+          utc,
+          control: ctrl,
+          reason: rsn,
+          comment: cmt,
+          traits: trt,
+          rawMeta: {
+            ENTRY_2027: ent,
+            Name: nm,
+            cross: cr,
+            pedigree: ped,
+            stage_2027: stage,
+            nursery: nursery,
+            utc__st: utc,
+            'test_line/_control': ctrl,
+            reason: rsn,
+            sowing_comment: cmt
+          },
           excelRun: startRun + runOffset,
           excelBoard: 1,
-          excelRow: r + 1 + cIdx * rowsPerCross,
+          excelRow: r + 1 + cIdx * rCount,
           sheetId,
           sheetName
         });
@@ -21327,14 +21592,43 @@ function buildFieldPlanDemoSheets() {
     });
     return pegs;
   };
-  const s1Pegs = mkPegs('demo_f2', 'F2_Populations', 1001, ['Dalguise / Maris Otter', 'Planet / Laureate', 'Tipple / Concerto', 'Diablo / Sienna'], 36, 'F2', 'F2 Hulled', 1, false);
-  const s2Pegs = mkPegs('demo_f3', 'F3_Headrows', 1145, ['ag104 / Propino', 'ag211 / Odyssey', 'ag305 / Westminster', 'ag412 / Scholar', 'ag518 / Tungsten'], 24, 'F3', 'F3 Hulled', 2, false);
-  const s3Pegs = mkPegs('demo_alts', 'Alts_2027', 1265, ['Alt-Check-A', 'Alt-Check-B', 'Alt-Line-03'], 18, 'Alts', 'Alternates', 4, true);
+
+  const s0Pegs = mkPegs('demo_18s', '18s_Trials_2027', 929, [
+    { entry: '27TC-01', name: 'Dalguise', cross: 'Dalguise', pedigree: 'Checked Border Variety', utc: 'UTC26-001', control: 'Border', reason: 'Perimeter Border', comment: '36r border buffer', rows: 36 },
+    { entry: '27TC-02', name: 'Mascani', cross: '95-56ACN3', pedigree: 'Jalna x Millennium', utc: 'UTC26-012', control: 'Control (C1)', reason: 'Milling Check', comment: 'Low screenings check', rows: 18 },
+    { entry: '27TC-03', name: 'Cromwell', cross: '10-108ACN15/2', pedigree: 'Mascani x 2009-115', utc: 'UTC26-019', control: 'Control (C2)', reason: 'BYDV Resistance', comment: 'Short stiff straw', rows: 18 }
+  ], 18, '18s', '18s 2027', 1, false);
+
+  const s1Pegs = mkPegs('demo_f2', 'F2_Populations', 1001, [
+    { entry: 'F2-2701', name: 'Dalguise / Maris Otter', cross: '2025-101Cn1', pedigree: 'Dalguise x Maris Otter', utc: 'UTC26-101', control: 'F2 Pop', reason: 'Winter Malting Quality', comment: 'Plump grain' },
+    { entry: 'F2-2702', name: 'Planet / Laureate', cross: '2025-102Cn4', pedigree: 'Planet x Laureate', utc: 'UTC26-102', control: 'F2 Pop', reason: 'High Extract Yield', comment: 'Early vigour' },
+    { entry: 'F2-2703', name: 'Tipple / Concerto', cross: '2025-108Cn2', pedigree: 'Tipple x Concerto', utc: 'UTC26-103', control: 'F2 Pop', reason: 'Straw Stiffness', comment: 'Clean flag leaf' },
+    { entry: 'F2-2704', name: 'Diablo / Sienna', cross: '2025-114Cn7', pedigree: 'Diablo x Sienna', utc: 'UTC26-104', control: 'F2 Pop', reason: 'Specific Weight', comment: 'Golden husk' }
+  ], 36, 'F2', 'F2 Hulled', 1, false);
+
+  const s2Pegs = mkPegs('demo_f3', 'F3_Headrows', 1145, [
+    { entry: 'F3-310', name: 'ag104 / Propino', cross: '2024-045Cn1/2', pedigree: 'ag104 x Propino', utc: 'UTC26-201', control: 'Test Line', reason: 'Mildew Resistance', comment: 'Selected score 8' },
+    { entry: 'F3-311', name: 'ag211 / Odyssey', cross: '2024-052Cn3/1', pedigree: 'ag211 x Odyssey', utc: 'UTC26-202', control: 'Test Line', reason: 'High Kernel Content', comment: 'Thin husk' },
+    { entry: 'F3-312', name: 'ag305 / Westminster', cross: '2024-061Cn2/4', pedigree: 'ag305 x Westminster', utc: 'UTC26-203', control: 'Test Line', reason: 'Winter Hardiness', comment: 'Erect habit' },
+    { entry: 'F3-313', name: 'ag412 / Scholar', cross: '2024-078Cn5/1', pedigree: 'ag412 x Scholar', utc: 'UTC26-204', control: 'Test Line', reason: 'Crown Rust Resistance', comment: 'Bright straw' },
+    { entry: 'F3-314', name: 'ag518 / Tungsten', cross: '2024-089Cn1/3', pedigree: 'ag518 x Tungsten', utc: 'UTC26-205', control: 'Test Line', reason: 'High Beta-Glucan', comment: 'Early panicle emergence' }
+  ], 24, 'F3', 'F3 Hulled', 2, false);
+
+  const s3Pegs = mkPegs('demo_alts', 'Alts_2027', 1265, [
+    { entry: 'ALT-01', name: 'Alt-Check-A (Peloton)', cross: 'ALT27-01', pedigree: 'Tardis x 1998-097Cn8', utc: 'UTC26-301', control: 'Control (Alt)', reason: 'Alternate Check', comment: '2x Double physical row spacing' },
+    { entry: 'ALT-02', name: 'Alt-Check-B (Avalon)', cross: 'ALT27-02', pedigree: 'Mascani x Balado', utc: 'UTC26-302', control: 'Control (Alt)', reason: 'Alternate Check', comment: '2x Double physical row spacing' },
+    { entry: 'ALT-03', name: 'Alt-Line-03', cross: 'ALT27-03', pedigree: 'Cromwell x Eagle', utc: 'UTC26-303', control: 'Test Line', reason: 'Spring/Autumn Plasticity', comment: '2x Double physical row spacing' }
+  ], 18, 'Alts', 'Alternates', 4, true);
+
+  const demoCols = ['FC2027', 'ENTRY_2027', 'Name', 'cross', 'pedigree', 'Range', 'Stage', 'nursery', 'utc__st', 'test_line/_control', 'reason', 'sowing_comment'];
+  state.fieldPlan.availableMetaCols = demoCols;
+
   return [
-    { id: 'demo_summary', name: 'RAW_summary', enabled: false, generation: 'Summary', isAlt: false, spacerAfter: 0, rowCount: 12, fcCount: 0, minFc: null, maxFc: null, detectedCols: ['nursery', 'count'], pegs: [] },
-    { id: 'demo_f2', name: 'F2_Populations', enabled: true, generation: 'F2', isAlt: false, spacerAfter: 0, rowCount: s1Pegs.length, fcCount: s1Pegs.length, minFc: 1001, maxFc: 1144, detectedCols: ['FC2027', 'Cross', 'Range', 'Stage'], pegs: s1Pegs },
-    { id: 'demo_f3', name: 'F3_Headrows', enabled: true, generation: 'F3', isAlt: false, spacerAfter: 0, rowCount: s2Pegs.length, fcCount: s2Pegs.length, minFc: 1145, maxFc: 1264, detectedCols: ['FC2027', 'Selection', 'Range', 'Run/Board'], pegs: s2Pegs },
-    { id: 'demo_alts', name: 'Alts_2027', enabled: true, generation: 'Alts', isAlt: true, spacerAfter: 0, rowCount: s3Pegs.length, fcCount: s3Pegs.length, minFc: 1265, maxFc: 1318, detectedCols: ['FC2027', 'Cross', 'Range', '2x Alt'], pegs: s3Pegs }
+    { id: 'demo_summary', name: 'RAW_summary', enabled: false, generation: 'Summary', isAlt: false, spacerAfter: 0, rowCount: 12, fcCount: 0, minFc: null, maxFc: null, detectedCols: ['nursery', 'count'], allColumns: ['nursery', 'count'], pegs: [] },
+    { id: 'demo_18s', name: '18s_Trials_2027', enabled: true, generation: '18s', isAlt: false, spacerAfter: 0, rowCount: s0Pegs.length, fcCount: s0Pegs.length, minFc: 929, maxFc: 1000, detectedCols: ['FC', 'Entry', 'Name', 'Cross', 'Pedigree', 'Stage'], allColumns: demoCols, pegs: s0Pegs },
+    { id: 'demo_f2', name: 'F2_Populations', enabled: true, generation: 'F2', isAlt: false, spacerAfter: 0, rowCount: s1Pegs.length, fcCount: s1Pegs.length, minFc: 1001, maxFc: 1144, detectedCols: ['FC', 'Entry', 'Cross', 'Pedigree', 'Range', 'Stage'], allColumns: demoCols, pegs: s1Pegs },
+    { id: 'demo_f3', name: 'F3_Headrows', enabled: true, generation: 'F3', isAlt: false, spacerAfter: 0, rowCount: s2Pegs.length, fcCount: s2Pegs.length, minFc: 1145, maxFc: 1264, detectedCols: ['FC', 'Entry', 'Selection', 'Pedigree', 'Range'], allColumns: demoCols, pegs: s2Pegs },
+    { id: 'demo_alts', name: 'Alts_2027', enabled: true, generation: 'Alts', isAlt: true, spacerAfter: 0, rowCount: s3Pegs.length, fcCount: s3Pegs.length, minFc: 1265, maxFc: 1318, detectedCols: ['FC', 'Entry', 'Name', 'Pedigree', '2x Alt'], allColumns: demoCols, pegs: s3Pegs }
   ];
 }
 
@@ -21362,6 +21656,14 @@ function toggleFieldPlanStart() {
 
 function syncFieldPlanControlsFromState() {
   const plan = state.fieldPlan;
+  if (!Array.isArray(plan.activeMetaFields) || !plan.activeMetaFields.length) plan.activeMetaFields = ['fc'];
+  if (!plan.sectionRules || typeof plan.sectionRules !== 'object') plan.sectionRules = {};
+  if (!Array.isArray(plan.exportCols) || !plan.exportCols.length) {
+    plan.exportCols = ['fc', 'run_board', 'rows', 'entry', 'name', 'cross', 'pedigree', 'selection', 'stage', 'nursery', 'utc', 'control', 'reason', 'comment'];
+  }
+  if (!plan.exportSheets || typeof plan.exportSheets !== 'object') {
+    plan.exportSheets = { condensed: true, visual: true, blocks: true, fieldbook: true, perSection: true, variants: false };
+  }
   const setVal = (id, val) => { const el = document.getElementById(id); if (el && val !== undefined && val !== null) el.value = val; };
   setVal('fp-engine', plan.engineMode || 'math');
   setVal('fp-color-by', plan.colorBy || 'generation');
@@ -21376,12 +21678,21 @@ function syncFieldPlanControlsFromState() {
   setVal('fp-cond-start-fc', plan.mathStartFcOverride ?? '');
   setVal('fp-cond-bed-m', plan.tapeBedM ?? 1.55);
   setVal('fp-cond-pitch-m', plan.tapePitchM ?? 1.88);
+  setVal('fp-meta-sep', plan.metaSeparator || ' · ');
+  setVal('fp-section-group-by', plan.sectionGroupBy || 'sheet');
   const tapeChk = document.getElementById('fp-cond-show-tape');
   if (tapeChk) tapeChk.checked = plan.showWidthTape !== false;
   const stopEl = document.getElementById('fp-stop-at-end');
   if (stopEl) stopEl.checked = Boolean(plan.stopAtGridEnd);
   const driftEl = document.getElementById('fp-highlight-drift');
   if (driftEl) driftEl.checked = Boolean(plan.highlightDrift);
+  const setChk = (id, v) => { const el = document.getElementById(id); if (el) el.checked = Boolean(v); };
+  setChk('fp-exp-inc-condensed', plan.exportSheets.condensed !== false);
+  setChk('fp-exp-inc-visual', plan.exportSheets.visual !== false);
+  setChk('fp-exp-inc-blocks', plan.exportSheets.blocks !== false);
+  setChk('fp-exp-inc-fieldbook', plan.exportSheets.fieldbook !== false);
+  setChk('fp-exp-inc-per-section', plan.exportSheets.perSection !== false);
+  setChk('fp-exp-inc-variants', Boolean(plan.exportSheets.variants));
   syncStartDirLabelFromGrids();
 }
 
@@ -21394,8 +21705,10 @@ function initializeFieldPlan() {
   if (plan.initialized) {
     renderFieldPlanSheetsTable();
     renderFieldPlanGridsTable();
+    renderFieldPlanMetaStudio();
     renderFieldPlan();
     renderCondensedFieldPlan();
+    renderFieldPlanFieldbookExplorer();
     return;
   }
   plan.initialized = true;
@@ -21424,15 +21737,33 @@ function parseWorkbookSheetForFieldPlan(workbook, sheetName, sheetIdx) {
   const sheetId = `sheet_${sheetIdx}`;
   const pegs = [];
   const colFlags = new Set();
+  const rawColSet = new Set();
 
   const normalizeKey = k => String(k || '').toLowerCase().replace(/_\d+$/, '').replace(/[^a-z0-9]/g, '');
+
+  const parseOptInt = v => {
+    if (v === undefined || v === null || String(v).trim() === '') return null;
+    const n = parseInt(v, 10);
+    return Number.isFinite(n) ? n : null;
+  };
+
+  // Track last block metadata for forward-filling across rows of a multi-row Fieldbook block (range > 1)
+  let carryBlockMeta = {
+    entry: '', name: '', cross: '', pedigree: '', selection: '',
+    nursery: '', stage: '', utc: '', control: '', reason: '', comment: '', traits: ''
+  };
+  let runningAutoFc = 1;
 
   rows.forEach((row, rowIndex) => {
     const keys = Object.keys(row);
     const firstByNorm = {};
+    const rawMeta = {};
     keys.forEach(rawKey => {
+      if (!rawKey || String(rawKey).startsWith('__EMPTY')) return;
+      rawColSet.add(rawKey);
       const val = row[rawKey];
       if (val === undefined || val === null || String(val).trim() === '') return;
+      rawMeta[rawKey] = String(val).trim();
       const nk = normalizeKey(rawKey);
       if (firstByNorm[nk] === undefined) firstByNorm[nk] = val;
     });
@@ -21443,55 +21774,197 @@ function parseWorkbookSheetForFieldPlan(workbook, sheetName, sheetIdx) {
       return undefined;
     };
 
-    const rawFc = getVal(['fc2027', 'fc2026', 'fc2025', 'fc2028', 'fc', 'fieldcode', 'plot', 'plotid']);
-    const fc = parseInt(rawFc, 10);
-    if (!Number.isFinite(fc)) return;
-    colFlags.add('FC');
-
-    const parseOptInt = v => {
-      if (v === undefined || v === null || String(v).trim() === '') return null;
-      const n = parseInt(v, 10);
-      return Number.isFinite(n) ? n : null;
-    };
-
     const rangeRaw = getVal(['range', 'headrow', 'rowinblock', 'blockrow']);
-    const seqRaw = getVal(['seq', 'sequence', 'seqnum']);
+    const seqRaw = getVal(['seq', 'sequence', 'sequance', 'seqnum']);
     const rangeIdx = parseOptInt(rangeRaw);
     const seq = parseOptInt(seqRaw);
     if (rangeIdx !== null) colFlags.add('Range');
     else if (seq !== null) colFlags.add('Seq');
 
-    const crossVal = getVal(['cross', 'crossname', 'pedigree', 'parentage']);
-    const selVal = getVal(['selection', 'sel', 'line', 'code']);
-    const varVal = getVal(['name', 'variety', 'identityx', 'namex', 'entry', 'genotype']);
-    if (crossVal !== undefined) colFlags.add('Cross');
-    if (selVal !== undefined || varVal !== undefined) colFlags.add('Name');
+    const entryRaw = getVal([
+      'entry2027', 'entry27', 'entry2026', 'entry26', 'entry2025', 'entry25',
+      'entry', 'entryno', 'entryid', 'correcttc2027', 'correcttc2026', 'augcode', 'trialcode', 'tc'
+    ]);
+    const crossRaw = getVal(['cross', 'crossid', 'crossx', 'crossname']);
+    const nameRaw = getVal(['name', 'variety', 'nameapproved', 'identity', 'identityx', 'namex', 'genotype', 'nameupper']);
+    const pedRaw = getVal(['pedigree', 'pedigrees1', 'parentage']);
+    const femRaw = getVal(['female', 'pedfemalefull', 'pedfemaleid']);
+    const maleRaw = getVal(['male', 'pedmalefull', 'pedmaleid']);
+    const selRaw = getVal(['selection', 'newcolumn', 'sel', 'breedersref', 'line', 'code', 'pedid', 'afp']);
+    const nurseryRaw = getVal(['nursery', 'oldnursery', 'type', 'trial', 'experiment']);
+    const stageRaw = getVal(['stage2027', 'stage2026', 'stage', 'generation', 'gen', 'filial']);
+    const utcRaw = getVal(['utcst', 'utc', 'fc26sr', 'seedsource']);
+    const ctrlRaw = getVal(['testlinecontrol', 'control', 'check', 'check2', 'status']);
+    const reasonRaw = getVal(['reason', 'reasons1', 'cat', 'target']);
+    const commentRaw = getVal(['sowingcomment', 'comment', 'comments', 'notes', 'slctdscore', 'locorslctd']);
 
-    const displayName = String(crossVal || varVal || selVal || 'Unknown').trim();
-    const nurseryVal = getVal(['nursery', 'type', 'trial', 'experiment']);
-    const stageVal = getVal(['stage2027', 'stage2026', 'stage', 'generation', 'gen', 'filial']);
-    if (nurseryVal !== undefined) colFlags.add('Nursery');
-    if (stageVal !== undefined) colFlags.add('Stage');
+    const traitBits = [];
+    const addTrait = (lbl, aliases) => {
+      const v = getVal(aliases);
+      if (v !== undefined && String(v).trim() !== '') traitBits.push(`${lbl}: ${String(v).trim()}`);
+    };
+    addTrait('Col', ['colour', 'lemmacolour']);
+    addTrait('Fluor', ['flourescense', 'fluorescence', 'fluorecense']);
+    addTrait('Ht', ['ht', 'height', 'plantheightstemandpanicle']);
+    addTrait('EE', ['ee', 'emergence', 'timeofpanicleemergence']);
+    addTrait('Husk', ['husk', 'hullability', 'hull']);
+    addTrait('TGW', ['tgwg', 'tgwmean', 'tgw']);
+    addTrait('SPWT', ['spwtkghl', 'spwtmean', 'spwt']);
+    const traitsStr = traitBits.join(' | ');
 
-    const excelRun = parseOptInt(getVal(['run', 'runnumber', 'col', 'column']));
+    let entryVal = entryRaw !== undefined ? String(entryRaw).trim() : '';
+    let crossVal = crossRaw !== undefined ? String(crossRaw).trim() : '';
+    let nameVal = nameRaw !== undefined ? String(nameRaw).trim() : '';
+    let pedVal = pedRaw !== undefined ? String(pedRaw).trim() : ((femRaw || maleRaw) ? `${femRaw || '?'} x ${maleRaw || '?'}` : '');
+    let selVal = selRaw !== undefined ? String(selRaw).trim() : '';
+    let nurseryVal = nurseryRaw !== undefined ? String(nurseryRaw).trim() : '';
+    let stageVal = stageRaw !== undefined ? String(stageRaw).trim() : '';
+    let utcVal = utcRaw !== undefined ? String(utcRaw).trim() : '';
+    let ctrlVal = ctrlRaw !== undefined ? String(ctrlRaw).trim() : '';
+    let reasonVal = reasonRaw !== undefined ? String(reasonRaw).trim() : '';
+    let commentVal = commentRaw !== undefined ? String(commentRaw).trim() : '';
+
+    // If this is an expanded Fieldbook sheet where Column C ('Selection') stores the 9 lines on range 1..9:
+    if (rangeIdx !== null && selVal) {
+      if (rangeIdx === 1 && !crossVal && !nameVal) {
+        crossVal = selVal;
+        nameVal = selVal;
+      } else if (rangeIdx === 3 && !pedVal && selVal.includes('x')) {
+        pedVal = selVal;
+      } else if (rangeIdx === 5 && selVal.includes('TC:')) {
+        const m = selVal.match(/UTC:\s*([^|]*)\|(\d*TC):\s*(.*)/i);
+        if (m) {
+          if (!utcVal && m[1].trim()) utcVal = m[1].trim();
+          if (!entryVal && m[3].trim()) entryVal = m[3].trim();
+        }
+      }
+    }
+
+    if (entryVal) colFlags.add('Entry');
+    if (crossVal) colFlags.add('Cross');
+    if (nameVal || selVal) colFlags.add('Name');
+    if (pedVal) colFlags.add('Pedigree');
+    if (nurseryVal) colFlags.add('Nursery');
+    if (stageVal) colFlags.add('Stage');
+    if (utcVal) colFlags.add('UTC');
+    if (ctrlVal) colFlags.add('Control');
+    if (commentVal) colFlags.add('Comment');
+
+    const excelRun = parseOptInt(getVal(['run', 'runnumber', 'runnum', 'col', 'column']));
     const excelBoard = parseOptInt(getVal(['board', 'startboard', 'tier']));
     if (excelRun !== null || excelBoard !== null) colFlags.add('Run/Board');
 
-    pegs.push({
-      fc,
-      rangeIdx,
-      seq,
-      name: displayName || 'Unknown',
-      cross: String(crossVal || displayName || '').trim(),
-      selection: String(selVal || varVal || '').trim(),
-      nursery: String(nurseryVal || '').trim(),
-      stage: String(stageVal || '').trim(),
-      excelRun,
-      excelBoard,
-      excelRow: rowIndex + 2,
-      sheetId,
-      sheetName
-    });
+    // Check for single FC vs Summary Start/End FC or Headrows
+    const rawFc = getVal(['fc2027', 'fc2026', 'fc2025', 'fc2028', 'fc', 'fieldcode', 'plot', 'plotid']);
+    const singleFc = parseInt(rawFc, 10);
+
+    const startFcCand = parseOptInt(getVal(['startfc2027', 'fc2027start', 'startfc2026', 'fc2026start', 'startfc', 'fcstart', '26start', 'minfc']));
+    const endFcCand = parseOptInt(getVal(['endfc2027', 'fc2027end', 'endfc2026', 'fc2026end', 'endfc', 'fcend', '26end', 'maxfc']));
+    const headRowsCand = parseOptInt(getVal(['headrows', 'headrow', 'crosscount', 'rows']));
+
+    if (Number.isFinite(singleFc)) {
+      colFlags.add('FC');
+      // Reset or update forward-fill block metadata
+      if (rangeIdx === 1 || (!carryBlockMeta.name && !carryBlockMeta.cross)) {
+        carryBlockMeta = {
+          entry: entryVal,
+          name: nameVal || crossVal || selVal || 'Unknown',
+          cross: crossVal || nameVal || selVal || '',
+          pedigree: pedVal,
+          selection: selVal || nameVal || '',
+          nursery: nurseryVal,
+          stage: stageVal,
+          utc: utcVal,
+          control: ctrlVal,
+          reason: reasonVal,
+          comment: commentVal,
+          traits: traitsStr
+        };
+      } else {
+        if (entryVal) carryBlockMeta.entry = entryVal;
+        if (nameVal) carryBlockMeta.name = nameVal;
+        if (crossVal) carryBlockMeta.cross = crossVal;
+        if (pedVal) carryBlockMeta.pedigree = pedVal;
+        if (nurseryVal) carryBlockMeta.nursery = nurseryVal;
+        if (stageVal) carryBlockMeta.stage = stageVal;
+        if (utcVal) carryBlockMeta.utc = utcVal;
+        if (ctrlVal) carryBlockMeta.control = ctrlVal;
+        if (reasonVal) carryBlockMeta.reason = reasonVal;
+        if (commentVal) carryBlockMeta.comment = commentVal;
+        if (traitsStr) carryBlockMeta.traits = traitsStr;
+      }
+
+      const displayName = String(crossVal || nameVal || carryBlockMeta.cross || carryBlockMeta.name || selVal || 'Unknown').trim();
+      pegs.push({
+        fc: singleFc,
+        rangeIdx,
+        seq,
+        entry: entryVal || carryBlockMeta.entry || '',
+        name: nameVal || carryBlockMeta.name || displayName,
+        cross: crossVal || carryBlockMeta.cross || displayName,
+        pedigree: pedVal || carryBlockMeta.pedigree || '',
+        selection: selVal || carryBlockMeta.selection || '',
+        nursery: nurseryVal || carryBlockMeta.nursery || '',
+        stage: stageVal || carryBlockMeta.stage || '',
+        utc: utcVal || carryBlockMeta.utc || '',
+        control: ctrlVal || carryBlockMeta.control || '',
+        reason: reasonVal || carryBlockMeta.reason || '',
+        comment: commentVal || carryBlockMeta.comment || '',
+        traits: traitsStr || carryBlockMeta.traits || '',
+        colCLine: selVal,
+        rawMeta,
+        excelRun,
+        excelBoard,
+        excelRow: rowIndex + 2,
+        sheetId,
+        sheetName
+      });
+      runningAutoFc = singleFc + 1;
+      return;
+    }
+
+    // Handle Summary Rows (start_fc..end_fc or head_rows) like in Fieldbooks_2027_SAFE_TEST.xlsx!
+    let sFc = startFcCand;
+    let eFc = endFcCand;
+    if ((sFc === null || eFc === null) && headRowsCand !== null && headRowsCand > 0 && (nameVal || crossVal || entryVal)) {
+      sFc = runningAutoFc;
+      eFc = runningAutoFc + headRowsCand - 1;
+    }
+    if (sFc !== null && eFc !== null && eFc >= sFc && (eFc - sFc) <= 5000) {
+      colFlags.add('FC Range');
+      const count = eFc - sFc + 1;
+      const displayName = String(crossVal || nameVal || selVal || entryVal || 'Block').trim();
+      for (let r = 1; r <= count; r++) {
+        const curFc = sFc + r - 1;
+        const mod12 = ((r - 1) % 12) + 1;
+        const autoSeq = seq !== null ? seq : (mod12 <= 6 ? mod12 : (13 - mod12));
+        pegs.push({
+          fc: curFc,
+          rangeIdx: r,
+          seq: autoSeq,
+          entry: entryVal,
+          name: nameVal || displayName,
+          cross: crossVal || displayName,
+          pedigree: pedVal,
+          selection: selVal || `${displayName}-${r}`,
+          nursery: nurseryVal,
+          stage: stageVal,
+          utc: utcVal,
+          control: ctrlVal,
+          reason: reasonVal,
+          comment: commentVal,
+          traits: traitsStr,
+          colCLine: '',
+          rawMeta,
+          excelRun,
+          excelBoard,
+          excelRow: rowIndex + 2,
+          sheetId,
+          sheetName
+        });
+      }
+      runningAutoFc = eFc + 1;
+    }
   });
 
   const fcs = pegs.map(p => p.fc);
@@ -21512,6 +21985,7 @@ function parseWorkbookSheetForFieldPlan(workbook, sheetName, sheetIdx) {
     minFc,
     maxFc,
     detectedCols: [...colFlags],
+    allColumns: [...rawColSet],
     pegs
   };
 }
@@ -21533,11 +22007,14 @@ async function handleFieldPlanUpload(event) {
     const parsedSheets = workbook.SheetNames.map((sheetName, idx) => parseWorkbookSheetForFieldPlan(workbook, sheetName, idx));
     const totalValidPegs = parsedSheets.reduce((acc, s) => acc + s.fcCount, 0);
     if (!totalValidPegs) {
-      throw new Error('No valid field codes found in any worksheet. Expected an FC, FC2026, FC2027, or Field Code column.');
+      throw new Error('No valid field codes found in any worksheet. Expected an FC, FC2026, FC2027, start_fc2027/end_fc2027, or head_rows column.');
     }
     if (!parsedSheets.some(s => s.enabled && s.fcCount > 0)) {
       parsedSheets.forEach(s => { if (s.fcCount > 0) s.enabled = true; });
     }
+    const allColSet = new Set();
+    parsedSheets.forEach(s => (s.allColumns || []).forEach(c => allColSet.add(c)));
+    plan.availableMetaCols = [...allColSet];
     plan.sheets = parsedSheets;
     plan.sourceName = file.name;
     plan.selectedBlockKey = null;
@@ -21548,6 +22025,7 @@ async function handleFieldPlanUpload(event) {
     plan.loading = false;
     renderFieldPlan();
     renderCondensedFieldPlan();
+    renderFieldPlanFieldbookExplorer();
     event.target.value = '';
   }
 }
@@ -21572,6 +22050,10 @@ function updateFieldPlanSheetMeta(sheetId, field, value) {
   if (field === 'generation') s.generation = String(value || '').trim() || s.name;
   else if (field === 'isAlt') s.isAlt = Boolean(value);
   else if (field === 'spacerAfter') s.spacerAfter = Math.max(0, parseInt(value, 10) || 0);
+  else if (field === 'sectionMode') {
+    setFieldPlanSectionRule(`sheet:${s.id}`, 'mode', value);
+    return;
+  }
   calculateFieldPlan();
 }
 
@@ -21584,17 +22066,25 @@ function renderFieldPlanSheetsTable() {
   const activeCount = sheets.filter(s => s.enabled && s.fcCount > 0).length;
   if (badge) badge.innerText = `${activeCount}/${sheets.length} active`;
   if (!sheets.length) {
-    tbody.innerHTML = `<tr><td colspan="8" class="py-3 text-center text-sand-400">Upload an Excel workbook (.xlsx / .xls) to inspect its sheets and generations.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9" class="py-3 text-center text-sand-400">Upload an Excel workbook (.xlsx / .xls) to inspect its sheets and generations.</td></tr>`;
     return;
   }
   tbody.innerHTML = sheets.map(s => {
     const muted = !s.enabled ? 'opacity-60' : '';
     const rangeTxt = s.fcCount ? `${s.minFc}–${s.maxFc}` : 'No FCs';
     const colsTxt = s.detectedCols && s.detectedCols.length ? s.detectedCols.join(', ') : '—';
+    const ruleKey = `sheet:${s.id}`;
+    const curRuleMode = plan.sectionRules?.[ruleKey]?.mode || 'global';
+    const modeOpts = FIELD_PLAN_SECTION_MODES.map(m => `<option value="${m.value}" ${curRuleMode === m.value ? 'selected' : ''}>${escapeFieldPlanText(m.label)}</option>`).join('');
     return `<tr class="${muted} hover:bg-sand-50">
       <td class="py-1 px-1.5 text-center"><input type="checkbox" ${s.enabled ? 'checked' : ''} ${s.fcCount === 0 ? 'disabled' : ''} onchange="toggleFieldPlanSheet('${escapeFieldPlanText(s.id)}', this.checked)"></td>
       <td class="py-1 px-1.5 font-mono font-semibold text-sand-900 truncate max-w-[140px]" title="${escapeFieldPlanText(s.name)}">${escapeFieldPlanText(s.name)}</td>
       <td class="py-1 px-1.5"><input type="text" value="${escapeFieldPlanText(s.generation)}" onchange="updateFieldPlanSheetMeta('${escapeFieldPlanText(s.id)}', 'generation', this.value)" class="w-20 px-1.5 py-0.5 border border-sand-300 rounded text-[10px] font-bold"></td>
+      <td class="py-1 px-1.5">
+        <select onchange="updateFieldPlanSheetMeta('${escapeFieldPlanText(s.id)}', 'sectionMode', this.value)" class="px-1.5 py-0.5 border border-indigo-200 bg-indigo-50/50 rounded text-[9.5px] font-semibold text-indigo-950">
+          ${modeOpts}
+        </select>
+      </td>
       <td class="py-1 px-1.5 text-right font-mono">${s.fcCount}<span class="text-sand-400 text-[9px]">/${s.rowCount}</span></td>
       <td class="py-1 px-1.5 font-mono text-[9.5px]">${escapeFieldPlanText(rangeTxt)}</td>
       <td class="py-1 px-1.5 text-[9px] text-sand-600 truncate max-w-[130px]" title="${escapeFieldPlanText(colsTxt)}">${escapeFieldPlanText(colsTxt)}</td>
@@ -21760,6 +22250,7 @@ function getGroupLabelForPeg(peg, plan) {
   const mode = plan.colorBy || 'generation';
   if (mode === 'nursery') return peg.nursery || peg.generation || peg.sheetName || 'Unassigned';
   if (mode === 'stage') return peg.stage || peg.generation || peg.nursery || 'Unassigned';
+  if (mode === 'control') return peg.control || peg.stage || peg.generation || 'Test Line';
   return peg.generation || peg.sheetName || peg.nursery || 'Group';
 }
 
@@ -21853,8 +22344,18 @@ function calculateFieldPlan() {
       if (cur.rangeIdx === null && peg.rangeIdx !== null) cur.rangeIdx = peg.rangeIdx;
       if (cur.seq === null && peg.seq !== null) cur.seq = peg.seq;
       if (cur.name === 'Unknown' && peg.name !== 'Unknown') cur.name = peg.name;
+      if (!cur.cross && peg.cross) cur.cross = peg.cross;
+      if (!cur.entry && peg.entry) cur.entry = peg.entry;
+      if (!cur.pedigree && peg.pedigree) cur.pedigree = peg.pedigree;
+      if (!cur.selection && peg.selection) cur.selection = peg.selection;
       if (!cur.nursery && peg.nursery) cur.nursery = peg.nursery;
       if (!cur.stage && peg.stage) cur.stage = peg.stage;
+      if (!cur.utc && peg.utc) cur.utc = peg.utc;
+      if (!cur.control && peg.control) cur.control = peg.control;
+      if (!cur.reason && peg.reason) cur.reason = peg.reason;
+      if (!cur.comment && peg.comment) cur.comment = peg.comment;
+      if (!cur.traits && peg.traits) cur.traits = peg.traits;
+      if (peg.rawMeta) cur.rawMeta = { ...(cur.rawMeta || {}), ...peg.rawMeta };
       if (cur.excelRun === null && peg.excelRun !== null) cur.excelRun = peg.excelRun;
       if (cur.excelBoard === null && peg.excelBoard !== null) cur.excelBoard = peg.excelBoard;
     });
@@ -22194,8 +22695,10 @@ function calculateFieldPlan() {
             run,
             board,
             dir: direction,
+            entry: peg.entry || '',
             name: peg.name,
             cross: peg.cross || peg.name,
+            pedigree: peg.pedigree || '',
             selection: peg.selection || '',
             groupKey: peg.groupKey,
             sheetId: peg.sheetId,
@@ -22203,6 +22706,12 @@ function calculateFieldPlan() {
             generation: peg.generation,
             stage: peg.stage,
             nursery: peg.nursery,
+            utc: peg.utc || '',
+            control: peg.control || '',
+            reason: peg.reason || '',
+            comment: peg.comment || '',
+            traits: peg.traits || '',
+            rawMeta: peg.rawMeta ? { ...peg.rawMeta } : {},
             start: peg.fc,
             end: peg.fc,
             pegCount: 1,
@@ -22230,6 +22739,7 @@ function calculateFieldPlan() {
         const sheetChange = peg.sheetId !== current.sheetId;
         const groupChange = peg.groupKey !== current.groupKey;
         const nameChange = peg.name.toLowerCase() !== current.name.toLowerCase();
+        const entryChange = Boolean(peg.entry && current.entry && peg.entry !== current.entry);
         let blockStartReset = false;
         if (peg.rangeIdx !== null) {
           blockStartReset = peg.rangeIdx === 1 && (!prevEntry || prevEntry.rangeIdx !== 1);
@@ -22238,13 +22748,20 @@ function calculateFieldPlan() {
         }
         const largeFcJump = peg.fc > current.end + 5 || peg.fc < current.end;
 
-        if (sheetChange || groupChange || nameChange || blockStartReset || largeFcJump) {
+        if (sheetChange || groupChange || nameChange || entryChange || blockStartReset || largeFcJump) {
           startNewBlock();
         } else {
           current.end = peg.fc;
           current.pegCount += 1;
           current.displayRows += peg.displayRows;
           current.physicalEnd = peg.physicalRow + peg.displayRows - 1;
+          if (!current.entry && peg.entry) current.entry = peg.entry;
+          if (!current.pedigree && peg.pedigree) current.pedigree = peg.pedigree;
+          if (!current.utc && peg.utc) current.utc = peg.utc;
+          if (!current.control && peg.control) current.control = peg.control;
+          if (!current.reason && peg.reason) current.reason = peg.reason;
+          if (!current.comment && peg.comment) current.comment = peg.comment;
+          if (!current.traits && peg.traits) current.traits = peg.traits;
           if (peg.excelRow !== null) {
             current.excelRowStart = current.excelRowStart === null ? peg.excelRow : Math.min(current.excelRowStart, peg.excelRow);
             current.excelRowEnd = current.excelRowEnd === null ? peg.excelRow : Math.max(current.excelRowEnd, peg.excelRow);
@@ -22291,8 +22808,10 @@ function calculateFieldPlan() {
   assignFieldPlanColors(blocks);
   renderFieldPlanGridsTable();
   renderFieldPlanDiagnostics();
+  renderFieldPlanMetaStudio();
   renderFieldPlan();
   renderCondensedFieldPlan();
+  renderFieldPlanFieldbookExplorer();
 }
 
 function updateFieldPlan() {
@@ -22354,8 +22873,10 @@ function clearFieldPlan() {
   renderFieldPlanSheetsTable();
   renderFieldPlanGridsTable();
   renderFieldPlanDiagnostics();
+  renderFieldPlanMetaStudio();
   renderFieldPlan();
   renderCondensedFieldPlan();
+  renderFieldPlanFieldbookExplorer();
 }
 
 function setFieldPlanLegendName(originalName, newName) {
@@ -22485,10 +23006,16 @@ function doesBlockMatchSearch(block, query) {
   const asNum = parseInt(q, 10);
   if (Number.isFinite(asNum) && String(asNum) === q && asNum >= block.start && asNum <= block.end) return true;
   return (
+    String(block.entry || '').toLowerCase().includes(q) ||
     String(block.name || '').toLowerCase().includes(q) ||
     String(block.cross || '').toLowerCase().includes(q) ||
+    String(block.pedigree || '').toLowerCase().includes(q) ||
+    String(block.selection || '').toLowerCase().includes(q) ||
     String(block.sheetName || '').toLowerCase().includes(q) ||
     String(block.generation || '').toLowerCase().includes(q) ||
+    String(block.nursery || '').toLowerCase().includes(q) ||
+    String(block.utc || '').toLowerCase().includes(q) ||
+    String(block.comment || '').toLowerCase().includes(q) ||
     `${block.start}-${block.end}`.includes(q)
   );
 }
@@ -22497,6 +23024,7 @@ function handleFieldPlanSearch(val) {
   state.fieldPlan.searchQuery = String(val || '');
   state.fieldPlan.searchMatchIndex = 0;
   renderFieldPlan();
+  renderFieldPlanFieldbookExplorer();
   if (state.fieldPlan.searchQuery.trim()) jumpNextFieldPlanMatch(true);
 }
 
@@ -22520,6 +23048,7 @@ function selectFieldPlanBlock(blockKey, scrollIntoView) {
   const plan = state.fieldPlan;
   plan.selectedBlockKey = blockKey;
   renderFieldPlan();
+  renderFieldPlanFieldbookExplorer();
   if (scrollIntoView) {
     setTimeout(() => {
       const safeSelector = (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape(blockKey) : blockKey.replace(/"/g, '\\"');
@@ -22527,6 +23056,14 @@ function selectFieldPlanBlock(blockKey, scrollIntoView) {
       if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }, 30);
   }
+}
+
+function openSelectedBlockInFieldbook(blockKey) {
+  if (blockKey) state.fieldPlan.selectedBlockKey = blockKey;
+  toggleFieldPlanFieldbookPanel(true);
+  setFieldPlanFieldbookTab('colc');
+  const card = document.getElementById('fp-fieldbook-viewer-card');
+  if (card && card.scrollIntoView) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function renderFieldPlanBlockInspector() {
@@ -22544,29 +23081,797 @@ function renderFieldPlanBlockInspector() {
   const driftBadge = blk.hasExcelDrift
     ? `<span class="px-1.5 py-0.5 rounded bg-rose-100 border border-rose-300 text-rose-900 font-mono font-bold">! Math R${blk.mathRun} B${blk.mathBoard} ≠ Excel R${blk.excelRun ?? '?'} B${blk.excelBoard ?? '?'}</span>`
     : (blk.excelRun !== null ? `<span class="px-1.5 py-0.5 rounded bg-emerald-100 border border-emerald-300 text-emerald-900 font-mono">✓ Matches Excel R${blk.excelRun} B${blk.excelBoard}</span>` : '');
+  const entryBadge = blk.entry ? `<span class="px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-950 font-mono font-bold">Entry: ${escapeFieldPlanText(blk.entry)}</span>` : '';
+  const pedBadge = blk.pedigree ? `<span class="px-1.5 py-0.5 rounded bg-white font-mono">Pedigree: <b>${escapeFieldPlanText(blk.pedigree)}</b></span>` : '';
+  const utcBadge = blk.utc ? `<span class="px-1.5 py-0.5 rounded bg-white font-mono">UTC: ${escapeFieldPlanText(blk.utc)}</span>` : '';
+  const ctrlBadge = blk.control ? `<span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-950 font-mono">${escapeFieldPlanText(blk.control)}</span>` : '';
+  const cmtBadge = blk.comment ? `<span class="px-1.5 py-0.5 rounded bg-white italic text-sand-700">"${escapeFieldPlanText(blk.comment)}"</span>` : '';
+
   box.classList.remove('hidden');
-  box.innerHTML = `<div class="flex flex-wrap items-center gap-2">
+  box.innerHTML = `<div class="flex flex-wrap items-center gap-1.5">
     <span class="font-bold font-mono text-blue-900">${escapeFieldPlanText(fcText)}</span>
-    <span>· <b>${escapeFieldPlanText(blk.name)}</b></span>
-    <span class="px-1.5 py-0.5 rounded bg-white border border-blue-200 font-mono">Sheet: ${escapeFieldPlanText(blk.sheetName)} (${escapeFieldPlanText(rowText)})</span>
-    <span class="px-1.5 py-0.5 rounded bg-white border border-blue-200 font-mono">Gen: ${escapeFieldPlanText(blk.generation || '—')}${blk.stage ? ' · Stage: ' + escapeFieldPlanText(blk.stage) : ''}</span>
-    <span class="px-1.5 py-0.5 rounded bg-white border border-blue-200 font-mono">Placed: R${blk.run} B${blk.board} (${blk.dir === 'UP' ? '↑' : '↓'}) · ${blk.displayRows} phys row${blk.displayRows === 1 ? '' : 's'}</span>
+    ${entryBadge}
+    <span>· <b>${escapeFieldPlanText(blk.name)}</b>${blk.cross && blk.cross !== blk.name ? ` <span class="text-sand-600 font-mono">(${escapeFieldPlanText(blk.cross)})</span>` : ''}</span>
+    ${pedBadge}
+    <span class="px-1.5 py-0.5 rounded bg-white font-mono">Sheet: ${escapeFieldPlanText(blk.sheetName)} (${escapeFieldPlanText(rowText)})</span>
+    <span class="px-1.5 py-0.5 rounded bg-white font-mono">Gen: ${escapeFieldPlanText(blk.generation || '—')}${blk.stage ? ' · Stage: ' + escapeFieldPlanText(blk.stage) : ''}${blk.nursery ? ' · Nursery: ' + escapeFieldPlanText(blk.nursery) : ''}</span>
+    ${utcBadge}
+    ${ctrlBadge}
+    ${cmtBadge}
+    <span class="px-1.5 py-0.5 rounded bg-white font-mono">Placed: R${blk.run} B${blk.board} (${blk.dir === 'UP' ? '↑' : '↓'}) · ${blk.displayRows} phys row${blk.displayRows === 1 ? '' : 's'}</span>
     ${driftBadge}
   </div>
-  <button type="button" onclick="selectFieldPlanBlock(null, false)" class="text-blue-700 hover:text-blue-950 font-bold px-1.5">✕</button>`;
+  <div class="flex items-center gap-1.5">
+    <button type="button" onclick="openSelectedBlockInFieldbook('${escapeFieldPlanText(blk.blockKey)}')" class="px-2 py-0.5 rounded bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-[9.5px]">View in Fieldbook Sheet</button>
+    <button type="button" onclick="selectFieldPlanBlock(null, false)" class="text-blue-700 hover:text-blue-950 font-bold px-1.5">✕</button>
+  </div>`;
 }
 
-function formatBlockLabel(block, labelMode) {
-  if (block.isGap) return 'SPACER';
+// =========================================================================
+// FIELDBOOK & METADATA DISPLAY TOGGLES + PER-SECTION RULES ENGINE
+// =========================================================================
+function toggleFieldPlanMetaBar(force) {
+  const plan = state.fieldPlan;
+  plan.metaBarOpen = force !== undefined ? Boolean(force) : !plan.metaBarOpen;
+  const drawer = document.getElementById('fp-meta-toggle-drawer');
+  const btn = document.getElementById('fp-btn-toggle-fieldbook');
+  if (drawer) drawer.classList.toggle('hidden', !plan.metaBarOpen);
+  if (btn) btn.innerText = plan.metaBarOpen ? 'Fieldbooks & Metadata ▴' : 'Fieldbooks & Metadata ▾';
+  if (plan.metaBarOpen && !plan.fieldbookPanelOpen) {
+    toggleFieldPlanFieldbookPanel(true);
+  }
+  renderFieldPlanMetaStudio();
+}
+
+function toggleFieldPlanExportStudio(force) {
+  const plan = state.fieldPlan;
+  plan.exportStudioOpen = force !== undefined ? Boolean(force) : !plan.exportStudioOpen;
+  const drawer = document.getElementById('fp-export-studio-drawer');
+  const btn = document.getElementById('fp-btn-toggle-export-studio');
+  if (drawer) drawer.classList.toggle('hidden', !plan.exportStudioOpen);
+  if (btn) btn.innerText = plan.exportStudioOpen ? 'Export Options ▴' : 'Export Options ▾';
+  renderFieldPlanMetaStudio();
+}
+
+function toggleFieldPlanFieldbookPanel(force) {
+  const plan = state.fieldPlan;
+  plan.fieldbookPanelOpen = force !== undefined ? Boolean(force) : !plan.fieldbookPanelOpen;
+  const card = document.getElementById('fp-fieldbook-viewer-card');
+  const btn = document.getElementById('fp-btn-show-fb-table');
+  if (card) card.classList.toggle('hidden', !plan.fieldbookPanelOpen);
+  if (btn) btn.innerText = plan.fieldbookPanelOpen ? 'Hide Fieldbook Table ▴' : 'Show Fieldbook Table ▾';
+  if (plan.fieldbookPanelOpen) renderFieldPlanFieldbookExplorer();
+}
+
+function setFieldPlanFieldbookTab(tab) {
+  const plan = state.fieldPlan;
+  plan.fieldbookTab = ['colc', 'blocks', 'rows'].includes(tab) ? tab : 'colc';
+  ['colc', 'blocks', 'rows'].forEach(k => {
+    const b = document.getElementById('fp-fb-tab-' + k);
+    if (b) {
+      b.className = k === plan.fieldbookTab
+        ? 'px-2 py-0.5 rounded bg-indigo-700 text-white'
+        : 'px-2 py-0.5 rounded text-sand-700 hover:bg-sand-200';
+    }
+  });
+  renderFieldPlanFieldbookExplorer();
+}
+
+function presetModeToFields(mode) {
+  switch (mode) {
+    case 'fc': return ['fc'];
+    case 'entry_fc': return ['entry', 'fc'];
+    case 'name_fc':
+    case 'cross_fc': return ['name', 'fc'];
+    case 'entry_name_fc': return ['entry', 'name', 'fc'];
+    case 'pedigree_fc': return ['pedigree', 'fc'];
+    case 'gen_fc': return ['stage', 'fc'];
+    case 'nursery_fc': return ['nursery', 'fc'];
+    case 'selection_fc': return ['selection', 'fc'];
+    case 'entry_only': return ['entry'];
+    case 'name_only': return ['name'];
+    default: return null;
+  }
+}
+
+function onFieldPlanLabelModeSelect(mode) {
+  const plan = state.fieldPlan;
+  plan.labelMode = mode;
+  const fields = presetModeToFields(mode);
+  if (fields) {
+    plan.activeMetaFields = [...fields];
+  }
+  scheduleWorkspaceAutosave();
+  renderFieldPlanMetaStudio();
+  renderFieldPlan();
+}
+
+function applyFieldPlanMetaPreset(mode) {
+  const plan = state.fieldPlan;
+  plan.labelMode = mode === 'name_fc' ? 'cross_fc' : mode;
+  const sel = document.getElementById('fp-label-mode');
+  if (sel) sel.value = plan.labelMode;
+  const fields = presetModeToFields(mode);
+  if (fields) {
+    plan.activeMetaFields = [...fields];
+  } else if (mode === 'per_section') {
+    if (!Object.values(plan.sectionRules || {}).some(r => r && r.mode && r.mode !== 'global')) {
+      autoAssignSmartSectionRules();
+      return;
+    }
+  }
+  scheduleWorkspaceAutosave();
+  renderFieldPlanMetaStudio();
+  renderFieldPlan();
+}
+
+function toggleFieldPlanMetaField(fieldKey) {
+  const plan = state.fieldPlan;
+  if (!Array.isArray(plan.activeMetaFields)) plan.activeMetaFields = ['fc'];
+  const idx = plan.activeMetaFields.indexOf(fieldKey);
+  if (idx >= 0) {
+    if (plan.activeMetaFields.length > 1) plan.activeMetaFields.splice(idx, 1);
+  } else {
+    plan.activeMetaFields.push(fieldKey);
+  }
+  plan.labelMode = 'custom_fields';
+  const sel = document.getElementById('fp-label-mode');
+  if (sel) sel.value = 'custom_fields';
+  scheduleWorkspaceAutosave();
+  renderFieldPlanMetaStudio();
+  renderFieldPlan();
+}
+
+function setFieldPlanCustomMetaCol(colName) {
+  const plan = state.fieldPlan;
+  plan.customMetaCol = colName || '';
+  if (colName && !plan.activeMetaFields.includes('custom')) {
+    plan.activeMetaFields.push('custom');
+    plan.labelMode = 'custom_fields';
+    const sel = document.getElementById('fp-label-mode');
+    if (sel) sel.value = 'custom_fields';
+  }
+  scheduleWorkspaceAutosave();
+  renderFieldPlanMetaStudio();
+  renderFieldPlan();
+}
+
+function setFieldPlanMetaSeparator(sep) {
+  state.fieldPlan.metaSeparator = sep || ' · ';
+  scheduleWorkspaceAutosave();
+  renderFieldPlan();
+}
+
+function setFieldPlanSectionGroupBy(groupBy) {
+  state.fieldPlan.sectionGroupBy = ['sheet', 'generation', 'nursery', 'stage'].includes(groupBy) ? groupBy : 'sheet';
+  scheduleWorkspaceAutosave();
+  renderFieldPlanMetaStudio();
+  renderFieldPlan();
+}
+
+function getFieldPlanSectionsList(plan) {
+  const mode = plan.sectionGroupBy || 'sheet';
+  const blocks = (plan.fieldData || []).filter(b => !b.isGap);
+  const map = new Map();
+
+  if (mode === 'sheet') {
+    (plan.sheets || []).filter(s => s.enabled && s.fcCount > 0).forEach(s => {
+      const sBlocks = blocks.filter(b => b.sheetId === s.id);
+      map.set(`sheet:${s.id}`, {
+        key: `sheet:${s.id}`,
+        id: s.id,
+        label: `${s.name} (${s.generation})`,
+        shortLabel: s.generation || s.name,
+        blocks: sBlocks,
+        minFc: s.minFc,
+        maxFc: s.maxFc,
+        fcCount: s.fcCount
+      });
+    });
+  } else {
+    blocks.forEach(b => {
+      const rawVal = mode === 'nursery'
+        ? (b.nursery || b.generation || b.sheetName || 'Unassigned')
+        : mode === 'stage'
+          ? (b.stage || b.generation || 'Unassigned')
+          : (b.generation || b.sheetName || 'Group');
+      const key = `${mode}:${rawVal}`;
+      if (!map.has(key)) {
+        map.set(key, {
+          key,
+          id: rawVal,
+          label: rawVal,
+          shortLabel: rawVal,
+          blocks: [],
+          minFc: b.start,
+          maxFc: b.end,
+          fcCount: 0
+        });
+      }
+      const entry = map.get(key);
+      entry.blocks.push(b);
+      entry.minFc = Math.min(entry.minFc, b.start);
+      entry.maxFc = Math.max(entry.maxFc, b.end);
+      entry.fcCount += (b.pegCount || 1);
+    });
+  }
+  return [...map.values()];
+}
+
+function ensureSectionRule(sectionKey) {
+  const plan = state.fieldPlan;
+  if (!plan.sectionRules || typeof plan.sectionRules !== 'object') plan.sectionRules = {};
+  if (!plan.sectionRules[sectionKey]) {
+    plan.sectionRules[sectionKey] = {
+      exportEnabled: true,
+      mode: 'global',
+      fields: ['entry', 'name', 'fc']
+    };
+  }
+  return plan.sectionRules[sectionKey];
+}
+
+function setFieldPlanSectionRule(sectionKey, prop, value) {
+  const plan = state.fieldPlan;
+  const rule = ensureSectionRule(sectionKey);
+  if (prop === 'exportEnabled') {
+    rule.exportEnabled = Boolean(value);
+  } else if (prop === 'mode') {
+    rule.mode = value || 'global';
+    const presetF = presetModeToFields(rule.mode);
+    if (presetF) rule.fields = [...presetF];
+  }
+  scheduleWorkspaceAutosave();
+  renderFieldPlanSheetsTable();
+  renderFieldPlanMetaStudio();
+  renderFieldPlan();
+  renderFieldPlanFieldbookExplorer();
+}
+
+function toggleSectionCustomField(sectionKey, fieldKey) {
+  const rule = ensureSectionRule(sectionKey);
+  if (!Array.isArray(rule.fields)) rule.fields = ['fc'];
+  const idx = rule.fields.indexOf(fieldKey);
+  if (idx >= 0) {
+    if (rule.fields.length > 1) rule.fields.splice(idx, 1);
+  } else {
+    rule.fields.push(fieldKey);
+  }
+  rule.mode = 'custom_fields';
+  scheduleWorkspaceAutosave();
+  renderFieldPlanSheetsTable();
+  renderFieldPlanMetaStudio();
+  renderFieldPlan();
+}
+
+function autoAssignSmartSectionRules() {
+  const plan = state.fieldPlan;
+  const sections = getFieldPlanSectionsList(plan);
+  sections.forEach(sec => {
+    const rule = ensureSectionRule(sec.key);
+    const lower = sec.label.toLowerCase();
+    const sample = sec.blocks[0] || {};
+    if (/border|check|parent|guard/i.test(lower)) {
+      rule.mode = 'cross_fc';
+      rule.fields = ['name', 'fc'];
+    } else if (/18s|trial|yield|pyt|ayt|obs|aug/i.test(lower) || (sample.entry && !/f[2345]/i.test(lower))) {
+      rule.mode = 'entry_name_fc';
+      rule.fields = ['entry', 'name', 'fc'];
+    } else if (/f2|pop/i.test(lower)) {
+      rule.mode = 'cross_fc';
+      rule.fields = ['cross', 'fc'];
+    } else if (/f3|f4|f5|headrow|line/i.test(lower)) {
+      rule.mode = sample.entry ? 'entry_fc' : 'selection_fc';
+      rule.fields = sample.entry ? ['entry', 'fc'] : ['selection', 'fc'];
+    } else if (/alt/i.test(lower)) {
+      rule.mode = sample.entry ? 'entry_name_fc' : 'cross_fc';
+      rule.fields = ['entry', 'name', 'fc'];
+    } else {
+      rule.mode = sample.entry ? 'entry_fc' : 'cross_fc';
+      rule.fields = sample.entry ? ['entry', 'fc'] : ['name', 'fc'];
+    }
+  });
+  plan.labelMode = 'per_section';
+  const sel = document.getElementById('fp-label-mode');
+  if (sel) sel.value = 'per_section';
+  scheduleWorkspaceAutosave();
+  renderFieldPlanSheetsTable();
+  renderFieldPlanMetaStudio();
+  renderFieldPlan();
+  showToast('Assigned smart per-section metadata rules (Trials → Entry+Name+FC, F2 → Cross+FC, F3 → Entry/Selection+FC).');
+}
+
+function resetAllSectionRulesToGlobal() {
+  const plan = state.fieldPlan;
+  Object.keys(plan.sectionRules || {}).forEach(k => {
+    plan.sectionRules[k].mode = 'global';
+    plan.sectionRules[k].exportEnabled = true;
+  });
+  if (plan.labelMode === 'per_section') {
+    plan.labelMode = 'fc';
+    const sel = document.getElementById('fp-label-mode');
+    if (sel) sel.value = 'fc';
+  }
+  scheduleWorkspaceAutosave();
+  renderFieldPlanSheetsTable();
+  renderFieldPlanMetaStudio();
+  renderFieldPlan();
+}
+
+function isBlockExportEnabled(block, plan) {
+  if (!block || block.isGap) return true;
+  const rules = plan.sectionRules || {};
+  const keysToCheck = [
+    `${plan.sectionGroupBy || 'sheet'}:${plan.sectionGroupBy === 'sheet' ? block.sheetId : plan.sectionGroupBy === 'nursery' ? (block.nursery || block.generation || block.sheetName) : plan.sectionGroupBy === 'stage' ? (block.stage || block.generation) : (block.generation || block.sheetName)}`,
+    `sheet:${block.sheetId}`,
+    `generation:${block.generation}`,
+    `nursery:${block.nursery}`
+  ];
+  for (const k of keysToCheck) {
+    if (rules[k] && rules[k].exportEnabled === false) return false;
+  }
+  return true;
+}
+
+function resolveSectionRuleForBlock(block, plan) {
+  if (!block || block.isGap) return null;
+  const rules = plan.sectionRules || {};
+  const grpBy = plan.sectionGroupBy || 'sheet';
+  const primaryVal = grpBy === 'sheet'
+    ? block.sheetId
+    : grpBy === 'nursery'
+      ? (block.nursery || block.generation || block.sheetName || 'Unassigned')
+      : grpBy === 'stage'
+        ? (block.stage || block.generation || 'Unassigned')
+        : (block.generation || block.sheetName || 'Group');
+  const candidates = [
+    `${grpBy}:${primaryVal}`,
+    `sheet:${block.sheetId}`,
+    `generation:${block.generation}`,
+    `nursery:${block.nursery}`
+  ];
+  for (const k of candidates) {
+    if (rules[k] && rules[k].mode && rules[k].mode !== 'global') {
+      return rules[k];
+    }
+  }
+  return null;
+}
+
+function extractBlockMetaFieldValue(block, fieldKey, plan) {
+  if (!block || block.isGap) return '';
   const fcPart = block.start === block.end ? String(block.start) : `${block.start}-${block.end}`;
-  if (labelMode === 'cross_fc') {
-    const shortName = String(block.name || '').slice(0, 14);
-    return shortName ? `${shortName} (${fcPart})` : fcPart;
+  switch (fieldKey) {
+    case 'fc': return fcPart;
+    case 'entry': return block.entry ? String(block.entry).trim() : '';
+    case 'name': return (block.name && block.name !== 'Unknown') ? String(block.name).slice(0, 18) : '';
+    case 'cross': return (block.cross && block.cross !== 'Unknown') ? String(block.cross).slice(0, 18) : '';
+    case 'pedigree': return block.pedigree ? String(block.pedigree).slice(0, 22) : '';
+    case 'selection': return block.selection ? String(block.selection).slice(0, 16) : '';
+    case 'stage': return block.stage || block.generation || '';
+    case 'nursery': return block.nursery || '';
+    case 'utc': return block.utc || '';
+    case 'control': return block.control || '';
+    case 'reason': return block.reason ? String(block.reason).slice(0, 18) : '';
+    case 'comment': return block.comment ? String(block.comment).slice(0, 18) : '';
+    case 'rows': return `${block.displayRows}r`;
+    case 'run_board': return `R${block.run}B${block.board}`;
+    case 'custom': {
+      const col = plan?.customMetaCol;
+      if (col && block.rawMeta && block.rawMeta[col] !== undefined) {
+        return String(block.rawMeta[col]).slice(0, 18);
+      }
+      return '';
+    }
+    default:
+      if (block.rawMeta && block.rawMeta[fieldKey] !== undefined) {
+        return String(block.rawMeta[fieldKey]).slice(0, 18);
+      }
+      return '';
   }
-  if (labelMode === 'gen_fc') {
-    return block.generation ? `${block.generation}: ${fcPart}` : fcPart;
+}
+
+function formatBlockLabelByFieldList(block, fields, plan) {
+  if (block.isGap) return 'SPACER';
+  const sep = plan?.metaSeparator || ' · ';
+  const seen = new Set();
+  const parts = [];
+  (fields || ['fc']).forEach(fKey => {
+    const val = extractBlockMetaFieldValue(block, fKey, plan);
+    if (val && !seen.has(val.toLowerCase())) {
+      seen.add(val.toLowerCase());
+      parts.push(val);
+    }
+  });
+  if (!parts.length) {
+    return block.start === block.end ? String(block.start) : `${block.start}-${block.end}`;
   }
-  return fcPart;
+  return parts.join(sep);
+}
+
+function formatBlockLabelForMode(block, mode, customFields, plan) {
+  if (block.isGap) return 'SPACER';
+  if (mode === 'custom_fields') {
+    return formatBlockLabelByFieldList(block, customFields || plan.activeMetaFields || ['fc'], plan);
+  }
+  const fields = presetModeToFields(mode);
+  if (fields) {
+    return formatBlockLabelByFieldList(block, fields, plan);
+  }
+  return formatBlockLabelByFieldList(block, ['fc'], plan);
+}
+
+function formatBlockLabel(block, labelModeOverride) {
+  if (block.isGap) return 'SPACER';
+  const plan = state.fieldPlan;
+  const effectiveMode = labelModeOverride || plan.labelMode || 'fc';
+
+  // Check if per-section override applies
+  if (!labelModeOverride || labelModeOverride === 'per_section') {
+    const secRule = resolveSectionRuleForBlock(block, plan);
+    if (secRule && secRule.mode && secRule.mode !== 'global') {
+      return formatBlockLabelForMode(block, secRule.mode, secRule.fields, plan);
+    }
+  }
+  if (effectiveMode === 'per_section') {
+    return formatBlockLabelByFieldList(block, plan.activeMetaFields || ['fc'], plan);
+  }
+  return formatBlockLabelForMode(block, effectiveMode, plan.activeMetaFields, plan);
+}
+
+function toggleFieldPlanExportCol(colKey) {
+  const plan = state.fieldPlan;
+  if (!Array.isArray(plan.exportCols)) plan.exportCols = ['fc', 'entry', 'name'];
+  const idx = plan.exportCols.indexOf(colKey);
+  if (idx >= 0) {
+    if (plan.exportCols.length > 1) plan.exportCols.splice(idx, 1);
+  } else {
+    plan.exportCols.push(colKey);
+  }
+  scheduleWorkspaceAutosave();
+  renderFieldPlanMetaStudio();
+}
+
+function setAllFieldPlanExportCols(all) {
+  const plan = state.fieldPlan;
+  if (all) {
+    plan.exportCols = FIELD_PLAN_META_FIELDS.filter(f => f.key !== 'custom').map(f => f.key);
+  } else {
+    plan.exportCols = ['fc', 'run_board', 'rows', 'entry', 'name', 'cross', 'pedigree', 'stage', 'nursery'];
+  }
+  scheduleWorkspaceAutosave();
+  renderFieldPlanMetaStudio();
+}
+
+function syncFieldPlanExportOpts() {
+  const plan = state.fieldPlan;
+  if (!plan.exportSheets) plan.exportSheets = {};
+  plan.exportSheets.condensed = Boolean(document.getElementById('fp-exp-inc-condensed')?.checked);
+  plan.exportSheets.visual = Boolean(document.getElementById('fp-exp-inc-visual')?.checked);
+  plan.exportSheets.blocks = Boolean(document.getElementById('fp-exp-inc-blocks')?.checked);
+  plan.exportSheets.fieldbook = Boolean(document.getElementById('fp-exp-inc-fieldbook')?.checked);
+  plan.exportSheets.perSection = Boolean(document.getElementById('fp-exp-inc-per-section')?.checked);
+  plan.exportSheets.variants = Boolean(document.getElementById('fp-exp-inc-variants')?.checked);
+  scheduleWorkspaceAutosave();
+}
+
+function renderFieldPlanMetaStudio() {
+  const plan = state.fieldPlan;
+
+  // 1. Update Active Label Badge on Window 1
+  const badge = document.getElementById('fp-active-label-badge');
+  if (badge) {
+    const anySecOverride = Object.values(plan.sectionRules || {}).some(r => r && r.mode && r.mode !== 'global');
+    if (plan.labelMode === 'per_section' || anySecOverride) {
+      badge.innerText = 'Labels: Per-Section Rules Active';
+    } else if (plan.labelMode === 'custom_fields') {
+      badge.innerText = `Labels: ${(plan.activeMetaFields || ['fc']).map(k => FIELD_PLAN_META_FIELDS.find(f => f.key === k)?.short || k).join(' + ')}`;
+    } else {
+      const mObj = FIELD_PLAN_SECTION_MODES.find(m => m.value === plan.labelMode);
+      badge.innerText = `Labels: ${mObj ? mObj.label : plan.labelMode}`;
+    }
+  }
+
+  // 2. Populate Extra Workbook Column dropdown
+  const customColSel = document.getElementById('fp-custom-meta-col');
+  if (customColSel) {
+    const cols = plan.availableMetaCols || [];
+    customColSel.innerHTML = `<option value="">(None)</option>` + cols.map(c => `<option value="${escapeFieldPlanText(c)}" ${plan.customMetaCol === c ? 'selected' : ''}>${escapeFieldPlanText(c)}</option>`).join('');
+  }
+
+  // 3. Render Global Multi-Select Metadata Pills
+  const pillsEl = document.getElementById('fp-meta-field-pills');
+  if (pillsEl) {
+    const active = plan.activeMetaFields || ['fc'];
+    pillsEl.innerHTML = FIELD_PLAN_META_FIELDS.map(f => {
+      if (f.key === 'custom' && !plan.customMetaCol) return '';
+      const isOn = active.includes(f.key);
+      const lbl = f.key === 'custom' ? `Col: ${plan.customMetaCol}` : f.label;
+      return `<button type="button" onclick="toggleFieldPlanMetaField('${f.key}')" class="px-2 py-1 rounded text-[9.5px] font-mono font-bold transition ${isOn ? 'bg-indigo-700 text-white shadow-2xs' : 'bg-white text-indigo-950 hover:bg-indigo-100'}">${isOn ? '✓ ' : '+ '}${escapeFieldPlanText(lbl)}</button>`;
+    }).join('');
+  }
+
+  // 4. Render Per-Section Display & Export Rules Matrix
+  const secTbody = document.getElementById('fp-section-rules-tbody');
+  if (secTbody) {
+    const sections = getFieldPlanSectionsList(plan);
+    if (!sections.length) {
+      secTbody.innerHTML = `<tr><td colspan="6" class="py-2 text-center text-sand-400">No active sections. Enable at least one workbook sheet.</td></tr>`;
+    } else {
+      const quickFieldKeys = ['fc', 'entry', 'name', 'cross', 'pedigree', 'selection', 'stage', 'nursery', 'utc', 'comment'];
+      secTbody.innerHTML = sections.map(sec => {
+        const rule = ensureSectionRule(sec.key);
+        const sampleBlk = sec.blocks[0] || {};
+        const sampleBits = [
+          sampleBlk.entry ? `Entry: ${sampleBlk.entry}` : '',
+          sampleBlk.name ? `Name: ${sampleBlk.name}` : '',
+          sampleBlk.pedigree ? `Ped: ${sampleBlk.pedigree}` : ''
+        ].filter(Boolean).join(' · ') || 'FC Range';
+        const modeOpts = FIELD_PLAN_SECTION_MODES.map(m => `<option value="${m.value}" ${rule.mode === m.value ? 'selected' : ''}>${escapeFieldPlanText(m.label)}</option>`).join('');
+        const customPills = quickFieldKeys.map(fk => {
+          const fMeta = FIELD_PLAN_META_FIELDS.find(x => x.key === fk);
+          const on = (rule.fields || []).includes(fk);
+          return `<button type="button" onclick="toggleSectionCustomField('${escapeFieldPlanText(sec.key)}', '${fk}')" class="px-1.5 py-0.5 rounded text-[8.5px] font-mono font-bold ${on ? 'bg-indigo-700 text-white' : 'bg-sand-100 text-sand-700 hover:bg-sand-200'}">${on ? '✓' : ''}${escapeFieldPlanText(fMeta ? fMeta.short : fk)}</button>`;
+        }).join(' ');
+
+        return `<tr class="hover:bg-indigo-50/40 ${rule.exportEnabled === false ? 'opacity-50' : ''}">
+          <td class="py-1 px-1.5 text-center"><input type="checkbox" ${rule.exportEnabled !== false ? 'checked' : ''} onchange="setFieldPlanSectionRule('${escapeFieldPlanText(sec.key)}', 'exportEnabled', this.checked)" title="Include this section in exports"></td>
+          <td class="py-1 px-1.5 font-mono font-bold text-sand-900">${escapeFieldPlanText(sec.label)}</td>
+          <td class="py-1 px-1.5 font-mono text-[9px] text-sand-600">${sec.blocks.length} blk · FC ${sec.minFc ?? '—'}–${sec.maxFc ?? '—'}</td>
+          <td class="py-1 px-1.5 text-[9px] text-sand-600 truncate max-w-[180px]" title="${escapeFieldPlanText(sampleBits)}">${escapeFieldPlanText(sampleBits)}</td>
+          <td class="py-1 px-1.5">
+            <select onchange="setFieldPlanSectionRule('${escapeFieldPlanText(sec.key)}', 'mode', this.value)" class="px-1.5 py-0.5 rounded bg-indigo-50 font-bold text-[9.5px] text-indigo-950">
+              ${modeOpts}
+            </select>
+          </td>
+          <td class="py-1 px-1.5"><div class="flex flex-wrap gap-1">${customPills}</div></td>
+        </tr>`;
+      }).join('');
+    }
+  }
+
+  // 5. Render Export Metadata Column Checkboxes
+  const expColsEl = document.getElementById('fp-export-col-checks');
+  if (expColsEl) {
+    const expCols = plan.exportCols || ['fc', 'entry', 'name'];
+    expColsEl.innerHTML = FIELD_PLAN_META_FIELDS.filter(f => f.key !== 'custom').map(f => {
+      const isOn = expCols.includes(f.key);
+      return `<button type="button" onclick="toggleFieldPlanExportCol('${f.key}')" class="px-2 py-0.5 rounded text-[9px] font-mono font-bold ${isOn ? 'bg-teal-700 text-white' : 'bg-sand-100 text-sand-700 hover:bg-sand-200'}">${isOn ? '✓ ' : ''}${escapeFieldPlanText(f.label)}</button>`;
+    }).join('');
+  }
+}
+
+// =========================================================================
+// WINDOW 3: FIELDBOOK & BLOCK METADATA EXPLORER (9-LINE COL C + SCHEDULES)
+// =========================================================================
+function buildFieldbookColCLine(peg, lineNum, block) {
+  const r = lineNum;
+  if (peg.colCLine && r <= 9) return peg.colCLine;
+  const crossOrName = peg.cross || peg.name || block?.cross || block?.name || '';
+  const stage = peg.stage || block?.stage || block?.generation || '';
+  const board = block?.board ?? peg.excelBoard ?? 1;
+  const run = block?.run ?? peg.excelRun ?? 1;
+  const nursery = peg.nursery || block?.nursery || '';
+  const dir = block?.dir || 'UP';
+  const ped = peg.pedigree || block?.pedigree || '';
+  const reason = peg.reason || block?.reason || '';
+  const utc = peg.utc || block?.utc || '';
+  const entry = peg.entry || block?.entry || '';
+  const comment = peg.comment || block?.comment || '';
+  const traits = peg.traits || block?.traits || '';
+
+  if (r === 1) return crossOrName;
+  if (r === 2) {
+    return [
+      stage,
+      `Board:${board}`,
+      `Run:${run}`,
+      nursery ? `Nursery:${nursery}` : '',
+      `Direction:${dir}`
+    ].filter(Boolean).join(', ');
+  }
+  if (r === 3) return ped;
+  if (r === 4) return reason;
+  if (r === 5) return (utc || entry) ? `UTC: ${utc || '—'} |27TC: ${entry || '—'}` : '';
+  if (r === 6) return comment;
+  if (r === 7) return traits;
+  if (r === 8) return peg.control || block?.control || '';
+  return '';
+}
+
+function renderFieldPlanFieldbookExplorer() {
+  const plan = state.fieldPlan;
+  const card = document.getElementById('fp-fieldbook-viewer-card');
+  const mount = document.getElementById('fp-fieldbook-explorer-mount');
+  if (!card || !mount || !plan.fieldbookPanelOpen) return;
+
+  const blocks = (plan.fieldData || []).filter(b => !b.isGap);
+  const secFilterEl = document.getElementById('fp-fb-section-filter');
+  const runFilterEl = document.getElementById('fp-fb-run-filter');
+
+  // Populate Section & Run filter dropdowns preserving selection
+  if (secFilterEl) {
+    const prevSec = secFilterEl.value || 'all';
+    const secNames = [...new Set(blocks.map(b => b.sheetName || b.generation).filter(Boolean))];
+    secFilterEl.innerHTML = `<option value="all">All Active Sections (${secNames.length})</option>` +
+      secNames.map(sn => `<option value="${escapeFieldPlanText(sn)}" ${prevSec === sn ? 'selected' : ''}>${escapeFieldPlanText(sn)}</option>`).join('');
+  }
+  if (runFilterEl) {
+    const prevRun = runFilterEl.value || 'all';
+    const runs = [...new Set(blocks.map(b => b.run))].sort((a, b) => a - b);
+    runFilterEl.innerHTML = `<option value="all">All Runs (${runs.length})</option>` +
+      runs.map(r => `<option value="${r}" ${String(prevRun) === String(r) ? 'selected' : ''}>Run ${r}</option>`).join('');
+  }
+
+  const activeSec = secFilterEl?.value || 'all';
+  const activeRun = runFilterEl?.value || 'all';
+  const q = (plan.searchQuery || '').trim();
+
+  let filteredBlocks = blocks.filter(b => {
+    if (activeSec !== 'all' && b.sheetName !== activeSec && b.generation !== activeSec) return false;
+    if (activeRun !== 'all' && String(b.run) !== String(activeRun)) return false;
+    if (q && !doesBlockMatchSearch(b, q)) return false;
+    return true;
+  });
+
+  if (!filteredBlocks.length) {
+    mount.innerHTML = `<div class="p-4 text-center text-sand-500 font-mono text-[10px]">No blocks match the current section/run/search filter.</div>`;
+    return;
+  }
+
+  const tab = plan.fieldbookTab || 'colc';
+
+  if (tab === 'blocks') {
+    const rowsHtml = filteredBlocks.slice(0, 300).map(b => {
+      const isSel = plan.selectedBlockKey === b.blockKey;
+      const fcTxt = b.start === b.end ? `${b.start}` : `${b.start}–${b.end}`;
+      const renderedLabel = formatBlockLabel(b);
+      return `<tr class="cursor-pointer hover:bg-indigo-50/60 ${isSel ? 'bg-indigo-100/80 font-bold' : ''}" onclick="selectFieldPlanBlock('${escapeFieldPlanText(b.blockKey)}', true)">
+        <td class="py-1 px-2 font-mono font-bold text-indigo-900">R${b.run} B${b.board} ${b.dir === 'UP' ? '↑' : '↓'}</td>
+        <td class="py-1 px-2 font-mono font-bold">${escapeFieldPlanText(fcTxt)}</td>
+        <td class="py-1 px-2 font-mono text-center">${b.displayRows}</td>
+        <td class="py-1 px-2 font-mono font-bold text-teal-800">${escapeFieldPlanText(b.entry || '—')}</td>
+        <td class="py-1 px-2 font-semibold">${escapeFieldPlanText(b.name || '—')}</td>
+        <td class="py-1 px-2 font-mono">${escapeFieldPlanText(b.cross || '—')}</td>
+        <td class="py-1 px-2">${escapeFieldPlanText(b.pedigree || '—')}</td>
+        <td class="py-1 px-2 font-mono">${escapeFieldPlanText(b.stage || b.generation || '—')}</td>
+        <td class="py-1 px-2">${escapeFieldPlanText(b.nursery || b.sheetName || '—')}</td>
+        <td class="py-1 px-2 font-mono">${escapeFieldPlanText(b.utc || '—')}</td>
+        <td class="py-1 px-2">${escapeFieldPlanText(b.control || '—')}</td>
+        <td class="py-1 px-2 text-sand-600">${escapeFieldPlanText(b.comment || b.reason || '—')}</td>
+        <td class="py-1 px-2 font-mono text-[9px] bg-sand-50">${escapeFieldPlanText(renderedLabel)}</td>
+      </tr>`;
+    }).join('');
+
+    mount.innerHTML = `<table class="w-full text-left border-collapse text-[10px]">
+      <thead class="bg-sand-100 sticky top-0 font-mono text-[9px] uppercase text-sand-600">
+        <tr>
+          <th class="py-1.5 px-2">Run/Board</th>
+          <th class="py-1.5 px-2">FC Range</th>
+          <th class="py-1.5 px-2 text-center">Rows</th>
+          <th class="py-1.5 px-2">Entry #</th>
+          <th class="py-1.5 px-2">Name / Variety</th>
+          <th class="py-1.5 px-2">Cross / ID</th>
+          <th class="py-1.5 px-2">Pedigree</th>
+          <th class="py-1.5 px-2">Stage</th>
+          <th class="py-1.5 px-2">Nursery / Sheet</th>
+          <th class="py-1.5 px-2">UTC</th>
+          <th class="py-1.5 px-2">Control</th>
+          <th class="py-1.5 px-2">Comment / Reason</th>
+          <th class="py-1.5 px-2">Active Schematic Label</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-sand-100">${rowsHtml}</tbody>
+    </table>`;
+    return;
+  }
+
+  if (tab === 'colc') {
+    // 9-Line Column C Breeders Fieldbook view (prioritize selected block if present, else first 8 filtered blocks)
+    const selBlk = filteredBlocks.find(b => b.blockKey === plan.selectedBlockKey);
+    const targetBlocks = selBlk ? [selBlk, ...filteredBlocks.filter(b => b.blockKey !== selBlk.blockKey).slice(0, 5)] : filteredBlocks.slice(0, 6);
+    const rangeBg = { 1: '#DCE6F1', 2: '#F4CCCC', 3: '#D9EAD3', 4: '#CFE2F3', 5: '#D9D9D9', 6: '#FFFFFF', 7: '#FFF2CC', 8: '#EAD1DC', 9: '#D0E0E3' };
+    const pastelD = ['#FDDCD6', '#D2E4FA', '#E4F7C9'];
+
+    let fbRowsHtml = '';
+    targetBlocks.forEach((blk, bIdx) => {
+      const blockPegs = (plan.mathPacked || []).filter(p => !p.isGap && p.run === blk.run && p.board === blk.board && p.fc >= blk.start && p.fc <= blk.end);
+      const pegsToShow = blockPegs.length ? blockPegs.slice(0, 18) : Array.from({ length: Math.min(12, blk.pegCount || 6) }, (_, i) => ({
+        fc: blk.start + i,
+        rangeIdx: i + 1,
+        seq: ((i % 12) < 6) ? ((i % 6) + 1) : (12 - (i % 12)),
+        ...blk
+      }));
+
+      pegsToShow.forEach((peg, pIdx) => {
+        const rNum = peg.rangeIdx || (pIdx + 1);
+        const seqNum = peg.seq || (((pIdx % 12) < 6) ? ((pIdx % 6) + 1) : (12 - (pIdx % 12)));
+        const colCText = buildFieldbookColCLine(peg, rNum, blk);
+        const topBorder = rNum === 1 ? 'border-top:2px solid #0f172a;' : 'border-top:1px solid #e2e8f0;';
+        const cBg = rangeBg[rNum] || '#ffffff';
+        const dBg = pastelD[Math.floor(pIdx / 6) % pastelD.length];
+
+        fbRowsHtml += `<tr style="${topBorder}font-family:'JetBrains Mono',monospace;font-size:10px;" class="cursor-pointer hover:opacity-95" onclick="selectFieldPlanBlock('${escapeFieldPlanText(blk.blockKey)}', true)">
+          <td style="padding:2px 6px;background:#f8fafc;color:#475569;text-align:center;">R${blk.run}B${blk.board}${blk.dir === 'UP' ? '↑' : '↓'}</td>
+          <td style="padding:2px 8px;font-weight:800;text-align:center;background:#ffffff;">${peg.fc}</td>
+          <td style="padding:2px 8px;background:${cBg};color:${rNum === 1 ? '#1d4ed8' : '#0f172a'};font-weight:${rNum === 1 ? '800' : '600'};min-width:290px;">${escapeFieldPlanText(colCText)}</td>
+          <td style="padding:2px 6px;background:${dBg};text-align:center;font-weight:700;">${rNum}</td>
+          <td style="padding:2px 6px;background:#fef9c3;text-align:center;font-weight:700;">${seqNum}</td>
+          <td style="padding:2px 6px;text-align:center;color:#0f766e;font-weight:700;">${escapeFieldPlanText(blk.entry || '—')}</td>
+          <td style="padding:2px 6px;">${escapeFieldPlanText(blk.name || '')}</td>
+          <td style="padding:2px 6px;text-align:center;color:#94a3b8;"></td>
+          <td style="padding:2px 6px;text-align:center;color:#94a3b8;"></td>
+          <td style="padding:2px 6px;text-align:center;color:#94a3b8;"></td>
+          <td style="padding:2px 6px;text-align:center;color:#94a3b8;"></td>
+          <td style="padding:2px 6px;text-align:center;color:#94a3b8;"></td>
+        </tr>`;
+      });
+    });
+
+    mount.innerHTML = `<div class="text-[9.5px] text-sand-600 pb-1.5 flex items-center justify-between">
+      <span>Showing authentic <b>9-Line Column C Breeders Fieldbook</b> preview (${selBlk ? `Selected Block FC ${selBlk.start}–${selBlk.end} first` : 'Click any block on the schematic above to pin it at the top'}).</span>
+      <span class="font-mono text-indigo-900">Lines 1–9: Cross → Stage/Board/Run/Dir → Pedigree → Reason → UTC | TC Entry → Comments → Traits</span>
+    </div>
+    <table class="w-full text-left border-collapse text-[10px]">
+      <thead class="bg-sand-200 sticky top-0 font-mono text-[9.5px] text-sand-900 font-bold">
+        <tr>
+          <th class="py-1 px-2 text-center">Pos</th>
+          <th class="py-1 px-2 text-center">FC</th>
+          <th class="py-1 px-2">Selection (9-Line Column C Metadata)</th>
+          <th class="py-1 px-2 text-center">range</th>
+          <th class="py-1 px-2 text-center">seq</th>
+          <th class="py-1 px-2 text-center">Entry</th>
+          <th class="py-1 px-2">Name</th>
+          <th class="py-1 px-2 text-center">h</th>
+          <th class="py-1 px-2 text-center">ee</th>
+          <th class="py-1 px-2 text-center">w</th>
+          <th class="py-1 px-2 text-center">ht</th>
+          <th class="py-1 px-2 text-center">mat</th>
+        </tr>
+      </thead>
+      <tbody>${fbRowsHtml}</tbody>
+    </table>`;
+    return;
+  }
+
+  // Tab 3: Expanded Pegs / Rows
+  const allowedFcSet = new Set();
+  filteredBlocks.slice(0, 60).forEach(b => {
+    for (let f = b.start; f <= b.end; f++) allowedFcSet.add(f);
+  });
+  const pegs = (plan.mathPacked || []).filter(p => !p.isGap && allowedFcSet.has(p.fc)).slice(0, 350);
+  mount.innerHTML = `<table class="w-full text-left border-collapse text-[10px]">
+    <thead class="bg-sand-100 sticky top-0 font-mono text-[9px] uppercase text-sand-600">
+      <tr>
+        <th class="py-1 px-2">FC</th>
+        <th class="py-1 px-2">Run/Board</th>
+        <th class="py-1 px-2">Range</th>
+        <th class="py-1 px-2">Seq</th>
+        <th class="py-1 px-2">Entry</th>
+        <th class="py-1 px-2">Name</th>
+        <th class="py-1 px-2">Cross</th>
+        <th class="py-1 px-2">Pedigree</th>
+        <th class="py-1 px-2">Stage</th>
+        <th class="py-1 px-2">Nursery</th>
+        <th class="py-1 px-2">UTC</th>
+        <th class="py-1 px-2">Comment</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-sand-100">${pegs.map(p => `<tr class="hover:bg-indigo-50/50 cursor-pointer font-mono" onclick="jumpToFieldPlanFc(${p.fc})">
+      <td class="py-1 px-2 font-bold text-blue-900">${p.fc}</td>
+      <td class="py-1 px-2">R${p.run} B${p.board} ${p.dir === 'UP' ? '↑' : '↓'}</td>
+      <td class="py-1 px-2 text-center">${p.rangeIdx ?? '—'}</td>
+      <td class="py-1 px-2 text-center">${p.seq ?? '—'}</td>
+      <td class="py-1 px-2 font-bold text-teal-800">${escapeFieldPlanText(p.entry || '—')}</td>
+      <td class="py-1 px-2 font-sans font-semibold">${escapeFieldPlanText(p.name || '—')}</td>
+      <td class="py-1 px-2">${escapeFieldPlanText(p.cross || '—')}</td>
+      <td class="py-1 px-2 font-sans">${escapeFieldPlanText(p.pedigree || '—')}</td>
+      <td class="py-1 px-2">${escapeFieldPlanText(p.stage || p.generation || '—')}</td>
+      <td class="py-1 px-2 font-sans">${escapeFieldPlanText(p.nursery || p.sheetName || '—')}</td>
+      <td class="py-1 px-2">${escapeFieldPlanText(p.utc || '—')}</td>
+      <td class="py-1 px-2 font-sans text-sand-600">${escapeFieldPlanText(p.comment || '—')}</td>
+    </tr>`).join('')}</tbody>
+  </table>`;
 }
 
 function renderFieldPlan() {
@@ -22653,6 +23958,7 @@ function renderFieldPlan() {
   }
 
   renderFieldPlanBlockInspector();
+  renderFieldPlanMetaStudio();
 
   if (!plan.fieldData.length && !plan.rawPegs.length) {
     mount.innerHTML = `<div class="p-8 text-center text-slate-600 font-mono text-xs w-full">Upload an .xlsx workbook or click "Demo" to view individual Cross/FC blocks (pure grid math is shown in Window 2 below).</div>`;
@@ -22724,23 +24030,37 @@ function renderFieldPlan() {
           const isMatch = blockObj && doesBlockMatchSearch(blockObj, plan.searchQuery);
           const isSelected = blockObj && plan.selectedBlockKey === blockObj.blockKey;
           const showDrift = blockObj && plan.highlightDrift && blockObj.hasExcelDrift;
+          const isMutedExp = blockObj && !isBlockExportEnabled(blockObj, plan);
           const extraCls = `${isSelected ? ' field-plan-block-selected' : isMatch ? ' field-plan-block-match' : ''}`;
           const driftStyle = showDrift ? 'box-shadow:inset 0 0 0 2px #e11d48;' : '';
+          const muteStyle = isMutedExp ? 'opacity:0.42;' : '';
           const clickAttr = blockObj && !blockObj.isGap
             ? `data-fp-block="${escapeFieldPlanText(blockObj.blockKey)}" onclick="selectFieldPlanBlock('${escapeFieldPlanText(blockObj.blockKey)}', false)"`
             : '';
           const fontSize = rows <= 4 ? 7.5 : rows <= 10 ? 9 : 10.5;
-          return `<div ${clickAttr} class="field-plan-block w-full flex items-center justify-center border-b border-black/15 last:border-b-0 box-border${extraCls}" title="${escapeFieldPlanText(tooltip)}" style="flex:${rows} 1 0;background:${isEmpty ? '#f1f5f9' : bg};color:${isEmpty ? '#94a3b8' : '#0f172a'};${driftStyle}"><span class="font-bold whitespace-nowrap" style="writing-mode:vertical-rl;transform:${direction === 'UP' ? 'rotate(180deg)' : 'none'};font-size:${fontSize}px;color:${isEmpty ? '#94a3b8' : '#0f172a'}">${escapeFieldPlanText(label)}</span></div>`;
+          return `<div ${clickAttr} class="field-plan-block w-full flex items-center justify-center border-b border-black/15 last:border-b-0 box-border${extraCls}" title="${escapeFieldPlanText(tooltip)}" style="flex:${rows} 1 0;background:${isEmpty ? '#f1f5f9' : bg};color:${isEmpty ? '#94a3b8' : '#0f172a'};${driftStyle}${muteStyle}"><span class="font-bold whitespace-nowrap" style="writing-mode:vertical-rl;transform:${direction === 'UP' ? 'rotate(180deg)' : 'none'};font-size:${fontSize}px;color:${isEmpty ? '#94a3b8' : '#0f172a'}">${escapeFieldPlanText(label)}</span></div>`;
         };
 
         let content = '';
         if (direction === 'UP' && empty > 0) content += renderCell(empty, 'EMPTY', '#f1f5f9', true, `Empty (${empty} rows)`, null);
         blocks.forEach(block => {
-          const lbl = formatBlockLabel(block, plan.labelMode);
+          const lbl = formatBlockLabel(block);
           const bg = block.isOverflow ? '#fecaca' : block.isGap ? '#e2e8f0' : (plan.nurseryColors[block.groupKey] || '#ffffff');
+          const tipBits = [
+            `FC ${block.start === block.end ? block.start : block.start + '-' + block.end}`,
+            block.entry ? `Entry: ${block.entry}` : '',
+            block.name,
+            block.cross && block.cross !== block.name ? `Cross: ${block.cross}` : '',
+            block.pedigree ? `Pedigree: ${block.pedigree}` : '',
+            block.stage || block.generation ? `Stage: ${block.stage || block.generation}` : '',
+            block.nursery ? `Nursery: ${block.nursery}` : '',
+            block.utc ? `UTC: ${block.utc}` : '',
+            block.comment ? `Note: ${block.comment}` : '',
+            `Sheet: ${block.sheetName} (R${block.excelRowStart || '?'}) · ${block.displayRows} phys rows`
+          ].filter(Boolean);
           const tip = block.isGap
             ? `${block.name} · ${block.displayRows} row(s)`
-            : `FC ${block.start === block.end ? block.start : block.start + '-' + block.end} · ${block.name} · Sheet: ${block.sheetName} (R${block.excelRowStart || '?'}) · ${block.displayRows} phys rows`;
+            : tipBits.join(' · ');
           content += renderCell(block.displayRows, lbl, bg, false, tip, block);
         });
         if (direction === 'DOWN' && empty > 0) content += renderCell(empty, 'EMPTY', '#f1f5f9', true, `Empty (${empty} rows)`, null);
@@ -23136,226 +24456,551 @@ function escapeFieldPlanText(value) {
   return String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
 }
 
-async function exportFieldPlanImage(format) {
+async function exportFieldPlanImage(format, variantModeOverride) {
   const target = document.getElementById('fp-grid-export');
   if (!state.fieldPlan.fieldData.length) return showFieldPlanError('Load or generate a field plan before exporting.');
   if (typeof htmlToImage === 'undefined') return showFieldPlanError('Image export library did not load. Check your internet connection.');
-  state.fieldPlan.loading = true;
+  const plan = state.fieldPlan;
+  const origMode = plan.labelMode;
+  if (variantModeOverride) {
+    plan.labelMode = variantModeOverride;
+    const sel = document.getElementById('fp-label-mode');
+    if (sel) sel.value = variantModeOverride;
+  }
+  plan.loading = true;
   renderFieldPlan();
   try {
     const options = { backgroundColor: '#e2e8f0', pixelRatio: 2, cacheBust: true };
     const dataUrl = format === 'png' ? await htmlToImage.toPng(target, options) : await htmlToImage.toSvg(target, options);
     const link = document.createElement('a');
-    link.download = `Nursery_Detail_Plan.${format}`;
+    const suffix = variantModeOverride || plan.labelMode || 'fc';
+    link.download = `Nursery_Detail_Plan_${suffix}.${format}`;
     link.href = dataUrl;
     link.click();
   } catch (error) {
     showFieldPlanError(`Image export failed: ${error.message}`);
   } finally {
-    state.fieldPlan.loading = false;
+    plan.loading = false;
+    if (variantModeOverride) {
+      plan.labelMode = origMode;
+      const sel = document.getElementById('fp-label-mode');
+      if (sel) sel.value = origMode;
+    }
     renderFieldPlan();
   }
+}
+
+function getCheckedFieldPlanExportVariants() {
+  const chks = Array.from(document.querySelectorAll('#fp-export-variant-checks .fp-var-chk:checked'));
+  const vals = chks.map(c => c.value).filter(Boolean);
+  return vals.length ? vals : [state.fieldPlan.labelMode || 'fc'];
+}
+
+async function exportFieldPlanBatchImages(format) {
+  const plan = state.fieldPlan;
+  if (!plan.fieldData.length) return showFieldPlanError('Load or generate a field plan before exporting.');
+  const variants = getCheckedFieldPlanExportVariants();
+  showToast(`Batch-exporting ${variants.length} ${format.toUpperCase()} schematic variant(s)...`);
+  for (const v of variants) {
+    await exportFieldPlanImage(format, v);
+    await new Promise(r => setTimeout(r, 220));
+  }
+  showToast(`Exported ${variants.length} ${format.toUpperCase()} schematic variant(s).`);
+}
+
+function buildBlockExportRecord(b, plan) {
+  const rec = {
+    Run: b.run,
+    Board: b.board,
+    Direction: b.dir,
+    Start_FC: b.start,
+    End_FC: b.end,
+    FC_Range: b.start === b.end ? String(b.start) : `${b.start}-${b.end}`,
+    Phys_Rows: b.displayRows,
+    Peg_Count: b.pegCount || 1,
+    Entry: b.entry || '',
+    Name: b.name || '',
+    Cross: b.cross || '',
+    Pedigree: b.pedigree || '',
+    Selection: b.selection || '',
+    Stage: b.stage || b.generation || '',
+    Generation: b.generation || '',
+    Nursery: b.nursery || '',
+    Sheet: b.sheetName || '',
+    UTC: b.utc || '',
+    Control: b.control || '',
+    Reason: b.reason || '',
+    Comment: b.comment || '',
+    Traits: b.traits || '',
+    Section_Rendered_Label: formatBlockLabel(b)
+  };
+  if (plan.customMetaCol && b.rawMeta && b.rawMeta[plan.customMetaCol] !== undefined) {
+    rec[plan.customMetaCol] = b.rawMeta[plan.customMetaCol];
+  }
+  return rec;
+}
+
+function getSelectedExportHeaders(plan) {
+  const cols = plan.exportCols || ['fc', 'run_board', 'rows', 'entry', 'name', 'cross', 'pedigree', 'selection', 'stage', 'nursery', 'utc', 'control', 'reason', 'comment'];
+  const headers = [];
+  if (cols.includes('run_board')) headers.push('Run', 'Board', 'Direction');
+  if (cols.includes('fc')) headers.push('Start_FC', 'End_FC', 'FC_Range');
+  if (cols.includes('rows')) headers.push('Phys_Rows');
+  if (cols.includes('entry')) headers.push('Entry');
+  if (cols.includes('name')) headers.push('Name');
+  if (cols.includes('cross')) headers.push('Cross');
+  if (cols.includes('pedigree')) headers.push('Pedigree');
+  if (cols.includes('selection')) headers.push('Selection');
+  if (cols.includes('stage')) headers.push('Stage', 'Generation');
+  if (cols.includes('nursery')) headers.push('Nursery', 'Sheet');
+  if (cols.includes('utc')) headers.push('UTC');
+  if (cols.includes('control')) headers.push('Control');
+  if (cols.includes('reason')) headers.push('Reason');
+  if (cols.includes('comment')) headers.push('Comment', 'Traits');
+  if (plan.customMetaCol) headers.push(plan.customMetaCol);
+  headers.push('Section_Rendered_Label');
+  return headers;
+}
+
+function downloadCsvLines(lines, filename) {
+  const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportFieldPlanMetadataCsv(mode = 'blocks', filterBlocks = null, customFilePrefix = null) {
+  const plan = state.fieldPlan;
+  const blocks = (filterBlocks || (plan.fieldData || [])).filter(b => !b.isGap && isBlockExportEnabled(b, plan));
+  if (!blocks.length) return showToast('No active blocks enabled for export.');
+  const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const baseName = (customFilePrefix || plan.sourceName || 'Nursery_Schematic').replace(/\.[^.]+$/, '');
+
+  if (mode === 'blocks') {
+    const headers = getSelectedExportHeaders(plan);
+    const lines = [headers.map(esc).join(',')];
+    blocks.forEach(b => {
+      const rec = buildBlockExportRecord(b, plan);
+      lines.push(headers.map(h => esc(rec[h] ?? '')).join(','));
+    });
+    downloadCsvLines(lines, `${baseName}_Block_Metadata.csv`);
+    showToast(`Exported ${blocks.length} blocks with selected metadata columns.`);
+    return;
+  }
+
+  // Full Expanded Breeders Fieldbook CSV (with 9-Line Column C Selection)
+  const headers = ['FC', 'Selection_9Line_ColC', 'range', 'seq', 'Run', 'Board', 'Direction', 'Entry', 'Name', 'Cross', 'Pedigree', 'Stage', 'Nursery', 'Sheet', 'UTC', 'Control', 'Reason', 'Comment', 'Section_Label', 'h', 'wh', 'ee', 'w', 'ht', 'mat'];
+  if (plan.customMetaCol) headers.push(plan.customMetaCol);
+  const lines = [headers.map(esc).join(',')];
+
+  blocks.forEach(blk => {
+    const blockPegs = (plan.mathPacked || []).filter(p => !p.isGap && p.run === blk.run && p.board === blk.board && p.fc >= blk.start && p.fc <= blk.end);
+    const pegsToExport = blockPegs.length ? blockPegs : Array.from({ length: blk.pegCount || 1 }, (_, i) => ({
+      fc: blk.start + i,
+      rangeIdx: i + 1,
+      seq: ((i % 12) < 6) ? ((i % 6) + 1) : (12 - (i % 12)),
+      ...blk
+    }));
+    const secLbl = formatBlockLabel(blk);
+    pegsToExport.forEach((peg, pIdx) => {
+      const rNum = peg.rangeIdx || (pIdx + 1);
+      const seqNum = peg.seq || (((pIdx % 12) < 6) ? ((pIdx % 6) + 1) : (12 - (pIdx % 12)));
+      const colCText = buildFieldbookColCLine(peg, rNum, blk);
+      const rowArr = [
+        peg.fc,
+        colCText,
+        rNum,
+        seqNum,
+        blk.run,
+        blk.board,
+        blk.dir,
+        peg.entry || blk.entry || '',
+        peg.name || blk.name || '',
+        peg.cross || blk.cross || '',
+        peg.pedigree || blk.pedigree || '',
+        peg.stage || blk.stage || blk.generation || '',
+        peg.nursery || blk.nursery || '',
+        blk.sheetName || '',
+        peg.utc || blk.utc || '',
+        peg.control || blk.control || '',
+        peg.reason || blk.reason || '',
+        peg.comment || blk.comment || '',
+        secLbl,
+        '', '', '', '', '', ''
+      ];
+      if (plan.customMetaCol) {
+        rowArr.push((peg.rawMeta && peg.rawMeta[plan.customMetaCol]) || (blk.rawMeta && blk.rawMeta[plan.customMetaCol]) || '');
+      }
+      lines.push(rowArr.map(esc).join(','));
+    });
+  });
+  downloadCsvLines(lines, `${baseName}_Fieldbook_Expanded.csv`);
+  showToast(`Exported expanded Fieldbook CSV (${lines.length - 1} rows).`);
+}
+
+async function exportFieldPlanPerSectionCsvs() {
+  const plan = state.fieldPlan;
+  const sections = getFieldPlanSectionsList(plan).filter(sec => {
+    const r = ensureSectionRule(sec.key);
+    return r.exportEnabled !== false && sec.blocks.length > 0;
+  });
+  if (!sections.length) return showToast('No active sections enabled for export.');
+  const baseName = (plan.sourceName || 'Nursery_Schematic').replace(/\.[^.]+$/, '');
+  for (const sec of sections) {
+    const safeSec = String(sec.shortLabel || sec.label || 'Section').replace(/[^a-zA-Z0-9_-]/g, '_');
+    exportFieldPlanMetadataCsv('blocks', sec.blocks, `${baseName}_${safeSec}`);
+    await new Promise(r => setTimeout(r, 180));
+  }
+  showToast(`Batch-exported ${sections.length} per-section CSV file(s).`);
+}
+
+function sanitizeExcelWorksheetName(rawName, existingNamesSet) {
+  let clean = String(rawName || 'Sheet').replace(/[\\/?*[\]:]/g, ' ').trim() || 'Sheet';
+  if (clean.length > 28) clean = clean.slice(0, 28).trim();
+  let candidate = clean;
+  let counter = 2;
+  while (existingNamesSet.has(candidate.toLowerCase())) {
+    const suffix = `_${counter++}`;
+    candidate = clean.slice(0, 31 - suffix.length) + suffix;
+  }
+  existingNamesSet.add(candidate.toLowerCase());
+  return candidate;
+}
+
+function writeVisualFieldPlanToWorksheet(workbook, sheetTitle, plan, labelModeOverride, usedSheetNames) {
+  const safeTitle = sanitizeExcelWorksheetName(sheetTitle, usedSheetNames);
+  const worksheet = workbook.addWorksheet(safeTitle, { views: [{ showGridLines: false, state: 'frozen', ySplit: 2 }] });
+  const configuredRunDefs = (plan.runDefs && plan.runDefs.length) ? plan.runDefs : buildConfiguredRunDefs(plan);
+  const runDefMap = new Map();
+  configuredRunDefs.forEach(rd => runDefMap.set(rd.run, rd));
+
+  const maxBlockRun = Math.max(0, ...plan.fieldData.map(b => b.run));
+  const runNumbers = plan.engineMode === 'excel'
+    ? Array.from({ length: Math.max(1, maxBlockRun) }, (_, i) => i + 1)
+    : configuredRunDefs.map(r => r.run);
+
+  const getRunMeta = run => {
+    const rd = runDefMap.get(run) || {
+      run,
+      gridName: 'Excel',
+      boards: Math.max(1, ...plan.fieldData.filter(b => b.run === run).map(b => b.board || 1)),
+      rowsPerBoard: 108,
+      dir: ((run % 2 !== 0) === plan.startsAtBottom ? 'UP' : 'DOWN')
+    };
+    const boards = plan.engineMode === 'excel'
+      ? Math.max(rd.boards || 1, ...plan.fieldData.filter(b => b.run === run).map(b => b.board || 1))
+      : (rd.boards || 1);
+    return { ...rd, boards, totalCapacity: boards * (rd.rowsPerBoard || 108) };
+  };
+
+  const runMetas = runNumbers.map(getRunMeta);
+  const maxTotalCap = Math.max(108, ...runMetas.map(m => m.totalCapacity));
+  const thinBorder = { style: 'thin', color: { argb: 'FFCBD5E1' } };
+
+  runMetas.forEach((rm, colIdx) => {
+    const col = colIdx + 1;
+    worksheet.getColumn(col).width = 13;
+    const runBlocks = plan.fieldData.filter(b => b.run === rm.run);
+    const direction = runBlocks[0]?.dir || rm.dir || 'UP';
+
+    const gridCell = worksheet.getCell(1, col);
+    gridCell.value = rm.gridName || '';
+    gridCell.font = { bold: true, size: 8, color: { argb: 'FFF8FAFC' } };
+    gridCell.alignment = { horizontal: 'center', vertical: 'middle' };
+    gridCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1E293B' } };
+
+    const header = worksheet.getCell(2, col);
+    header.value = rm.isOverflowRun ? 'OVERFLOW' : `R${rm.run} ${direction === 'UP' ? '↑' : '↓'}`;
+    header.alignment = { horizontal: 'center', vertical: 'middle' };
+    header.font = { bold: true, size: 10, color: { argb: 'FF0F172A' } };
+    header.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF1F5F9' } };
+    header.border = { top: { style: 'thick' }, bottom: { style: 'thick' }, left: { style: 'thick' }, right: { style: 'thick' } };
+
+    let currentRow = 3 + Math.max(0, maxTotalCap - rm.totalCapacity);
+    const visualBoards = Array.from({ length: rm.boards }, (_, i) => rm.boards - i);
+
+    for (const board of visualBoards) {
+      const blocks = runBlocks.filter(item => item.board === board).sort((a, b) =>
+        direction === 'UP' ? (b.physicalStart ?? b.start) - (a.physicalStart ?? a.start) : (a.physicalStart ?? a.start) - (b.physicalStart ?? b.start)
+      );
+      const boardCap = rm.rowsPerBoard || 108;
+      const occupied = blocks.reduce((tot, b) => tot + b.displayRows, 0);
+      const empty = Math.max(0, boardCap - occupied);
+
+      const writeCellBlock = (rows, label, color, isEmpty = false) => {
+        if (rows <= 0) return;
+        const first = currentRow;
+        const last = first + rows - 1;
+        if (last > first) worksheet.mergeCells(first, col, last, col);
+        const cell = worksheet.getCell(first, col);
+        cell.value = label;
+        cell.alignment = { textRotation: 90, vertical: 'middle', horizontal: 'center', wrapText: true };
+        cell.font = { bold: true, size: rows <= 6 ? 8 : rows <= 12 ? 10 : 11, color: { argb: isEmpty ? 'FF94A3B8' : 'FF0F172A' } };
+        const colorHex = (isEmpty ? '#F1F5F9' : color || '#FFFFFF').replace('#', '');
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: `FF${colorHex}` } };
+        cell.border = { top: thinBorder, bottom: thinBorder, left: { style: 'thick' }, right: { style: 'thick' } };
+        for (let r = first; r <= last; r++) worksheet.getRow(r).height = 6;
+        currentRow = last + 1;
+      };
+
+      if (direction === 'UP' && empty > 0) writeCellBlock(empty, 'EMPTY', '#F1F5F9', true);
+      blocks.forEach(block => {
+        const expOn = isBlockExportEnabled(block, plan);
+        const lbl = expOn ? formatBlockLabel(block, labelModeOverride) : `${block.start}-${block.end} (skip)`;
+        writeCellBlock(
+          block.displayRows,
+          lbl,
+          !expOn ? '#F1F5F9' : block.isOverflow ? '#FECACA' : block.isGap ? '#E2E8F0' : (plan.nurseryColors[block.groupKey] || '#FFFFFF'),
+          Boolean(block.isGap || !expOn)
+        );
+      });
+      if (direction === 'DOWN' && empty > 0) writeCellBlock(empty, 'EMPTY', '#F1F5F9', true);
+      const bottom = worksheet.getCell(currentRow - 1, col);
+      bottom.border = { ...bottom.border, bottom: { style: 'thick' } };
+    }
+
+    const footer = worksheet.getCell(currentRow, col);
+    footer.value = rm.isOverflowRun ? 'OVERFLOW' : `R${rm.run} ${direction === 'UP' ? '↑' : '↓'}`;
+    footer.alignment = { horizontal: 'center', vertical: 'middle' };
+    footer.font = { bold: true, size: 10, color: { argb: 'FF0F172A' } };
+    footer.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF1F5F9' } };
+    footer.border = { top: { style: 'thick' }, bottom: { style: 'thick' }, left: { style: 'thick' }, right: { style: 'thick' } };
+  });
 }
 
 async function exportFieldPlanExcel() {
   const plan = state.fieldPlan;
   if (!plan.fieldData.length) return showFieldPlanError('Load or generate a field plan before exporting.');
   if (typeof ExcelJS === 'undefined') return showFieldPlanError('Excel export library did not load. Check your internet connection.');
+  syncFieldPlanExportOpts();
+  const expCfg = plan.exportSheets || { condensed: true, visual: true, blocks: true, fieldbook: true, perSection: true, variants: false };
   plan.loading = true;
   renderFieldPlan();
   clearFieldPlanError();
   try {
     const workbook = new ExcelJS.Workbook();
-    workbook.creator = 'SandPlot Nursery Detail Plan Viewer';
-
-    // Sheet 1: Condensed Mathematical Reference Plan (Spreadsheet Schematic)
-    const condSheet = workbook.addWorksheet('Condensed Math Plan', { views: [{ state: 'frozen', xSplit: 1 }] });
-    const { runSummaries, maxBoards } = buildFixedMathSchematicData(plan);
-    condSheet.getColumn(1).width = 18;
+    workbook.creator = 'SandPlot Nursery Schematic & Fieldbook Studio v12.10';
+    const usedSheetNames = new Set();
     const thinCellBorder = { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } };
 
-    let cRow = 1;
-    const bedM = Number(plan.tapeBedM) || 1.55;
-    const pitchM = Number(plan.tapePitchM) || 1.88;
-    condSheet.getCell(cRow, 1).value = `Bed (${bedM}m)`;
-    condSheet.getCell(cRow + 1, 1).value = `Pitch (${pitchM}m)`;
-    condSheet.getCell(cRow + 2, 1).value = 'Section / Gen';
-    runSummaries.forEach((rs, idx) => {
-      const col = idx + 2;
-      condSheet.getColumn(col).width = 10;
-      condSheet.getCell(cRow, col).value = Number(((idx + 1) * bedM).toFixed(2));
-      condSheet.getCell(cRow + 1, col).value = Number(((idx + 1) * pitchM).toFixed(2));
-      condSheet.getCell(cRow + 2, col).value = rs.sectionHeader || '';
-    });
-    cRow += 3;
+    // 1. Condensed Mathematical Reference Plan
+    if (expCfg.condensed !== false) {
+      const condSheet = workbook.addWorksheet(sanitizeExcelWorksheetName('Condensed Math Plan', usedSheetNames), { views: [{ state: 'frozen', xSplit: 1 }] });
+      const { runSummaries, maxBoards } = buildFixedMathSchematicData(plan);
+      condSheet.getColumn(1).width = 18;
 
-    for (let b = maxBoards; b >= 1; b--) {
-      const lblCell = condSheet.getCell(cRow, 1);
-      lblCell.value = `Board ${b}`;
-      lblCell.font = { bold: true, size: 10 };
-      lblCell.border = thinCellBorder;
+      let cRow = 1;
+      const bedM = Number(plan.tapeBedM) || 1.55;
+      const pitchM = Number(plan.tapePitchM) || 1.88;
+      condSheet.getCell(cRow, 1).value = `Bed (${bedM}m)`;
+      condSheet.getCell(cRow + 1, 1).value = `Pitch (${pitchM}m)`;
+      condSheet.getCell(cRow + 2, 1).value = 'Section / Gen';
       runSummaries.forEach((rs, idx) => {
         const col = idx + 2;
-        const cell = condSheet.getCell(cRow, col);
-        cell.border = thinCellBorder;
-        cell.alignment = { horizontal: 'center', vertical: 'middle' };
-        if (b > rs.boards) {
-          cell.value = '—';
-          return;
-        }
-        const bc = rs.boardCells[b];
-        if (!bc || !bc.segments.length) {
-          cell.value = '';
-          return;
-        }
-        const firstSeg = bc.segments[0];
-        cell.value = bc.segments.length === 1
-          ? (firstSeg.isGap ? 'pad' : `${firstSeg.gen} #${firstSeg.genBoardNum}`)
-          : bc.segments.map(s => s.isGap ? 'pad' : `${s.gen}#${s.genBoardNum}`).join('/');
-        cell.font = { bold: true, size: 9, color: { argb: 'FF0F172A' } };
-        const hex = String(firstSeg.color || '#FFFFFF').replace('#', '');
-        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: `FF${hex}` } };
+        condSheet.getColumn(col).width = 10;
+        condSheet.getCell(cRow, col).value = Number(((idx + 1) * bedM).toFixed(2));
+        condSheet.getCell(cRow + 1, col).value = Number(((idx + 1) * pitchM).toFixed(2));
+        condSheet.getCell(cRow + 2, col).value = rs.sectionHeader || '';
       });
-      cRow++;
-    }
+      cRow += 3;
 
-    // Travel arrow + Red/Blue Run # + Start/End FC rows
-    condSheet.getCell(cRow, 1).value = 'Direction';
-    condSheet.getCell(cRow + 1, 1).value = 'Run #';
-    condSheet.getCell(cRow + 2, 1).value = 'Start FC (Entry)';
-    condSheet.getCell(cRow + 3, 1).value = 'End FC (Exit)';
-    condSheet.getCell(cRow + 4, 1).value = 'Math Phys Rows';
-    runSummaries.forEach((rs, idx) => {
-      const col = idx + 2;
-      const dirC = condSheet.getCell(cRow, col);
-      dirC.value = rs.dir === 'UP' ? '↑' : '↓';
-      dirC.alignment = { horizontal: 'center' };
-      dirC.font = { bold: true, size: 12 };
-      dirC.border = thinCellBorder;
-
-      const runC = condSheet.getCell(cRow + 1, col);
-      runC.value = rs.run;
-      runC.alignment = { horizontal: 'center' };
-      runC.font = { bold: true, size: 12, color: { argb: 'FF000000' } };
-      runC.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: rs.run % 2 === 1 ? 'FFFF2A2A' : 'FF00B4F5' } };
-      runC.border = thinCellBorder;
-
-      const sC = condSheet.getCell(cRow + 2, col);
-      sC.value = rs.startFc ?? '';
-      sC.alignment = { horizontal: 'center' };
-      sC.font = { bold: true, size: 9 };
-      sC.border = thinCellBorder;
-
-      const eC = condSheet.getCell(cRow + 3, col);
-      eC.value = rs.endFc ?? '';
-      eC.alignment = { horizontal: 'center' };
-      eC.font = { bold: true, size: 9 };
-      eC.border = thinCellBorder;
-
-      const pC = condSheet.getCell(cRow + 4, col);
-      pC.value = `${rs.physStart}-${rs.physEnd}`;
-      pC.alignment = { horizontal: 'center' };
-      pC.font = { size: 8 };
-      pC.border = thinCellBorder;
-    });
-
-    // Sheet 2: Detailed Visual Field Plan
-    const worksheet = workbook.addWorksheet('Visual Field Plan', { views: [{ showGridLines: false, state: 'frozen', ySplit: 2 }] });
-    const configuredRunDefs = (plan.runDefs && plan.runDefs.length) ? plan.runDefs : buildConfiguredRunDefs(plan);
-    const runDefMap = new Map();
-    configuredRunDefs.forEach(rd => runDefMap.set(rd.run, rd));
-
-    const maxBlockRun = Math.max(0, ...plan.fieldData.map(b => b.run));
-    const runNumbers = plan.engineMode === 'excel'
-      ? Array.from({ length: Math.max(1, maxBlockRun) }, (_, i) => i + 1)
-      : configuredRunDefs.map(r => r.run);
-
-    const getRunMeta = run => {
-      const rd = runDefMap.get(run) || {
-        run,
-        gridName: 'Excel',
-        boards: Math.max(1, ...plan.fieldData.filter(b => b.run === run).map(b => b.board || 1)),
-        rowsPerBoard: 108,
-        dir: ((run % 2 !== 0) === plan.startsAtBottom ? 'UP' : 'DOWN')
-      };
-      const boards = plan.engineMode === 'excel'
-        ? Math.max(rd.boards || 1, ...plan.fieldData.filter(b => b.run === run).map(b => b.board || 1))
-        : (rd.boards || 1);
-      return { ...rd, boards, totalCapacity: boards * (rd.rowsPerBoard || 108) };
-    };
-
-    const runMetas = runNumbers.map(getRunMeta);
-    const maxTotalCap = Math.max(108, ...runMetas.map(m => m.totalCapacity));
-    const thinBorder = { style: 'thin', color: { argb: 'FFCBD5E1' } };
-
-    runMetas.forEach((rm, colIdx) => {
-      const col = colIdx + 1;
-      worksheet.getColumn(col).width = 12;
-      const runBlocks = plan.fieldData.filter(b => b.run === rm.run);
-      const direction = runBlocks[0]?.dir || rm.dir || 'UP';
-
-      const gridCell = worksheet.getCell(1, col);
-      gridCell.value = rm.gridName || '';
-      gridCell.font = { bold: true, size: 8, color: { argb: 'FFF8FAFC' } };
-      gridCell.alignment = { horizontal: 'center', vertical: 'middle' };
-      gridCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1E293B' } };
-
-      const header = worksheet.getCell(2, col);
-      header.value = rm.isOverflowRun ? 'OVERFLOW' : `R${rm.run} ${direction === 'UP' ? '↑' : '↓'}`;
-      header.alignment = { horizontal: 'center', vertical: 'middle' };
-      header.font = { bold: true, size: 10, color: { argb: 'FF0F172A' } };
-      header.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF1F5F9' } };
-      header.border = { top: { style: 'thick' }, bottom: { style: 'thick' }, left: { style: 'thick' }, right: { style: 'thick' } };
-
-      let currentRow = 3 + Math.max(0, maxTotalCap - rm.totalCapacity);
-      const visualBoards = Array.from({ length: rm.boards }, (_, i) => rm.boards - i);
-
-      for (const board of visualBoards) {
-        const blocks = runBlocks.filter(item => item.board === board).sort((a, b) =>
-          direction === 'UP' ? (b.physicalStart ?? b.start) - (a.physicalStart ?? a.start) : (a.physicalStart ?? a.start) - (b.physicalStart ?? b.start)
-        );
-        const boardCap = rm.rowsPerBoard || 108;
-        const occupied = blocks.reduce((tot, b) => tot + b.displayRows, 0);
-        const empty = Math.max(0, boardCap - occupied);
-
-        const writeCellBlock = (rows, label, color, isEmpty = false) => {
-          if (rows <= 0) return;
-          const first = currentRow;
-          const last = first + rows - 1;
-          if (last > first) worksheet.mergeCells(first, col, last, col);
-          const cell = worksheet.getCell(first, col);
-          cell.value = label;
-          cell.alignment = { textRotation: 90, vertical: 'middle', horizontal: 'center', wrapText: true };
-          cell.font = { bold: true, size: rows <= 6 ? 8 : rows <= 12 ? 10 : 11, color: { argb: isEmpty ? 'FF94A3B8' : 'FF0F172A' } };
-          const colorHex = (isEmpty ? '#F1F5F9' : color || '#FFFFFF').replace('#', '');
-          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: `FF${colorHex}` } };
-          cell.border = { top: thinBorder, bottom: thinBorder, left: { style: 'thick' }, right: { style: 'thick' } };
-          for (let r = first; r <= last; r++) worksheet.getRow(r).height = 6;
-          currentRow = last + 1;
-        };
-
-        if (direction === 'UP' && empty > 0) writeCellBlock(empty, 'EMPTY', '#F1F5F9', true);
-        blocks.forEach(block => writeCellBlock(
-          block.displayRows,
-          formatBlockLabel(block, plan.labelMode),
-          block.isOverflow ? '#FECACA' : block.isGap ? '#E2E8F0' : (plan.nurseryColors[block.groupKey] || '#FFFFFF'),
-          Boolean(block.isGap)
-        ));
-        if (direction === 'DOWN' && empty > 0) writeCellBlock(empty, 'EMPTY', '#F1F5F9', true);
-        const bottom = worksheet.getCell(currentRow - 1, col);
-        bottom.border = { ...bottom.border, bottom: { style: 'thick' } };
+      for (let b = maxBoards; b >= 1; b--) {
+        const lblCell = condSheet.getCell(cRow, 1);
+        lblCell.value = `Board ${b}`;
+        lblCell.font = { bold: true, size: 10 };
+        lblCell.border = thinCellBorder;
+        runSummaries.forEach((rs, idx) => {
+          const col = idx + 2;
+          const cell = condSheet.getCell(cRow, col);
+          cell.border = thinCellBorder;
+          cell.alignment = { horizontal: 'center', vertical: 'middle' };
+          if (b > rs.boards) {
+            cell.value = '—';
+            return;
+          }
+          const bc = rs.boardCells[b];
+          if (!bc || !bc.segments.length) {
+            cell.value = '';
+            return;
+          }
+          const firstSeg = bc.segments[0];
+          cell.value = bc.segments.length === 1
+            ? (firstSeg.isGap ? 'pad' : `${firstSeg.gen} #${firstSeg.genBoardNum}`)
+            : bc.segments.map(s => s.isGap ? 'pad' : `${s.gen}#${s.genBoardNum}`).join('/');
+          cell.font = { bold: true, size: 9, color: { argb: 'FF0F172A' } };
+          const hex = String(firstSeg.color || '#FFFFFF').replace('#', '');
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: `FF${hex}` } };
+        });
+        cRow++;
       }
 
-      const footer = worksheet.getCell(currentRow, col);
-      footer.value = rm.isOverflowRun ? 'OVERFLOW' : `R${rm.run} ${direction === 'UP' ? '↑' : '↓'}`;
-      footer.alignment = { horizontal: 'center', vertical: 'middle' };
-      footer.font = { bold: true, size: 10, color: { argb: 'FF0F172A' } };
-      footer.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF1F5F9' } };
-      footer.border = { top: { style: 'thick' }, bottom: { style: 'thick' }, left: { style: 'thick' }, right: { style: 'thick' } };
-    });
+      condSheet.getCell(cRow, 1).value = 'Direction';
+      condSheet.getCell(cRow + 1, 1).value = 'Run #';
+      condSheet.getCell(cRow + 2, 1).value = 'Start FC (Entry)';
+      condSheet.getCell(cRow + 3, 1).value = 'End FC (Exit)';
+      condSheet.getCell(cRow + 4, 1).value = 'Math Phys Rows';
+      runSummaries.forEach((rs, idx) => {
+        const col = idx + 2;
+        const dirC = condSheet.getCell(cRow, col);
+        dirC.value = rs.dir === 'UP' ? '↑' : '↓';
+        dirC.alignment = { horizontal: 'center' };
+        dirC.font = { bold: true, size: 12 };
+        dirC.border = thinCellBorder;
 
-    // Sheet 3: Workbook Sheets & Diagnostics Audit
-    const auditSheet = workbook.addWorksheet('Diagnostics & Sheets');
+        const runC = condSheet.getCell(cRow + 1, col);
+        runC.value = rs.run;
+        runC.alignment = { horizontal: 'center' };
+        runC.font = { bold: true, size: 12, color: { argb: 'FF000000' } };
+        runC.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: rs.run % 2 === 1 ? 'FFFF2A2A' : 'FF00B4F5' } };
+        runC.border = thinCellBorder;
+
+        const sC = condSheet.getCell(cRow + 2, col);
+        sC.value = rs.startFc ?? '';
+        sC.alignment = { horizontal: 'center' };
+        sC.font = { bold: true, size: 9 };
+        sC.border = thinCellBorder;
+
+        const eC = condSheet.getCell(cRow + 3, col);
+        eC.value = rs.endFc ?? '';
+        eC.alignment = { horizontal: 'center' };
+        eC.font = { bold: true, size: 9 };
+        eC.border = thinCellBorder;
+
+        const pC = condSheet.getCell(cRow + 4, col);
+        pC.value = `${rs.physStart}-${rs.physEnd}`;
+        pC.alignment = { horizontal: 'center' };
+        pC.font = { size: 8 };
+        pC.border = thinCellBorder;
+      });
+    }
+
+    // 2. Primary Detailed Visual Field Plan (with active / per-section metadata labels)
+    if (expCfg.visual !== false) {
+      writeVisualFieldPlanToWorksheet(workbook, 'Visual Field Plan', plan, null, usedSheetNames);
+    }
+
+    // 3. Optional Multi-Variant Visual Plan Tabs (FC, Entry+FC, Name+FC, etc.)
+    if (expCfg.variants) {
+      const checkedVars = getCheckedFieldPlanExportVariants();
+      checkedVars.forEach(vMode => {
+        const modeObj = FIELD_PLAN_SECTION_MODES.find(m => m.value === vMode);
+        const tabLbl = `Plan ${modeObj ? modeObj.label : vMode}`;
+        writeVisualFieldPlanToWorksheet(workbook, tabLbl, plan, vMode, usedSheetNames);
+      });
+    }
+
+    // 4. Block Metadata Schedule Sheet (1 Row per Block with all checked metadata columns)
+    const exportableBlocks = (plan.fieldData || []).filter(b => !b.isGap && isBlockExportEnabled(b, plan));
+    if (expCfg.blocks !== false && exportableBlocks.length) {
+      const blkSheet = workbook.addWorksheet(sanitizeExcelWorksheetName('Block Metadata Schedule', usedSheetNames), { views: [{ state: 'frozen', ySplit: 1 }] });
+      const headers = getSelectedExportHeaders(plan);
+      blkSheet.columns = headers.map(h => ({
+        header: h.replace(/_/g, ' '),
+        key: h,
+        width: h.includes('Label') || h.includes('Pedigree') || h.includes('Name') || h.includes('Cross') ? 26 : 13
+      }));
+      blkSheet.getRow(1).font = { bold: true, size: 10, color: { argb: 'FFFFFFFF' } };
+      blkSheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1E293B' } };
+      exportableBlocks.forEach(b => {
+        const rec = buildBlockExportRecord(b, plan);
+        const r = blkSheet.addRow(rec);
+        const colorHex = String(plan.nurseryColors[b.groupKey] || '#FFFFFF').replace('#', '');
+        r.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: `FF${colorHex}` } };
+      });
+    }
+
+    // 5. Full Expanded Breeders Fieldbook Sheet (with 9-Line Column C Selection & pastel range highlights)
+    if (expCfg.fieldbook !== false && exportableBlocks.length) {
+      const fbSheet = workbook.addWorksheet(sanitizeExcelWorksheetName('Fieldbook 9-Line Col C', usedSheetNames), { views: [{ state: 'frozen', ySplit: 1 }] });
+      fbSheet.columns = [
+        { header: 'Pos', key: 'pos', width: 10 },
+        { header: 'FC', key: 'fc', width: 10 },
+        { header: 'Selection', key: 'sel', width: 42 },
+        { header: 'range', key: 'range', width: 8 },
+        { header: 'seq', key: 'seq', width: 7 },
+        { header: 'Entry', key: 'entry', width: 12 },
+        { header: 'Name', key: 'name', width: 20 },
+        { header: 'Cross', key: 'cross', width: 20 },
+        { header: 'Pedigree', key: 'pedigree', width: 26 },
+        { header: 'Stage', key: 'stage', width: 10 },
+        { header: 'Nursery', key: 'nursery', width: 16 },
+        { header: 'Section Label', key: 'secLbl', width: 22 },
+        { header: 'h', key: 'h', width: 7 },
+        { header: 'wh', key: 'wh', width: 7 },
+        { header: 'ee', key: 'ee', width: 7 },
+        { header: 'w', key: 'w', width: 7 },
+        { header: 'ht', key: 'ht', width: 7 },
+        { header: 'mat', key: 'mat', width: 7 }
+      ];
+      fbSheet.getRow(1).font = { bold: true, size: 10 };
+      fbSheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD9D9D9' } };
+      const rangeHexMap = { 1: 'FFDCE6F1', 2: 'FFF4CCCC', 3: 'FFD9EAD3', 4: 'FFCFE2F3', 5: 'FFD9D9D9', 6: 'FFFFFFFF', 7: 'FFFFF2CC', 8: 'FFEAD1DC', 9: 'FFD0E0E3' };
+
+      exportableBlocks.forEach(blk => {
+        const blockPegs = (plan.mathPacked || []).filter(p => !p.isGap && p.run === blk.run && p.board === blk.board && p.fc >= blk.start && p.fc <= blk.end);
+        const pegsToWrite = blockPegs.length ? blockPegs : Array.from({ length: blk.pegCount || 1 }, (_, i) => ({
+          fc: blk.start + i,
+          rangeIdx: i + 1,
+          seq: ((i % 12) < 6) ? ((i % 6) + 1) : (12 - (i % 12)),
+          ...blk
+        }));
+        const secLbl = formatBlockLabel(blk);
+        pegsToWrite.forEach((peg, pIdx) => {
+          const rNum = peg.rangeIdx || (pIdx + 1);
+          const seqNum = peg.seq || (((pIdx % 12) < 6) ? ((pIdx % 6) + 1) : (12 - (pIdx % 12)));
+          const colCText = buildFieldbookColCLine(peg, rNum, blk);
+          const excelRow = fbSheet.addRow({
+            pos: `R${blk.run}B${blk.board}${blk.dir === 'UP' ? '↑' : '↓'}`,
+            fc: peg.fc,
+            sel: colCText,
+            range: rNum,
+            seq: seqNum,
+            entry: peg.entry || blk.entry || '',
+            name: peg.name || blk.name || '',
+            cross: peg.cross || blk.cross || '',
+            pedigree: peg.pedigree || blk.pedigree || '',
+            stage: peg.stage || blk.stage || blk.generation || '',
+            nursery: peg.nursery || blk.nursery || '',
+            secLbl
+          });
+          const selCell = excelRow.getCell(3);
+          const argbBg = rangeHexMap[rNum] || 'FFFFFFFF';
+          selCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: argbBg } };
+          if (rNum === 1) {
+            selCell.font = { bold: true, color: { argb: 'FF1D4ED8' } };
+            excelRow.border = { top: { style: 'medium', color: { argb: 'FF0F172A' } } };
+          }
+        });
+      });
+    }
+
+    // 6. Optional Separate Tab per Section (each configured with that section's metadata fields!)
+    if (expCfg.perSection !== false) {
+      const sections = getFieldPlanSectionsList(plan).filter(sec => {
+        const r = ensureSectionRule(sec.key);
+        return r.exportEnabled !== false && sec.blocks.length > 0;
+      });
+      sections.forEach(sec => {
+        const secSheet = workbook.addWorksheet(sanitizeExcelWorksheetName(`Sec_${sec.shortLabel || sec.label}`, usedSheetNames), { views: [{ state: 'frozen', ySplit: 1 }] });
+        const headers = getSelectedExportHeaders(plan);
+        secSheet.columns = headers.map(h => ({
+          header: h.replace(/_/g, ' '),
+          key: h,
+          width: h.includes('Label') || h.includes('Pedigree') || h.includes('Name') ? 25 : 13
+        }));
+        secSheet.getRow(1).font = { bold: true, size: 10, color: { argb: 'FFFFFFFF' } };
+        secSheet.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF312E81' } };
+        sec.blocks.forEach(b => {
+          secSheet.addRow(buildBlockExportRecord(b, plan));
+        });
+      });
+    }
+
+    // 7. Workbook Sheets & Diagnostics Audit
+    const auditSheet = workbook.addWorksheet(sanitizeExcelWorksheetName('Diagnostics & Sheets', usedSheetNames));
     auditSheet.columns = [
       { header: 'Category', key: 'cat', width: 20 },
       { header: 'Sheet', key: 'sheet', width: 24 },
@@ -23365,12 +25010,13 @@ async function exportFieldPlanExcel() {
       { header: 'Details', key: 'detail', width: 55 }
     ];
     (plan.sheets || []).forEach(s => {
+      const ruleMode = plan.sectionRules?.[`sheet:${s.id}`]?.mode || 'global';
       auditSheet.addRow({
         cat: s.enabled ? 'Sheet (Included)' : 'Sheet (Skipped)',
         sheet: s.name,
         row: s.rowCount,
         fc: s.fcCount ? `${s.minFc}-${s.maxFc}` : 'None',
-        name: `Gen: ${s.generation}${s.isAlt ? ' (2x Alt)' : ''}`,
+        name: `Gen: ${s.generation}${s.isAlt ? ' (2x Alt)' : ''} · Mode: ${ruleMode}`,
         detail: `FC count: ${s.fcCount}, SpacerAfter: ${s.spacerAfter || 0}`
       });
     });
@@ -23391,7 +25037,7 @@ async function exportFieldPlanExcel() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'Nursery_Detail_Plan.xlsx';
+    link.download = 'Nursery_Detail_Plan_v10.xlsx';
     link.click();
     URL.revokeObjectURL(url);
   } catch (error) {
